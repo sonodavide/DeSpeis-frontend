@@ -1,0 +1,48 @@
+<div  *ngIf="film">
+    <div class="film-header">
+      <!-- Immagine della locandina -->
+      <img [src]="film.img" alt="{{ film.titolo }}" class="film-img-detail">
+  
+      <!-- Dettagli principali del film -->
+      <div class="film-info">
+        <h1 class="film-title">{{ film.titolo }}</h1>
+        <div class="film-metadata">
+          <span><strong>Durata:</strong> {{ film.durata }} min</span>
+          <span><strong>Data di uscita:</strong> {{ film.datauscita | date: 'dd-MM-yyyy' }}</span>
+        </div>
+        <p class="film-trama">{{ film.trama }}</p>
+  
+        <!-- Link di esempio per tornare alla lista dei film o per azioni -->
+        <a routerLink="/films" class="button-link">Torna alla lista dei film</a>
+      </div>
+    </div>
+  
+    <!-- Sezione con informazioni aggiuntive -->
+    <div class="film-extra-details">
+      <div *ngIf="film.attores.length > 0" class="film-cast">
+        <h2>Cast</h2>
+        <ul>
+          <li *ngFor="let attore of film.attores">{{ attore.nome }} {{ attore.cognome }}</li>
+        </ul>
+      </div>
+  
+      <div *ngIf="film.registas.length > 0" class="film-directors">
+        <h2>Regista</h2>
+        <ul>
+          <li *ngFor="let regista of film.registas">{{ regista.nome }} {{ regista.cognome }}</li>
+        </ul>
+      </div>
+  
+      <div *ngIf="film.generes.length > 0" class="film-genres">
+        <h2>Genere</h2>
+        <ul>
+          <li *ngFor="let genere of film.generes">{{ genere.genere }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="!film">
+    <p>Film non trovato.</p>
+  </div>
+  

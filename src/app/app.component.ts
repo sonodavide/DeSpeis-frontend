@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { FilmsComponent } from './components/films/films.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

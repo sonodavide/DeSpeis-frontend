@@ -1,0 +1,24 @@
+.scroll-top-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f5c518; /* Colore giallo accento */
+    color: #1c1c1c; /* Colore scuro per il testo del pulsante */
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+  }
+  
+  .scroll-top-button:hover {
+    background-color: #ffda44; /* Effetto hover più chiaro */
+  }
+  
+  .scroll-top-button:focus {
+    outline: none;
+  }
+  

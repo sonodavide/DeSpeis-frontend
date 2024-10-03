@@ -1,0 +1,17 @@
+/* Sfondo esterno per tutta la pagina */
+body {
+    background-color: #121212; /* Grigio antracite scuro */
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Container principale */
+  .main-content {
+    
+  }
+  
+  /* Imposta il margine per il contenuto per evitare sovrapposizioni */
+  .film-container {
+
+  }
+  

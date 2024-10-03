@@ -1,0 +1,75 @@
+.spettacoli-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    margin: auto;
+  }
+  
+  .giorni-settimana {
+    margin-bottom: 20px;
+  }
+  
+  .giorni-lista {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .giorni-lista li {
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    color: #ccc;
+    border-bottom: 2px solid transparent;
+  }
+  
+  .giorni-lista li.selected {
+    color: #fff;
+    border-bottom: 2px solid #fff;
+  }
+  
+  .spettacolo-card {
+    display: flex;
+    background-color: #1c1c1c;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  .film-poster img {
+    max-width: 150px;
+    border-radius: 8px;
+  }
+  
+  .film-info {
+    margin-left: 20px;
+  }
+  
+  .film-info h3 {
+    color: #f1c40f;
+    margin-bottom: 10px;
+  }
+  
+  .film-info p {
+    margin: 5px 0;
+  }
+  
+  .orari {
+    margin-top: 10px;
+  }
+  
+  .orari span {
+    background-color: #444;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 4px;
+    display: inline-block;
+    color: #fff;
+  }
+  
