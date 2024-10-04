@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'film/:id', component: DettagliFilmComponent},
   {path: 'spettacoli', component: SpettacoliComponent},
   {path: '', component: HomepageComponent},
-  {path: 'selezione-posti', component: SelezionePostiComponent}
+  {path: 'selezione-posti/:id', component: SelezionePostiComponent}
 ];
 
 @NgModule({

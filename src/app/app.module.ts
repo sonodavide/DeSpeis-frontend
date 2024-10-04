@@ -12,7 +12,7 @@ import { TastoSopraComponent } from './components/tasto-sopra/tasto-sopra.compon
 import { SpettacoliComponent } from './components/spettacoli/spettacoli.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { SelezionePostiComponent } from './components/selezione-posti/selezione-posti.component';
-
+import { JoinPipe } from './utils/join.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +23,7 @@ import { SelezionePostiComponent } from './components/selezione-posti/selezione-
     SpettacoliComponent,
     HomepageComponent,
     SelezionePostiComponent,
+    JoinPipe,
   ],
   imports: [
     BrowserModule,
