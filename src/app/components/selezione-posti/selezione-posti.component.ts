@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { PostispettacoloDto } from '../../model/postiSpettacolo';
+import { PrenotazioneService } from '../../services/prenotazione.service';
+import { ActivatedRoute } from '@angular/router';
+import { SpettacoloService } from '../../services/spettacolo.service';
 
 @Component({
   selector: 'app-selezione-posti',
@@ -7,40 +11,39 @@ import { Component } from '@angular/core';
 })
 export class SelezionePostiComponent {
   
-  posti: { [fila: string]: { numero: number, prenotato: boolean, speciale?: boolean }[] } = {
-    'A': [{ numero: 1, prenotato: false}, { numero: 2, prenotato: true }, { numero: 3, prenotato: false }],
-    'B': [{ numero: 1, prenotato: false }, { numero: 2, prenotato: false }, { numero: 3, prenotato: true }],
-    'C': [{ numero: 1, prenotato: false }, { numero: 2, prenotato: false }, { numero: 3, prenotato: false }],
-    'D': [{ numero: 1, prenotato: false }, { numero: 2, prenotato: false }, { numero: 3, prenotato: false }],
-    'E': [{ numero: 1, prenotato: true }, { numero: 2, prenotato: true }, { numero: 3, prenotato: false }],
-    'F': [{ numero: 1, prenotato: false }, { numero: 2, prenotato: false }, { numero: 3, prenotato: false }],
-    'G': [{ numero: 1, prenotato: true }, { numero: 2, prenotato: false }],
-    'H': [{ numero: 1, prenotato: false }, { numero: 2, prenotato: false }],
-  };
+  posti?: PostispettacoloDto;
 
-  postiSelezionati: { fila: string, numero: number }[] = [];
+  postiSelezionati: number[] = [];
 
-  constructor() { }
+  constructor(private spettacoloService : SpettacoloService, private route: ActivatedRoute, private prenotazioneService : PrenotazioneService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getPosti()
+  }
 
-  // Funzione per gestire la selezione di un posto
-  selezionaPosto(fila: string, numero: number, prenotato: boolean) {
-    if (!prenotato) {
-      const indicePosto = this.postiSelezionati.findIndex(p => p.fila === fila && p.numero === numero);
-      if (indicePosto === -1) {
-        this.postiSelezionati.push({ fila, numero });
-      } else {
-        this.postiSelezionati.splice(indicePosto, 1);
-      }
+  libero(stato : string){
+    return stato==="libero"
+  }
+
+  isPostoSelezionato(postoId: number): boolean {
+    return this.postiSelezionati.includes(postoId);
+  }
+
+  selezionaPosto(postoId : number){
+    if(this.postiSelezionati.includes(postoId)){
+      let index = this.postiSelezionati.indexOf(postoId);
+      this.postiSelezionati.splice(index)
+    } else {
+      this.postiSelezionati.push(postoId)
     }
   }
-
-  isPostoSelezionato(fila: string, numero: number): boolean {
-    return this.postiSelezionati.some(p => p.fila === fila && p.numero === numero);
+  getPosti() {
+    let spettacoloId : number = +this.route.snapshot.paramMap.get('id')!
+    this.spettacoloService.getPostiSpettacolo(spettacoloId).subscribe(posti => this.posti= posti)
   }
 
-  getFilas() {
-    return Object.keys(this.posti);
+  prenota(){
+    
+    this.prenotazioneService.prenota({postiIds : this.postiSelezionati, userId : 1, spettacoloId : this.posti?.spettacoloId! }).subscribe()
   }
 }

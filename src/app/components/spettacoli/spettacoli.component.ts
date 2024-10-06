@@ -20,7 +20,7 @@ export class SpettacoliComponent {
 
   ngOnInit(): void {
     this.generaGiorniSettimana(); // Genera le prossime 7 date
-    this.getSpettacoli(this.giorniSettimana[0].date); // Richiedi gli spettacoli per "Oggi"
+    this.selezionaGiorno(this.giorniSettimana[0].date); // Richiedi gli spettacoli per "Oggi"
 
   }
 
@@ -45,5 +45,10 @@ export class SpettacoliComponent {
   // Metodo per formattare l'orario in maniera più leggibile
   formatTime(time: string): string {
     return time.substring(0, 5); // Mostra solo ore e minuti (HH:mm)
+  }
+
+  selezionaGiorno(date: string) {
+    this.dataSelezionata = date;
+    this.getSpettacoli(date);  // Aggiorna gli spettacoli per la data selezionata
   }
 }

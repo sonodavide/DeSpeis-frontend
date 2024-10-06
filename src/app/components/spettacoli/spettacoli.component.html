@@ -2,7 +2,7 @@
     <div class="giorni-settimana">
       <ul class="giorni-lista">
         <li *ngFor="let giorno of giorniSettimana" 
-            (click)="getSpettacoli(giorno.date)" 
+            (click)="selezionaGiorno(giorno.date)" 
             [class.selected]="giorno.date === dataSelezionata">
           {{ giorno.label }}
         </li>

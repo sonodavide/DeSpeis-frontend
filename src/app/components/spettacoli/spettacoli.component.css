@@ -1,13 +1,8 @@
 .spettacoli-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #000;
-    color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
   }
   
   .giorni-settimana {
@@ -36,8 +31,8 @@
   .spettacolo-card {
     display: flex;
     background-color: #1c1c1c;
-    padding: 15px;
-    margin: 20px 0;
+    padding: 10px 0;
+    margin: 10px 0;
     border-radius: 8px;
     width: 100%;
   }
@@ -74,3 +69,11 @@
     cursor: pointer;
   }
   
+
+  .giorni-lista li.selected {
+    color: #fff; /* Colore del testo del giorno selezionato */
+    border-bottom: 2px solid #f1c40f; /* Sottolineatura del giorno selezionato */
+    font-weight: bold; /* Rende il testo più evidente */
+    background-color: #444; /* Sfondo del giorno selezionato */
+    border-radius: 5px; /* Arrotonda leggermente lo sfondo */
+  }
