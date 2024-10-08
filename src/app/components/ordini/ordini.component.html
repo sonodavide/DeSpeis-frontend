@@ -11,6 +11,11 @@
         <p><strong>Stato:</strong> {{ ordine.stato }}</p>
         <p><strong>Totale:</strong> {{ ordine.totale | currency: 'EUR' }}</p>
         <p><strong>Biglietti:</strong> </p>
+        <ul>
+          <li *ngFor="let biglietto of ordine.bigliettos">
+            {{bigliettoToString(biglietto)}}
+          </li>
+        </ul>
         <hr>
       </div>
   
