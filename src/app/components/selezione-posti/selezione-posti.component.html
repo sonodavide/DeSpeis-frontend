@@ -3,11 +3,11 @@
       <span>Schermo</span>
     </div>
   
-    <div class="fila-container" *ngFor="let fila of posti?.posti?.keys()">
+    <div class="fila-container" *ngFor="let fila of posti?.keys()">
       <span class="etichetta-fila">{{ fila }}</span>
       <div class="fila">
         <div class="posto" 
-             *ngFor="let posto of posti?.posti!.get(fila) ?? []"
+             *ngFor="let posto of posti?.get(fila) ?? []"
              [class.prenotato]="!libero(posto.stato)"
              [class.selezionato]="isPostoSelezionato(posto.postoId)"
              (click)="selezionaPosto(posto.postoId)">

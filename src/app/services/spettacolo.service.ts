@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SpettacoloDto } from '../model/spettacolo';
 import { FilmSpettacoliDto } from '../model/filmSpettacoli';
-import { PostispettacoloDto } from '../model/postiSpettacolo';
+import { PostiSpettacoloResponseDto } from '../model/postiSpettacolo';
+import { NuovoSpettacoloDto } from '../model/nuovoSpettacolo';
+import { SpettacoloRicercaDto } from '../model/spettacoloRicercaDto';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +23,33 @@ export class SpettacoloService {
     const params = new HttpParams().set('date', date);
     return this.http.post<FilmSpettacoliDto[]>(url, {}, { headers, params });
   }
-  getPostiSpettacolo(spettacoloId: number): Observable<PostispettacoloDto> {
+  getPostiSpettacolo(spettacoloId: number): Observable<PostiSpettacoloResponseDto> {
     const params = new HttpParams().set('spettacoloId', spettacoloId);
-    return this.http.get<PostispettacoloDto>(`${this.apiUrl}/sala`, { params });
+    return this.http.get<PostiSpettacoloResponseDto>(`${this.apiUrl}/sala`, { params });
+  }
+  // Metodo per aggiungere un nuovo spettacolo
+  nuovo(nuovoSpettacolo: NuovoSpettacoloDto): Observable<NuovoSpettacoloDto> {
+    const url = `${this.apiUrl}/nuovo`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<NuovoSpettacoloDto>(url, nuovoSpettacolo, { headers });
+  }
+
+  // Metodo per eliminare uno spettacolo esistente
+  elimina(spettacolo: NuovoSpettacoloDto): Observable<any> {
+    const url = `${this.apiUrl}/elimina`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<any>(url, spettacolo, { headers });
+  }
+  cerca(date: string): Observable<NuovoSpettacoloDto[]> {
+    const url = `${this.apiUrl}/ricerca`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    const params = new HttpParams().set('date', date);
+    return this.http.post<NuovoSpettacoloDto[]>(url, {}, { headers, params });
   }
 }

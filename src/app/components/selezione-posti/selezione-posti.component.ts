@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { PostispettacoloDto } from '../../model/postiSpettacolo';
+import { PostiSpettacoloResponseDto } from '../../model/postiSpettacolo';
 import { PrenotazioneService } from '../../services/prenotazione.service';
 import { ActivatedRoute } from '@angular/router';
 import { SpettacoloService } from '../../services/spettacolo.service';
-
+import { SharedBigliettiService } from '../../services/shared-biglietti.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-selezione-posti',
   templateUrl: './selezione-posti.component.html',
@@ -11,11 +12,11 @@ import { SpettacoloService } from '../../services/spettacolo.service';
 })
 export class SelezionePostiComponent {
   
-  posti?: PostispettacoloDto;
+  posti? = new Map();
 
   postiSelezionati: number[] = [];
 
-  constructor(private spettacoloService : SpettacoloService, private route: ActivatedRoute, private prenotazioneService : PrenotazioneService) { }
+  constructor(private router : Router ,private spettacoloService : SpettacoloService, private route: ActivatedRoute, private prenotazioneService : PrenotazioneService, private sharedBigliettiService : SharedBigliettiService) { }
 
   ngOnInit(): void {
     this.getPosti()
@@ -39,11 +40,14 @@ export class SelezionePostiComponent {
   }
   getPosti() {
     let spettacoloId : number = +this.route.snapshot.paramMap.get('id')!
-    this.spettacoloService.getPostiSpettacolo(spettacoloId).subscribe(posti => this.posti= posti)
+    this.spettacoloService.getPostiSpettacolo(spettacoloId).subscribe(posti =>{
+      this.posti = new Map(Object.entries(posti.posti));
+    })
   }
 
   prenota(){
-    
-    this.prenotazioneService.prenota({postiIds : this.postiSelezionati, userId : 1, spettacoloId : this.posti?.spettacoloId! }).subscribe()
+    this.sharedBigliettiService.updateData(this.postiSelezionati)
+    this.router.navigate(["/checkout"])
+    //this.prenotazioneService.prenota({postiIds : this.postiSelezionati, userId : 1, spettacoloId : this.posti?.spettacoloId! }).subscribe()
   }
 }

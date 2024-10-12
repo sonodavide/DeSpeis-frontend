@@ -1,0 +1,106 @@
+<div class="admin-utenti-container">
+    <!-- Sezione Creazione -->
+    <div class="section create-section">
+      <h2>Crea Nuovo Utente</h2>
+      <form (ngSubmit)="creaUtente()">
+        <label for="username">Username:</label>
+        <input type="text" id="username" [(ngModel)]="nuovoUtente.username" name="username" required />
+  
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" [(ngModel)]="nuovoUtente.nome" name="nome" required />
+  
+        <label for="cognome">Cognome:</label>
+        <input type="text" id="cognome" [(ngModel)]="nuovoUtente.cognome" name="cognome" required />
+  
+        <label for="datanascita">Data di Nascita:</label>
+        <input type="date" id="datanascita" [(ngModel)]="nuovoUtente.datanascita" name="datanascita" required />
+  
+        <label for="telefono">Telefono:</label>
+        <input type="tel" id="telefono" [(ngModel)]="nuovoUtente.telefono" name="telefono" required />
+  
+        <button type="submit" class="create-button">Crea</button>
+      </form>
+    </div>
+  
+    <!-- Sezione Ricerca e Dettagli -->
+    <div class="section search-section">
+      <h2>Cerca Utente</h2>
+      <input type="text" placeholder="Cerca utente per nome o username" [(ngModel)]="termineRicerca" (ngModelChange)="onSearchChange($event)" />
+      
+      <div *ngIf="isLoading" class="loading-indicator">
+        Ricerca in corso...
+      </div>
+      
+      <ul *ngIf="risultatiRicerca.length > 0">
+        <p>Consigliati:</p>
+        <li *ngFor="let utente of risultatiRicerca" (click)="selezionaUtente(utente)">
+          > {{ utente.username }} - {{ utente.nome }} {{ utente.cognome }}
+        </li>
+      </ul>
+  
+      <!-- Dettagli Utente Selezionato -->
+      <div *ngIf="utenteSelezionatoModificato" class="details-section">
+        <h3>Dettagli Utente</h3>
+        <label for="username">Username:</label>
+        <input type="text" id="username" [(ngModel)]="utenteSelezionatoModificato.username" (input)="abilitaModifiche()" />
+  
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" [(ngModel)]="utenteSelezionatoModificato.nome" (input)="abilitaModifiche()" />
+  
+        <label for="cognome">Cognome:</label>
+        <input type="text" id="cognome" [(ngModel)]="utenteSelezionatoModificato.cognome" (input)="abilitaModifiche()" />
+  
+        <label for="datanascita">Data di Nascita:</label>
+        <input type="date" id="datanascita" [(ngModel)]="utenteSelezionatoModificato.datanascita" (input)="abilitaModifiche()" />
+  
+        <label for="telefono">Telefono:</label>
+        <input type="tel" id="telefono" [(ngModel)]="utenteSelezionatoModificato.telefono" (input)="abilitaModifiche()" />
+  
+        <button class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaUtente()">Modifica</button>
+        <button class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">Annulla Modifica</button>
+        <button class="delete-button" (click)="eliminaUtente()">Elimina</button>
+        <!-- Sezione Biglietti -->
+  <div class="biglietti-container">
+    <h3>Biglietti dell'Utente</h3>
+    <div *ngIf="biglietti.length > 0; else nessunBiglietto">
+      <div *ngFor="let biglietto of biglietti" class="biglietto">
+        <!-- Dettagli biglietto -->
+        <p><strong>Codice Biglietto:</strong> {{ biglietto.id }}</p>
+        <p><strong>Film:</strong> {{ biglietto.postospettacoloSpettacoloFilmTitolo }}</p>
+        <!-- Altri dettagli -->
+      </div>
+      <div class="pagination">
+        <button (click)="paginaPrecedenteBiglietti()" [disabled]="paginaBiglietti === 0">Indietro</button>
+        <span class="pagina-info">Pagina {{ paginaBiglietti + 1 }} di {{ totalePagineBiglietti }}</span>
+        <button (click)="paginaSuccessivaBiglietti()" [disabled]="paginaBiglietti >= totalePagineBiglietti - 1">Avanti</button>
+      </div>
+    </div>
+    <ng-template #nessunBiglietto>
+      <p>Non ci sono biglietti.</p>
+    </ng-template>
+  </div>
+
+  <!-- Sezione Ordini -->
+  <div class="ordini-container">
+    <h3>Ordini dell'Utente</h3>
+    <div *ngIf="ordini.length > 0; else nessunOrdine">
+      <div *ngFor="let ordine of ordini" class="ordine">
+        <!-- Dettagli ordine -->
+        <p><strong>Codice Ordine:</strong> {{ ordine.id }}</p>
+        <p><strong>Data:</strong> {{ ordine.data | date: 'dd/MM/yyyy' }}</p>
+        <!-- Altri dettagli -->
+      </div>
+      <div class="pagination">
+        <button (click)="paginaPrecedenteOrdini()" [disabled]="paginaOrdini === 0">Indietro</button>
+        <span class="pagina-info">Pagina {{ paginaOrdini + 1 }} di {{ totalePagineOrdini }}</span>
+        <button (click)="paginaSuccessivaOrdini()" [disabled]="paginaOrdini >= totalePagineOrdini - 1">Avanti</button>
+      </div>
+    </div>
+    <ng-template #nessunOrdine>
+      <p>Non ci sono ordini.</p>
+    </ng-template>
+  </div>
+      </div>
+    </div>
+  </div>
+  

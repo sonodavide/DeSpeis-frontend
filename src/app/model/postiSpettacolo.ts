@@ -1,7 +1,7 @@
-import { postoResponseDto } from "./postoResponseDto";
+import { PostoResponseDto } from "./postoResponseDto";
 
-export interface PostispettacoloDto {
+export interface PostiSpettacoloResponseDto {
     spettacoloId: number;
-    posti : Map<string, postoResponseDto[]>;
+    posti : { [key: string]: PostoResponseDto[] };
     
   }

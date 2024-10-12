@@ -17,6 +17,17 @@ import { JoinPipe } from './utils/join.pipe';
 import { UtenteComponent } from './components/utente/utente.component';
 import { OrdiniComponent } from './components/ordini/ordini.component';
 import { BigliettiComponent } from './components/biglietti/biglietti.component';
+import { FormsModule } from '@angular/forms';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { AdminComponent } from './components/admin/admin.component';
+
+import { AdminGenereComponent } from './components/admin-genere/admin-genere.component';
+import { AdminAttoreComponent } from './components/admin-attore/admin-attore.component';
+import { AdminRegistaComponent } from './components/admin-regista/admin-regista.component';
+import { AdminFilmComponent } from './components/admin-film/admin-film.component';
+import { AdminSpettacoloComponent } from './components/admin-spettacolo/admin-spettacolo.component';
+import { AdminSalaComponent } from './components/admin-sala/admin-sala.component';
+import { AdminUtenteComponent } from './components/admin-utente/admin-utente.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,8 +42,19 @@ import { BigliettiComponent } from './components/biglietti/biglietti.component';
     UtenteComponent,
     OrdiniComponent,
     BigliettiComponent,
+    CheckoutComponent,
+    AdminComponent,
+
+    AdminGenereComponent,
+    AdminAttoreComponent,
+    AdminRegistaComponent,
+    AdminFilmComponent,
+    AdminSpettacoloComponent,
+    AdminSalaComponent,
+    AdminUtenteComponent,
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
   ],

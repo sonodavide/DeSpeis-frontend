@@ -1,0 +1,33 @@
+<div class="admin-sala-container">
+    <!-- Colonna per la lista delle file -->
+    <div class="fila-list-container">
+        <div class="fila-container" *ngFor="let fila of file.slice().reverse()">
+          <span class="etichetta-fila">{{ fila.nome }}</span>
+          <button (click)="aggiungiPosto(fila.nome)" class="posto-add">+</button>
+          <button (click)="rimuoviPosto(fila.nome)" class="posto-remove">-</button>
+        </div>
+      </div>
+    
+    <!-- Colonna per la disposizione dei posti della sala -->
+    <div class="posti-container">
+      <div class="selezione-posti">
+        <div class="schermo">
+          <span>Schermo</span>
+        </div>
+        <div class="fila-posti-container" *ngFor="let fila of file.slice().reverse()">
+          <div class="fila">
+            <div class="posto" *ngFor="let posto of fila.sedili">
+              <span>{{ posto }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pulsanti per aggiungere/rimuovere file -->
+      <div class="fila-buttons">
+        <button (click)="aggiungiFila()" class="fila-add">+ Fila</button>
+        <button (click)="rimuoviFila()" class="fila-remove">- Fila</button>
+      </div>
+    </div>
+  </div>
+  

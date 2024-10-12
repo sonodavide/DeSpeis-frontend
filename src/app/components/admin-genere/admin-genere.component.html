@@ -1,0 +1,56 @@
+<div class="admin-genere-container">
+    <!-- Sezione Creazione -->
+    <div class="section create-section">
+      <h2>Crea Nuovo Genere</h2>
+      <form (ngSubmit)="creaGenere()">
+        <label for="genere">Genere:</label>
+        <input type="text" id="genere" [(ngModel)]="nuovoGenere.genere" name="genere" required />
+  
+        
+  
+        <button type="submit" class="create-button">Crea</button>
+      </form>
+    </div>
+  
+    <!-- Sezione Ricerca e Dettagli -->
+    <div class="section search-section">
+      <h2>Cerca Genere</h2>
+      <input type="text" placeholder="Cerca genere" [(ngModel)]="termineRicerca" (ngModelChange)="onSearchChange($event)"  />
+      <!-- Loading indicator -->
+      <div *ngIf="isLoading" class="loading-indicator">
+        Ricerca in corso...
+      </div>
+
+      <ul *ngIf="risultatiRicerca.length > 0">
+        <p>Consigliati:</p>
+        <li *ngFor="let genere of risultatiRicerca" (click)="selezionaGenere(genere)">
+          > {{ genere.genere }} 
+        </li>
+      </ul>
+  
+      <!-- Dettagli Genere Selezionato -->
+<div *ngIf="genereSelezionatoModificato" class="details-section">
+    <h3>Dettagli Genere</h3>
+    <label for="genere">Nome:</label>
+    <input
+      type="text"
+      id="genere"
+      [(ngModel)]="genereSelezionatoModificato.genere"
+      (input)="abilitaModifiche()"
+    />
+  
+    
+  
+    <button class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaGenere()">
+      Modifica
+    </button>
+    <button class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">
+      Annulla Modifica
+    </button>
+    <button class="delete-button" (click)="eliminaGenere()">
+      Elimina
+    </button>
+  </div>
+  
+  </div>
+</div>

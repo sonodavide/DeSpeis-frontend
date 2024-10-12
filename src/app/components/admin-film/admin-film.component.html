@@ -1,0 +1,266 @@
+<div class="admin-film-container">
+  <!-- Sezione Creazione -->
+  <div class="section create-section">
+    <h2>Crea Nuovo Film</h2>
+    <form (ngSubmit)="creaFilm()">
+      <label for="titolo">Titolo:</label>
+      <input type="text" id="titolo" [(ngModel)]="nuovoFilm.titolo" name="titolo" required />
+
+      <label for="durata">Durata (min):</label>
+      <input type="number" id="durata" [(ngModel)]="nuovoFilm.durata" name="durata" required />
+
+      <label for="trama">Trama:</label>
+      <textarea id="trama" [(ngModel)]="nuovoFilm.trama" name="trama" required rows="4"></textarea>
+
+      <label for="img">URL Immagine:</label>
+      <input type="text" id="img" [(ngModel)]="nuovoFilm.img" name="img" required />
+
+      <label for="datauscita">Data di Uscita:</label>
+      <input type="date" id="datauscita" 
+             [(ngModel)]="nuovoFilm.datauscita" 
+             name="datauscita" 
+             required />
+
+      <!-- Sezione Attori -->
+      <div class="form-group">
+        <label for="filmActors">Attori:</label>
+        <input type="text" 
+               placeholder="Cerca attore per nome o cognome" 
+               [(ngModel)]="termineRicercaAttoreCreazione" 
+               (ngModelChange)="onSearchChange($event, 'attoreCreazione')" 
+               name="filmActors" />
+        
+        <div *ngIf="isLoadingAttoreCreazione" class="loading-indicator">
+          Ricerca in corso...
+        </div>
+        
+        <ul *ngIf="risultatiRicercaAttoriCreazione.length > 0">
+          <li *ngFor="let actor of risultatiRicercaAttoriCreazione" 
+              (click)="aggiungiElemento(actor, 'attoreCreazione')">
+              {{ actor.nome }} {{ actor.cognome }}
+          </li>
+        </ul>
+        <div class="selected-list">
+          <span *ngFor="let actor of nuovoFilm.attores">
+            <button type="button" (click)="rimuoviElemento(actor, 'attoreCreazione')">
+              {{ actor.nome }} {{ actor.cognome }} <b>X</b>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <!-- Sezione Registi -->
+      <div class="form-group">
+        <label for="filmRegisti">Registi:</label>
+        <input type="text" 
+               placeholder="Cerca regista per nome o cognome" 
+               [(ngModel)]="termineRicercaRegistaCreazione" 
+               (ngModelChange)="onSearchChange($event, 'registaCreazione')" 
+               name="filmRegisti" />
+        
+        <div *ngIf="isLoadingRegistaCreazione" class="loading-indicator">
+          Ricerca in corso...
+        </div>
+        
+        <ul *ngIf="risultatiRicercaRegistiCreazione.length > 0">
+          <li *ngFor="let regista of risultatiRicercaRegistiCreazione" 
+              (click)="aggiungiElemento(regista, 'registaCreazione')">
+              {{ regista.nome }} {{ regista.cognome }}
+          </li>
+        </ul>
+        <div class="selected-list">
+          <span *ngFor="let regista of nuovoFilm.registas">
+            <button type="button" (click)="rimuoviElemento(regista, 'registaCreazione')">
+              {{ regista.nome }} {{ regista.cognome }} <b>X</b>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <!-- Sezione Generi -->
+      <div class="form-group">
+        <label for="filmGenres">Generi:</label>
+        <input type="text" 
+               placeholder="Cerca genere" 
+               [(ngModel)]="termineRicercaGenereCreazione" 
+               (ngModelChange)="onSearchChange($event, 'genereCreazione')"  
+               name="filmGenres" />
+        
+        <div *ngIf="isLoadingGenereCreazione" class="loading-indicator">
+          Ricerca in corso...
+        </div>
+
+        <ul *ngIf="risultatiRicercaGeneriCreazione.length > 0">
+          <li *ngFor="let genre of risultatiRicercaGeneriCreazione" 
+              (click)="aggiungiElemento(genre, 'genereCreazione')">
+              {{ genre.genere }}
+          </li>
+        </ul>
+        <div class="selected-list">
+          <span *ngFor="let genre of nuovoFilm.generes">
+            <button type="button" (click)="rimuoviElemento(genre, 'genereCreazione')">
+              {{ genre.genere }} <b>X</b>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <button type="submit" class="create-button">Crea</button>
+    </form>
+  </div>
+
+  <!-- Sezione Modifica -->
+  <div class="section edit-section">
+    <h2>Modifica Film Esistente</h2>
+  
+    <!-- Ricerca film -->
+    <label for="searchFilm">Cerca Film:</label>
+    <input type="text" 
+           name="searchFilm" 
+           placeholder="Cerca film per titolo" 
+           [(ngModel)]="termineRicercaFilm" 
+           (ngModelChange)="onSearchChange($event, 'film')" />
+    
+    <div *ngIf="isLoadingFilm" class="loading-indicator">
+      Ricerca in corso...
+    </div>
+    
+    <ul *ngIf="risultatiRicercaFilm.length > 0">
+      <li *ngFor="let film of risultatiRicercaFilm" 
+          (click)="selezionaFilm(film)">
+          {{ film.titolo }}
+      </li>
+    </ul>
+  
+    <!-- Form di modifica -->
+    <form *ngIf="filmSelezionatoModificato" (ngSubmit)="modificaFilm()">
+      <label for="editTitolo">Titolo:</label>
+      <input type="text" 
+             id="editTitolo" 
+             [(ngModel)]="filmSelezionatoModificato.titolo" 
+             name="editTitolo" 
+             required (input)="abilitaModifiche()" />
+  
+      <label for="editDurata">Durata (min):</label>
+      <input type="number" 
+             id="editDurata" 
+             [(ngModel)]="filmSelezionatoModificato.durata" 
+             name="editDurata" 
+             required />
+  
+      <label for="trama">Trama:</label>
+      <textarea id="trama" [(ngModel)]="filmSelezionatoModificato.trama" name="trama" required rows="4" (input)="abilitaModifiche()"></textarea>
+
+      <label for="img">URL Immagine:</label>
+      <input type="text" id="img" [(ngModel)]="filmSelezionatoModificato.img" name="img" required (input)="abilitaModifiche()"/>
+
+      <label for="datauscita">Data di Uscita:</label>
+      <input type="date" id="datauscita" 
+            [(ngModel)]="filmSelezionatoModificato.datauscita" 
+            name="datauscita" (input)="abilitaModifiche()"
+            required />
+      
+      <!-- Sezione Attori Modifica -->
+      <div class="form-group">
+        <label for="editActors">Attori:</label>
+        <input type="text" 
+               name="editActors" 
+               placeholder="Cerca attore per nome o cognome" 
+               [(ngModel)]="termineRicercaAttoreModifica" 
+               (ngModelChange)="onSearchChange($event, 'attoreModifica')" />
+        
+        <div *ngIf="isLoadingAttoreModifica" class="loading-indicator">
+          Ricerca in corso...
+        </div>
+        
+        <ul *ngIf="risultatiRicercaAttoriModifica.length > 0">
+          <li *ngFor="let actor of risultatiRicercaAttoriModifica" 
+              (click)="aggiungiElemento(actor, 'attoreModifica'); abilitaModifiche()">
+              {{ actor.nome }} {{ actor.cognome }}
+          </li>
+        </ul>
+        <div class="selected-list">
+          <span *ngFor="let actor of filmSelezionatoModificato.attores">
+            <button type="button" (click)="rimuoviElemento(actor, 'attoreModifica'); abilitaModifiche()">
+              {{ actor.nome }} {{ actor.cognome }} <b>X</b>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <!-- Sezione Registi Modifica -->
+      <div class="form-group">
+        <label for="editRegisti">Registi:</label>
+        <input type="text" 
+               name="editRegisti" 
+               placeholder="Cerca regista per nome o cognome" 
+               [(ngModel)]="termineRicercaRegistaModifica" 
+               (ngModelChange)="onSearchChange($event, 'registaModifica')" />
+        
+        <div *ngIf="isLoadingRegistaModifica" class="loading-indicator">
+          Ricerca in corso...
+        </div>
+        
+        <ul *ngIf="risultatiRicercaRegistiModifica.length > 0">
+          <li *ngFor="let regista of risultatiRicercaRegistiModifica" 
+              (click)="aggiungiElemento(regista, 'registaModifica'); abilitaModifiche()">
+              {{ regista.nome }} {{ regista.cognome }}
+          </li>
+        </ul>
+        <div class="selected-list">
+          <span *ngFor="let regista of filmSelezionatoModificato.registas">
+            <button type="button" (click)="rimuoviElemento(regista, 'registaModifica'); abilitaModifiche()">
+              {{ regista.nome }} {{ regista.cognome }} <b>X</b>
+            </button>
+          </span>
+        </div>
+      </div>
+  
+      <!-- Sezione Generi Modifica -->
+      <div class="form-group">
+        <label for="editGenres">Generi:</label>
+        <input type="text" 
+               name="editGenres" 
+               placeholder="Cerca genere" 
+               [(ngModel)]="termineRicercaGenereModifica" 
+               (ngModelChange)="onSearchChange($event, 'genereModifica')" />
+        
+        <div *ngIf="isLoadingGenereModifica" class="loading-indicator">
+          Ricerca in corso...
+        </div>
+        
+        <ul *ngIf="risultatiRicercaGeneriModifica.length > 0">
+          <li *ngFor="let genre of risultatiRicercaGeneriModifica" 
+              (click)="aggiungiElemento(genre, 'genereModifica'); abilitaModifiche()">
+              {{ genre.genere }}
+          </li>
+        </ul>
+        <div class="selected-list">
+          <span *ngFor="let genre of filmSelezionatoModificato.generes">
+            <button type="button" (click)="rimuoviElemento(genre, 'genereModifica'); abilitaModifiche()" >
+              {{ genre.genere }} <b>X</b>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <button class="edit-button" 
+        type="submit"
+              [disabled]="!modificheAbilitate" 
+              (click)="modificaFilm()">
+        Modifica
+      </button>
+      <button class="cancel-button" 
+      type="button"
+              [disabled]="!modificheAbilitate" 
+              (click)="annullaModifiche()">
+        Annulla Modifica
+      </button>
+      <button typeclass="delete-button" 
+      type="button"
+              (click)="eliminaFilm()">
+        Elimina
+      </button>
+    </form>
+  </div>
+</div>

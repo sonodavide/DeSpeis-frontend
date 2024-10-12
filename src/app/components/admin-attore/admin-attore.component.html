@@ -1,0 +1,63 @@
+<div class="admin-attori-container">
+    <!-- Sezione Creazione -->
+    <div class="section create-section">
+      <h2>Crea Nuovo Attore</h2>
+      <form (ngSubmit)="creaAttore()">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" [(ngModel)]="nuovoAttore.nome" name="nome" required />
+  
+        <label for="cognome">Cognome:</label>
+        <input type="text" id="cognome" [(ngModel)]="nuovoAttore.cognome" name="cognome" required />
+  
+        <button type="submit" class="create-button">Crea</button>
+      </form>
+    </div>
+  
+    <!-- Sezione Ricerca e Dettagli -->
+    <div class="section search-section">
+      <h2>Cerca Attore</h2>
+      <input type="text" placeholder="Cerca attore per nome o cognome" [(ngModel)]="termineRicerca" (ngModelChange)="onSearchChange($event)"  />
+      <!-- Loading indicator -->
+      <div *ngIf="isLoading" class="loading-indicator">
+        Ricerca in corso...
+      </div>
+      
+      <ul *ngIf="risultatiRicerca.length > 0">
+        <p>Consigliati:</p>
+        <li *ngFor="let attore of risultatiRicerca" (click)="selezionaAttore(attore)">
+          > {{ attore.nome }} {{ attore.cognome }}
+        </li>
+      </ul>
+  
+      <!-- Dettagli Attore Selezionato -->
+<div *ngIf="attoreSelezionatoModificato" class="details-section">
+    <h3>Dettagli Attore</h3>
+    <label for="nome">Nome:</label>
+    <input
+      type="text"
+      id="nome"
+      [(ngModel)]="attoreSelezionatoModificato.nome"
+      (input)="abilitaModifiche()"
+    />
+  
+    <label for="cognome">Cognome:</label>
+    <input
+      type="text"
+      id="cognome"
+      [(ngModel)]="attoreSelezionatoModificato.cognome"
+      (input)="abilitaModifiche()"
+    />
+  
+    <button class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaAttore()">
+      Modifica
+    </button>
+    <button class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">
+      Annulla Modifica
+    </button>
+    <button class="delete-button" (click)="eliminaAttore()">
+      Elimina
+    </button>
+  </div>
+  
+  </div>
+</div>
