@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { GenereDto } from '../../model/film';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { GenereService } from '../../services/genere.service';
+import { PaginatedResponse } from '../../model/paginatedResponse';
 @Component({
   selector: 'app-admin-genere',
   templateUrl: './admin-genere.component.html',
@@ -9,57 +10,70 @@ import { GenereService } from '../../services/genere.service';
 })
 export class AdminGenereComponent {
   constructor(private genereService : GenereService){}
-  private searchSubject = new Subject<string>();
-  
-  isLoading = false;
-  ngOnInit() : void{
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-    ).subscribe(term => {
-      if (term.length >= 2) {
-        this.cercaGenere(term);
-      } else {
-        this.risultatiRicerca = [];
-      }
-    });
-  }
 
+  isLoading = false;
   nuovoGenere: GenereDto = { id: 0, genere: ''};
   termineRicerca: string = '';
-  attori: GenereDto[] = [];
-  risultatiRicerca: GenereDto[] = [];
+  generi: GenereDto[] = [];
   genereSelezionato: GenereDto | null = null;
   genereSelezionatoModificato: GenereDto | null = null;
   modificheAbilitate: boolean = false;
+  paginaCorrente = 0;
+  totalePagine = 0;
+  pageSize = 4; 
+  ngOnInit() : void{
+    this.getGeneri()
+  }
 
-  creaGenere() {
+  
+  getGeneri() : void{
+    this.genereService.getAllPaginated(this.paginaCorrente, this.pageSize)
+    .subscribe(response => {
+      this.generi = response.content;
+      this.totalePagine = response.totalPages;
+    })
+  }
+  creaGenere() : void {
     this.genereService.nuovo(this.nuovoGenere).subscribe()
     this.nuovoGenere = { id: undefined, genere: '' };
   }
-  onSearchChange(term: string) {
-    this.searchSubject.next(term);
-  }
-  cercaGenere(term: string) {
-    this.isLoading = true;
-    this.genereService.getSuggestions(term).subscribe(
-      (risultati: GenereDto[]) => {
-        this.risultatiRicerca = risultati;
-        this.isLoading = false;
-      },
-      error => {
-        console.error('Errore nella ricerca:', error);
-        this.risultatiRicerca = [];
-        this.isLoading = false;
-      }
-    );
+ 
+  eseguiRicerca(): void {
+    this.paginaCorrente=0
+    if (this.termineRicerca.trim()) {
+      this.genereService.cerca(this.termineRicerca, this.paginaCorrente, this.pageSize)
+        .subscribe((response: PaginatedResponse<GenereDto>) => {
+          this.generi = response.content;
+          this.totalePagine = response.totalPages;
+        });
+    } else {
+      this.getGeneri();
+    }
   }
 
+  resetRicerca(): void {
+    this.termineRicerca = '';
+    this.paginaCorrente = 0;
+    this.getGeneri();
+  }
+
+  paginaPrecedente(): void {
+    if (this.paginaCorrente > 0) {
+      this.paginaCorrente--;
+      this.termineRicerca ? this.eseguiRicerca() : this.getGeneri();
+    }
+  }
+
+  paginaSuccessiva(): void {
+    if (this.paginaCorrente < this.totalePagine - 1) {
+      this.paginaCorrente++;
+      this.termineRicerca ? this.eseguiRicerca() : this.getGeneri();
+    }
+  }
   selezionaGenere(genere: GenereDto) {
     this.genereSelezionato = genere;
     this.genereSelezionatoModificato = { ...genere };
     this.modificheAbilitate = false;
-    this.risultatiRicerca = []
   }
 
   abilitaModifiche() {

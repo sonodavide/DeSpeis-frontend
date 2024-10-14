@@ -76,3 +76,19 @@
   .create-button{
     display: block;
   }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    padding: 8px 12px;
+  }
+  
+  .pagination span {
+    color: #ffffff;
+  }
