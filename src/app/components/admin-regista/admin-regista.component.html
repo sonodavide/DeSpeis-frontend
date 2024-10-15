@@ -20,7 +20,6 @@
       <button (click)="eseguiRicerca()">Cerca</button>
       <button (click)="resetRicerca()">Reset</button>
       <ul *ngIf="registi.length > 0">
-        <p>Consigliati:</p>
         <li *ngFor="let regista of registi" (click)="selezionaRegista(regista)">
           > {{ regista.nome }} {{ regista.cognome }}
         </li>

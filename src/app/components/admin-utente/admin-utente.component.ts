@@ -25,18 +25,11 @@ export class AdminUtenteComponent {
   totalePagineBiglietti = 1;
   paginaOrdini = 0;
   totalePagineOrdini = 1;
+  paginaUtenti = 0;
+  totalePagineUtenti=0;
 
   ngOnInit(): void {
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-    ).subscribe(term => {
-      if (term.length >= 2) {
-        this.cercaUtente(term);
-      } else {
-        this.risultatiRicerca = [];
-      }
-    });
+    this.caricaUtenti()
   }
 
   nuovoUtente: UtenteDto = { id: undefined, username: '', nome: '', cognome: '', datanascita: '', telefono: '' };
@@ -45,43 +38,41 @@ export class AdminUtenteComponent {
   utenteSelezionato: UtenteDto | null = null;
   utenteSelezionatoModificato: UtenteDto | null = null;
   modificheAbilitate: boolean = false;
-
+  pageSizeUtenti=4
+  pageSizeBiglietti=8
+  pageSizeOrdini=4
   creaUtente() {
     this.utenteService.nuovo(this.nuovoUtente).subscribe(() => {
       this.nuovoUtente = { id: 0, username: '', nome: '', cognome: '', datanascita: '', telefono: '' };
     });
   }
 
-  onSearchChange(term: string) {
-    this.searchSubject.next(term);
+  caricaUtenti() : void {
+    this.utenteService.getAllPaginated(this.paginaUtenti, this.pageSizeUtenti).subscribe( response => {
+      this.risultatiRicerca = response.content;
+      this.totalePagineUtenti = response.totalPages
+    })
   }
 
-  cercaUtente(term: string) {
-    this.isLoading = true;
-    this.utenteService.getSuggestions(term).subscribe(
-      (risultati: UtenteDto[]) => {
-        this.risultatiRicerca = risultati;
-        this.isLoading = false;
-      },
-      error => {
-        console.error('Errore nella ricerca:', error);
-        this.risultatiRicerca = [];
-        this.isLoading = false;
-      }
-    );
+  eseguiRicerca() : void {
+    this.paginaUtenti=0
+    this.utenteService.cerca(this.termineRicerca, this.paginaUtenti, this.pageSizeUtenti).subscribe( response => {
+      this.risultatiRicerca = response.content;
+      this.totalePagineUtenti = response.totalPages
+    })
   }
+  
 
   selezionaUtente(utente: UtenteDto) {
     this.utenteSelezionato = utente;
     this.utenteSelezionatoModificato = { ...utente };
     this.modificheAbilitate = false;
-    this.risultatiRicerca = [];
     this.caricaBiglietti();
     this.caricaOrdini();
   }
 
   caricaBiglietti() {
-    this.bigliettoService.getBigliettiByUser(this.utenteSelezionato!.id!, this.paginaBiglietti)
+    this.bigliettoService.getBigliettiByUser(this.utenteSelezionato!.id!, this.paginaBiglietti, this.pageSizeBiglietti)
       .subscribe(response => {
         this.biglietti = response.content;
         this.totalePagineBiglietti = response.totalPages;
@@ -89,11 +80,25 @@ export class AdminUtenteComponent {
   }
 
   caricaOrdini() {
-    this.ordineService.getOrdiniPaginated(this.paginaOrdini, this.utenteSelezionato!.id!)
+    this.ordineService.getOrdiniByUserPaginated(this.utenteSelezionato?.id!, this.paginaOrdini, this.pageSizeOrdini)
       .subscribe(response => {
         this.ordini = response.content;
         this.totalePagineOrdini = response.totalPages;
       });
+  }
+
+  paginaPrecedente(): void {
+    if (this.paginaUtenti > 0) {
+      this.paginaUtenti--;
+      this.termineRicerca ? this.eseguiRicerca() : this.caricaUtenti();
+    }
+  }
+
+  paginaSuccessiva(): void {
+    if (this.paginaUtenti < this.totalePagineUtenti - 1) {
+      this.paginaUtenti++;
+      this.termineRicerca ? this.eseguiRicerca() : this.caricaUtenti();
+    }
   }
 
   paginaPrecedenteBiglietti() {
@@ -148,5 +153,11 @@ export class AdminUtenteComponent {
         this.utenteSelezionatoModificato = null;
       });
     }
+  }
+
+  resetRicerca() : void {
+    this.termineRicerca = ""
+    this.caricaUtenti()
+    this.paginaUtenti=0;
   }
 }

@@ -19,11 +19,12 @@ export class BigliettoService {
   }
 
   // Metodo per ottenere i biglietti di un utente specifico con paginazione
-  getBigliettiByUser(userId: number, page: number = 0): Observable<PaginatedResponse<BigliettoDto>> {
+  getBigliettiByUser(userId: number, pageNumber: number, pageSize : number): Observable<PaginatedResponse<BigliettoDto>> {
     const params = new HttpParams()
-      .set('user', userId.toString())
-      .set('page', page.toString());
-    return this.http.get<PaginatedResponse<BigliettoDto>>(this.apiUrl, { params });
+      .set('user', userId)
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/paginated/user`, { params });
   }
 
   // Metodo per ottenere i biglietti di una data specifica

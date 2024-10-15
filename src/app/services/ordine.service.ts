@@ -13,14 +13,10 @@ export class OrdineService {
 
   constructor(private http: HttpClient) {}
 
-  // Metodo per ottenere gli ordini con paginazione (pagina di default 0)
-  getOrdiniPaginated(page: number, userId?: number): Observable<PaginatedResponse<OrdineDto>> {
-    let params = new HttpParams().set('page', page.toString());
-    if (userId !== undefined) {
-      params = params.set('user', userId.toString());
-    }
-    
-    return this.http.get<PaginatedResponse<OrdineDto>>(this.apiUrl, { params });
+  getOrdiniByUserPaginated(userId: number, pageNumber: number, pageSize:number): Observable<PaginatedResponse<OrdineDto>> {
+    let params = new HttpParams().set('pageNumber', pageNumber).set('userId', userId).set('pageSize', pageSize);
+
+    return this.http.get<PaginatedResponse<OrdineDto>>(`${this.apiUrl}/paged/user`, { params });
   }
 
 

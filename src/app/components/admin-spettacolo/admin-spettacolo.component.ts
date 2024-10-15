@@ -7,6 +7,12 @@ import { PrenotazioneService } from '../../services/prenotazione.service';
 import { PostiSpettacoloResponseDto } from '../../model/postiSpettacolo';
 import { PostoResponseDto } from '../../model/postoResponseDto';
 import { PrenotazioneRequestDto } from '../../model/prenotazioneRequest';
+import { SalaDto } from '../../model/salaDto';
+import { FilmDto } from '../../model/film';
+import { FilmService } from '../../services/film.service';
+import { SalaService } from '../../services/sala.service';
+import { SearchType } from '../../utils/searchType';
+import { PaginatedResponse } from '../../model/paginatedResponse';
 
 @Component({
   selector: 'app-admin-spettacolo',
@@ -15,29 +21,59 @@ import { PrenotazioneRequestDto } from '../../model/prenotazioneRequest';
 })
 export class AdminSpettacoloComponent {
   nuovoSpettacolo: NuovoSpettacoloDto = this.resetNuovoSpettacolo()
-  
-  constructor(private spettacoloService : SpettacoloService, private prenotazioneService : PrenotazioneService){}
-  private searchSubject = new Subject<string>();
-  
-  termineRicerca: string = '';
-  isLoading = false;
-  spettacoli: SpettacoloDto[] = [];
-  risultatiRicerca: NuovoSpettacoloDto[] = [];
+  SearchType = SearchType
+  constructor(private spettacoloService : SpettacoloService, private prenotazioneService : PrenotazioneService, private filmService : FilmService, private salaService : SalaService){}
+
+  termineRicercaFilmCreazione : string = ""
+  termineRicercaFilmModifica : string = ""
+  termineRicercaSalaCreazione : string = ""
+  termineRicercaSalaModifica  : string = ""
+
+  risultatiRicercaFilmCreazione: FilmDto[] = [];
+  risultatiRicercaFilmModifica: FilmDto[] = [];
+  risultatiRicercaSalaModifica: SalaDto[] = [];
+  risultatiRicercaSalaCreazione: SalaDto[] = [];
+
+  // Variabili per la paginazione di Film - Creazione
+  paginaCorrenteFilmCreazione: number = 0;
+  totalePagineFilmCreazione: number = 0;
+  pageSizeFilmCreazione: number = 4;
+
+  // Variabili per la paginazione di Film - Modifica
+  paginaCorrenteFilmModifica: number = 0;
+  totalePagineFilmModifica: number = 0;
+  pageSizeFilmModifica: number = 4;
+
+  // Variabili per la paginazione di Sala - Creazione
+  paginaCorrenteSalaCreazione: number = 0;
+  totalePagineSalaCreazione: number = 0;
+  pageSizeSalaCreazione: number = 4;
+
+  // Variabili per la paginazione di Sala - Modifica
+  paginaCorrenteSalaModifica: number = 0;
+  totalePagineSalaModifica: number = 0;
+  pageSizeSalaModifica: number = 4;
+
+  // Variabili per la paginazione di Spettacolo - Creazione
+  paginaCorrenteSpettacoloCreazione: number = 0;
+  totalePagineSpettacoloCreazione: number = 0;
+  pageSizeSpettacoloCreazione: number = 4;
+
+  // Variabili per la paginazione di Spettacolo - Modifica
+  paginaCorrenteSpettacoloModifica: number = 0;
+  totalePagineSpettacoloModifica: number = 0;
+  pageSizeSpettacoloModifica: number = 4;
+
+  termineRicercaSpettacoloModifica: string = '';
+  risultatiRicercaSpettacolo: NuovoSpettacoloDto[] = [];
   spettacoloSelezionato: NuovoSpettacoloDto | null = null;
   spettacoloSelezionatoModificato: NuovoSpettacoloDto | null = null;
   modificheAbilitate: boolean = false;
 
   ngOnInit() : void{
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-    ).subscribe(term => {
-      if (term) {
-        this.cercaSpettacolo(term);
-      } else {
-        this.risultatiRicerca = [];
-      }
-    });
+    this.loader(SearchType.FilmCreazione)
+    this.loader(SearchType.SpettacoloModifica)
+    this.loader(SearchType.SalaModifica)
   }
 
   creaSpettacolo() {
@@ -45,29 +81,253 @@ export class AdminSpettacoloComponent {
     this.nuovoSpettacolo = this.resetNuovoSpettacolo()
   }
 
-  onSearchChange(term: string) {
-    this.searchSubject.next(term);
-  }
-  cercaSpettacolo(term: string) {
-    this.isLoading = true;
-    this.spettacoloService.cerca(term).subscribe(
-      (risultati: NuovoSpettacoloDto[]) => {
-        this.risultatiRicerca = risultati;
-        this.isLoading = false;
-      },
-      error => {
-        console.error('Errore nella ricerca:', error);
-        this.risultatiRicerca = [];
-        this.isLoading = false;
+  
+  eseguiRicerca(tipo: SearchType) {
+    switch (tipo) {
+      case SearchType.FilmCreazione: {
+        this.filmService.cerca(this.termineRicercaFilmCreazione.trim(), this.paginaCorrenteFilmCreazione, this.pageSizeFilmCreazione)
+          .subscribe((response: PaginatedResponse<FilmDto>) => {
+            this.risultatiRicercaFilmCreazione = response.content;
+            this.totalePagineFilmCreazione = response.totalPages;
+          });
+        break;
       }
-    );
+        
+      case SearchType.FilmModifica: {
+        this.filmService.cerca(this.termineRicercaFilmModifica.trim(), this.paginaCorrenteFilmModifica, this.pageSizeFilmModifica)
+          .subscribe((response: PaginatedResponse<FilmDto>) => {
+            this.risultatiRicercaFilmModifica = response.content;
+            this.totalePagineFilmModifica = response.totalPages;
+          });
+        break;
+      }
+      
+      case SearchType.SalaCreazione: {
+        this.salaService.cerca(this.termineRicercaSalaCreazione.trim(), this.paginaCorrenteSalaCreazione, this.pageSizeSalaCreazione)
+          .subscribe((response: PaginatedResponse<SalaDto>) => {
+            this.risultatiRicercaSalaCreazione = response.content;
+            this.totalePagineSalaCreazione = response.totalPages;
+          });
+        break;
+      }
+        
+      case SearchType.SalaModifica: {
+        this.salaService.cerca(this.termineRicercaSalaModifica.trim(), this.paginaCorrenteSalaModifica, this.pageSizeSalaModifica)
+          .subscribe((response: PaginatedResponse<SalaDto>) => {
+            this.risultatiRicercaSalaModifica = response.content;
+            this.totalePagineSalaModifica = response.totalPages;
+          });
+        break;
+      }
+      
+      
+      case SearchType.SpettacoloModifica: {
+        this.spettacoloService.cerca(this.termineRicercaSpettacoloModifica.trim(), this.paginaCorrenteSpettacoloModifica, this.pageSizeSpettacoloModifica)
+          .subscribe((response: PaginatedResponse<NuovoSpettacoloDto>) => {
+            this.risultatiRicercaSpettacolo = response.content;
+            this.totalePagineSpettacoloModifica = response.totalPages;
+          });
+        break;
+      }
+    }
+}
+
+  paginaSuccessiva(tipo: SearchType) {
+    let termineRicerca = '';
+    switch (tipo) {
+      case SearchType.FilmCreazione:
+        termineRicerca = this.termineRicercaFilmCreazione;
+        if (this.paginaCorrenteFilmCreazione < this.totalePagineFilmCreazione - 1) {
+          this.paginaCorrenteFilmCreazione++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+      case SearchType.FilmModifica:
+        termineRicerca = this.termineRicercaFilmModifica;
+        if (this.paginaCorrenteFilmModifica < this.totalePagineFilmModifica - 1) {
+          this.paginaCorrenteFilmModifica++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+      case SearchType.SalaCreazione:
+        termineRicerca = this.termineRicercaSalaCreazione;
+        if (this.paginaCorrenteSalaCreazione < this.totalePagineSalaCreazione - 1) {
+          this.paginaCorrenteSalaCreazione++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+      case SearchType.SalaModifica:
+        termineRicerca = this.termineRicercaSalaModifica;
+        if (this.paginaCorrenteSalaModifica < this.totalePagineSalaModifica - 1) {
+          this.paginaCorrenteSalaModifica++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+
+
+      case SearchType.SpettacoloModifica:
+        termineRicerca = this.termineRicercaSpettacoloModifica;
+        if (this.paginaCorrenteSpettacoloModifica < this.totalePagineSpettacoloModifica - 1) {
+          this.paginaCorrenteSpettacoloModifica++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+      default:
+        console.error('Tipo di ricerca non valido:', tipo);
+    }
+  }
+
+  paginaPrecedente(tipo: SearchType) {
+    let termineRicerca = '';
+    switch (tipo) {
+      case SearchType.FilmCreazione:
+        termineRicerca = this.termineRicercaFilmCreazione;
+        if (this.paginaCorrenteFilmCreazione > 0) {
+          this.paginaCorrenteFilmCreazione--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+      case SearchType.FilmModifica:
+        termineRicerca = this.termineRicercaFilmModifica;
+        if (this.paginaCorrenteFilmModifica > 0) {
+          this.paginaCorrenteFilmModifica--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+      case SearchType.SalaCreazione:
+        termineRicerca = this.termineRicercaSalaCreazione;
+        if (this.paginaCorrenteSalaCreazione > 0) {
+          this.paginaCorrenteSalaCreazione--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+      case SearchType.SalaModifica:
+        termineRicerca = this.termineRicercaSalaModifica;
+        if (this.paginaCorrenteSalaModifica > 0) {
+          this.paginaCorrenteSalaModifica--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+
+
+      case SearchType.SpettacoloModifica:
+        termineRicerca = this.termineRicercaSpettacoloModifica;
+        if (this.paginaCorrenteSpettacoloModifica > 0) {
+          this.paginaCorrenteSpettacoloModifica--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+
+      default:
+        console.error('Tipo di ricerca non valido:', tipo);
+    }
+}
+
+loader(tipo: SearchType) {
+  switch(tipo) {
+    case SearchType.FilmCreazione:
+      this.filmService.getAllPaginated(this.paginaCorrenteFilmCreazione, this.pageSizeFilmCreazione)
+        .subscribe((response: PaginatedResponse<FilmDto>) => {
+          this.risultatiRicercaFilmCreazione = response.content;
+          this.totalePagineFilmCreazione = response.totalPages;
+        });
+      break;
+
+    case SearchType.FilmModifica:
+      this.filmService.getAllPaginated(this.paginaCorrenteFilmModifica, this.pageSizeFilmModifica)
+        .subscribe((response: PaginatedResponse<FilmDto>) => {
+          this.risultatiRicercaFilmModifica = response.content;
+          this.totalePagineFilmModifica = response.totalPages;
+        });
+      break;
+
+    case SearchType.SalaCreazione:
+      this.salaService.getAllPaginated(this.paginaCorrenteSalaCreazione, this.pageSizeSalaCreazione)
+        .subscribe((response: PaginatedResponse<SalaDto>) => {
+          this.risultatiRicercaSalaCreazione = response.content;
+          this.totalePagineSalaCreazione = response.totalPages;
+        });
+      break;
+
+    case SearchType.SalaModifica:
+      this.salaService.getAllPaginated(this.paginaCorrenteSalaModifica, this.pageSizeSalaModifica)
+        .subscribe((response: PaginatedResponse<SalaDto>) => {
+          this.risultatiRicercaSalaModifica = response.content;
+          this.totalePagineSalaModifica = response.totalPages;
+        });
+      break;
+
+
+    case SearchType.SpettacoloModifica:
+      this.spettacoloService.getAllPaginated(this.paginaCorrenteSpettacoloModifica, this.pageSizeSpettacoloModifica)
+        .subscribe((response: PaginatedResponse<NuovoSpettacoloDto>) => {
+          this.risultatiRicercaSpettacolo = response.content;
+          this.totalePagineSpettacoloModifica = response.totalPages;
+        });
+      break;
+  }
+}
+
+resettaRicerca(tipo: SearchType): void {
+  switch(tipo) {
+    case SearchType.FilmCreazione:
+      this.termineRicercaFilmCreazione = '';
+      this.paginaCorrenteFilmCreazione = 0;
+      this.loader(SearchType.FilmCreazione);
+      break;
+
+    case SearchType.FilmModifica:
+      this.termineRicercaFilmModifica = '';
+      this.paginaCorrenteFilmModifica = 0;
+      this.loader(SearchType.FilmModifica);
+      break;
+
+    case SearchType.SalaCreazione:
+      this.termineRicercaSalaCreazione = '';
+      this.paginaCorrenteSalaCreazione = 0;
+      this.loader(SearchType.SalaCreazione);
+      break;
+
+    case SearchType.SalaModifica:
+      this.termineRicercaSalaModifica = '';
+      this.paginaCorrenteSalaModifica = 0;
+      this.loader(SearchType.SalaModifica);
+      break;
+
+    
+    case SearchType.SpettacoloModifica:
+      this.termineRicercaSpettacoloModifica = '';
+      this.paginaCorrenteSpettacoloModifica = 0;
+      this.loader(SearchType.SpettacoloModifica);
+      break;
+  }
+}
+
+  selezionaElemento(item : any, tipo : SearchType){
+    switch(tipo){
+      case SearchType.FilmCreazione : this.nuovoSpettacolo?.film!=item;break;
+      case SearchType.SalaCreazione : this.nuovoSpettacolo.sala=item;break;
+      case SearchType.FilmModifica : this.spettacoloSelezionatoModificato?.film!=item;break;
+      case SearchType.SalaCreazione : this.spettacoloSelezionatoModificato?.sala!=item;break;
+    }
   }
 
   selezionaSpettacolo(spettacolo: NuovoSpettacoloDto) {
     this.spettacoloSelezionato = spettacolo;
     this.spettacoloSelezionatoModificato = { ...spettacolo };
     this.modificheAbilitate = false;
-    this.risultatiRicerca = []
+    this.getPosti()
+    this.loader(SearchType.FilmModifica)
+    this.loader(SearchType.SalaModifica)
   }
 
   abilitaModifiche() {
@@ -102,8 +362,8 @@ export class AdminSpettacoloComponent {
       data: '',          // Valore stringa vuoto per la data
       ora: '',           // Valore stringa vuoto per l'ora
       prezzo: 0,         // Imposta il prezzo a zero per iniziare
-      salaId: {
-        id: 0,           // ID iniziale a zero
+      sala: {
+        id: undefined,           
         post: new Set()  // Set vuoto per i posti in sala
       },
       film: {
@@ -120,6 +380,8 @@ export class AdminSpettacoloComponent {
       acquistabile: false // Impostato a false come predefinito
     };
   }
+
+
 
   //posti?: PostiSpettacoloResponseDto;
   posti = new Map()

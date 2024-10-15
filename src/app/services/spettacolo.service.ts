@@ -6,6 +6,7 @@ import { FilmSpettacoliDto } from '../model/filmSpettacoli';
 import { PostiSpettacoloResponseDto } from '../model/postiSpettacolo';
 import { NuovoSpettacoloDto } from '../model/nuovoSpettacolo';
 import { SpettacoloRicercaDto } from '../model/spettacoloRicercaDto';
+import { PaginatedResponse } from '../model/paginatedResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -44,12 +45,18 @@ export class SpettacoloService {
     });
     return this.http.post<any>(url, spettacolo, { headers });
   }
-  cerca(date: string): Observable<NuovoSpettacoloDto[]> {
-    const url = `${this.apiUrl}/ricerca`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    const params = new HttpParams().set('date', date);
-    return this.http.post<NuovoSpettacoloDto[]>(url, {}, { headers, params });
+  cerca(date: string, pageNumber : number, pageSize : number): Observable<PaginatedResponse<NuovoSpettacoloDto>> {
+
+    const params = new HttpParams()
+    .set('date', date)
+    .set("pageNumber", pageNumber)
+    .set("pageSize", pageSize);
+    return this.http.get<PaginatedResponse<NuovoSpettacoloDto>>(`${this.apiUrl}/cerca`, { params });
+  }
+  getAllPaginated(pageNumber : number, pageSize : number) : Observable<PaginatedResponse<NuovoSpettacoloDto>>{
+    const params = new HttpParams()
+    .set("pageNumber", pageNumber)
+    .set("pageSize", pageSize)
+    return this.http.get<PaginatedResponse<NuovoSpettacoloDto>>(`${this.apiUrl}/paged`, {params})
   }
 }

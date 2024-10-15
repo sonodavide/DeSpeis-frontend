@@ -8,30 +8,19 @@ import { GenereService } from '../../services/genere.service';
 import { RegistaService } from '../../services/regista.service';
 import { AttoreService } from '../../services/attore.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-
+import { PaginatedResponse } from '../../model/paginatedResponse';
+import { SearchType } from '../../utils/searchType';
 @Component({
   selector: 'app-admin-film',
   templateUrl: './admin-film.component.html',
   styleUrls: ['./admin-film.component.css']
 })
 export class AdminFilmComponent {
-  
+  SearchType = SearchType
   constructor(private filmService : FilmService, private genereService : GenereService, private registaService : RegistaService, private attoreService : AttoreService){}
-  private searchSubjectFilm = new Subject<string>();
-  private searchSubjectAttoreCreazione = new Subject<string>();
-  private searchSubjectAttoreModifica = new Subject<string>();
-  private searchSubjectRegistaCreazione = new Subject<string>();
-  private searchSubjectRegistaModifica = new Subject<string>();
-  private searchSubjectGenereCreazione = new Subject<string>();
-  private searchSubjectGenereModifica = new Subject<string>();
 
-  isLoadingFilm = false;
-  isLoadingAttoreCreazione = false;
-  isLoadingRegistaCreazione = false;
-  isLoadingGenereCreazione = false;
-  isLoadingAttoreModifica = false;
-  isLoadingRegistaModifica = false;
-  isLoadingGenereModifica = false;
+
+
   nuovoFilm: FilmDto = {
     id: undefined,
     titolo: '',
@@ -44,38 +33,12 @@ export class AdminFilmComponent {
     registas: []
   };
   ngOnInit() : void{
-    this.searchSubjectFilm.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-    ).subscribe(term => {
-      if (term.length >= 2) {
-        this.cercaFilm(term);
-      } else {
-        this.risultatiRicercaFilm = [];
-      }
-    });
-    // Observable per la ricerca attori, registi e generi per creazione
-    this.setupSearchSubscription(this.searchSubjectAttoreCreazione, 'attoreCreazione');
-    this.setupSearchSubscription(this.searchSubjectRegistaCreazione, 'registaCreazione');
-    this.setupSearchSubscription(this.searchSubjectGenereCreazione, 'genereCreazione');
-
-    // Observable per la ricerca attori, registi e generi per modifica
-    this.setupSearchSubscription(this.searchSubjectAttoreModifica, 'attoreModifica');
-    this.setupSearchSubscription(this.searchSubjectRegistaModifica, 'registaModifica');
-    this.setupSearchSubscription(this.searchSubjectGenereModifica, 'genereModifica');
+    this.loader(SearchType.AttoreCreazione)
+    this.loader(SearchType.FilmModifica)
+    this.loader(SearchType.GenereCreazione)
+    this.loader(SearchType.RegistaCreazione)
   }
-  setupSearchSubscription(subject: Subject<string>, tipo: string): void {
-    subject.pipe(
-      debounceTime(300),
-      distinctUntilChanged()
-    ).subscribe(term => {
-      if (term.length >= 2) {
-        this.effettuaRicerca(term, tipo);
-      } else {
-        this.resetRisultatiRicerca(tipo);
-      }
-    });
-  }
+  
 
   
   filmSelezionato: FilmDto | null = null;
@@ -101,6 +64,34 @@ export class AdminFilmComponent {
   
   films: FilmDto[] = [];
 
+  paginaCorrenteFilm = 0;
+  totalePagineFilm = 0;
+  pageSizeFilm = 4;
+
+  paginaCorrenteAttoriCreazione = 0;
+  totalePagineAttoriCreazione = 0;
+  pageSizeAttoriCreazione = 4;
+
+  paginaCorrenteRegistiCreazione = 0;
+  totalePagineRegistiCreazione = 0;
+  pageSizeRegistiCreazione = 4;
+
+  paginaCorrenteGeneriCreazione = 0;
+  totalePagineGeneriCreazione = 0;
+  pageSizeGeneriCreazione = 4;
+
+  paginaCorrenteAttoriModifica = 0;
+  totalePagineAttoriModifica = 0;
+  pageSizeAttoriModifica = 4;
+
+  paginaCorrenteRegistiModifica = 0;
+  totalePagineRegistiModifica = 0;
+  pageSizeRegistiModifica = 4;
+
+  paginaCorrenteGeneriModifica = 0;
+  totalePagineGeneriModifica = 0;
+  pageSizeGeneriModifica = 4;
+
   
 
   // Funzione per creare un nuovo film
@@ -110,17 +101,7 @@ export class AdminFilmComponent {
     
     
   }
-  onSearchChange(term: string, tipo: string) {
-    switch(tipo) {
-      case 'film': this.searchSubjectFilm.next(term); break;
-      case 'attoreCreazione': this.searchSubjectAttoreCreazione.next(term); break;
-      case 'genereCreazione': this.searchSubjectGenereCreazione.next(term); break;
-      case 'registaCreazione': this.searchSubjectRegistaCreazione.next(term); break;
-      case 'attoreModifica': this.searchSubjectAttoreModifica.next(term); break;
-      case 'genereModifica': this.searchSubjectGenereModifica.next(term); break;
-      case 'registaModifica': this.searchSubjectRegistaModifica.next(term); break;
-    }
-  }
+
   // Funzione per modificare il film selezionato
   modificaFilm() {
     if (this.filmSelezionatoModificato) {
@@ -146,181 +127,103 @@ export class AdminFilmComponent {
     }
   }
 
-  // Funzione per cercare i film in base al titolo
-  cercaFilm(term: string) {
-    /*this.isLoadingFilm = true;
-    this.filmService.cerca(term, 0 ,0).subscribe(
-      (risultati: FilmDto[]) => {
-        this.risultatiRicercaFilm = risultati;
-        this.isLoadingFilm = false;
-      },
-      error => {
-        console.error('Errore nella ricerca:', error);
-        this.risultatiRicercaFilm = [];
-        this.isLoadingFilm = false;
-      }
-    );*/
-  }
 
   // Funzione per selezionare un film dalla lista dei risultati
   selezionaFilm(film: FilmDto) {
     this.filmSelezionato = { ...film };
     this.filmSelezionatoModificato = this.filmSelezionato
-    this.resetRisultatiRicerca("attoreModifica")
+    this.loader(SearchType.AttoreModifica)
     this.termineRicercaAttoreModifica=""
     this.termineRicercaRegistaModifica=""
     this.termineRicercaGenereModifica=""
-    this.resetRisultatiRicerca("genereModifica")
-    this.resetRisultatiRicerca("registaModifica")
+    this.loader(SearchType.GenereModifica)
+    this.loader(SearchType.RegistaModifica)
     this.risultatiRicercaFilm = []
   }
 
-  effettuaRicerca(term: string, tipo: string) {
-    switch(tipo) {
-      case 'attoreCreazione': {
-        this.isLoadingAttoreCreazione = true;
-        this.attoreService.getSuggestions(term).subscribe(
-          results => this.aggiornaRisultati('attoreCreazione', results),
-          error => this.gestisciErrore('attoreCreazione', error)
-        );
+  eseguiRicerca(tipo: SearchType) {
+    switch (tipo) {
+      case SearchType.AttoreCreazione: {
+        this.attoreService.cerca(this.termineRicercaAttoreCreazione.trim(), this.paginaCorrenteAttoriCreazione, this.pageSizeAttoriCreazione)
+          .subscribe((response: PaginatedResponse<AttoreDto>) => {
+            this.risultatiRicercaAttoriCreazione = response.content;
+            this.totalePagineAttoriCreazione = response.totalPages;
+          });
         break;
       }
         
-      case 'genereCreazione':{
-        this.isLoadingGenereCreazione = true;
-        this.genereService.cerca(term, 0 , 0).subscribe(
-          //results => this.aggiornaRisultati('genereCreazione', results),
-          error => this.gestisciErrore('genereCreazione', error)
-        );
+      case SearchType.GenereCreazione: {
+        this.genereService.cerca(this.termineRicercaGenereCreazione.trim(), this.paginaCorrenteGeneriCreazione, this.pageSizeGeneriCreazione)
+          .subscribe((response: PaginatedResponse<GenereDto>) => {
+            this.risultatiRicercaGeneriCreazione = response.content;
+            this.totalePagineGeneriCreazione = response.totalPages;
+          });
         break;
-      }
-       
-      case 'attoreModifica':{
-        this.isLoadingAttoreModifica = true;
-        this.attoreService.getSuggestions(term).subscribe(
-          results => this.aggiornaRisultati('attoreModifica', results),
-          error => this.gestisciErrore('attoreModifica', error)
-        );
-        break;
-      }
-        
-      case 'genereModifica':{
-        /*this.isLoadingGenereModifica = true;
-        this.genereService.cerca(term).subscribe(
-          results => this.aggiornaRisultati('genereModifica', results),
-          error => this.gestisciErrore('genereModifica', error)
-        );*/
-        break;
-      }
-      case 'registaCreazione' : {
-        /*this.isLoadingRegistaCreazione = true
-        this.registaService.cerca(term).subscribe(
-          results => this.aggiornaRisultati("registaCreazione", results),
-          error => this.gestisciErrore('registaCreazione', error)
-        );*/
-        break;
-      }
-      case 'registaModifica' : {
-        /*this.isLoadingRegistaModifica = true
-        this.registaService.cerca(term).subscribe(
-          results => this.aggiornaRisultati("registaModifica", results),
-          error => this.gestisciErrore('registaModifica', error)
-        );*/
-        break;
-
-      }
-     
-    }
-  }
-  aggiornaRisultati(tipo: string, risultati: any[]): void {
-    switch(tipo) {
-      case 'attoreCreazione': {
-        this.risultatiRicercaAttoriCreazione = risultati; 
-        this.isLoadingAttoreCreazione = false; 
-        break;
-      }
-      case 'genereCreazione': {
-        this.risultatiRicercaGeneriCreazione = risultati; 
-        this.isLoadingGenereCreazione = false; 
-        break;
-      }
-      case 'attoreModifica': {
-        this.risultatiRicercaAttoriModifica = risultati; 
-        this.isLoadingAttoreModifica = false; 
-        break;
-      }
-      case 'genereModifica': {
-        this.risultatiRicercaGeneriModifica = risultati; 
-        this.isLoadingGenereModifica = false; 
-        break;
-      }
-      case 'registaCreazione' : {
-        this.risultatiRicercaRegistiCreazione = risultati;
-        this.isLoadingRegistaCreazione = false;
-        break
-      }
-      case 'registaModifica' : {
-        this.risultatiRicercaRegistiModifica = risultati;
-        this.isLoadingRegistaModifica = false;
-        break
       }
       
+      case SearchType.AttoreModifica: {
+        this.attoreService.cerca(this.termineRicercaAttoreModifica.trim(), this.paginaCorrenteAttoriModifica, this.pageSizeAttoriModifica)
+          .subscribe((response: PaginatedResponse<AttoreDto>) => {
+            this.risultatiRicercaAttoriModifica = response.content;
+            this.totalePagineAttoriModifica = response.totalPages;
+          });
+        break;
+      }
+        
+      case SearchType.GenereModifica: {
+        this.genereService.cerca(this.termineRicercaGenereModifica.trim(), this.paginaCorrenteGeneriModifica, this.pageSizeGeneriModifica)
+          .subscribe((response: PaginatedResponse<GenereDto>) => {
+            this.risultatiRicercaGeneriModifica = response.content;
+            this.totalePagineGeneriModifica = response.totalPages;
+          });
+        break;
+      }
+  
+      case SearchType.RegistaCreazione: {
+        this.registaService.cerca(this.termineRicercaRegistaCreazione.trim(), this.paginaCorrenteRegistiCreazione, this.pageSizeRegistiCreazione)
+          .subscribe((response: PaginatedResponse<RegistaDto>) => {
+            this.risultatiRicercaRegistiCreazione = response.content;
+            this.totalePagineRegistiCreazione = response.totalPages;
+          });
+        break;
+      }
+  
+      case SearchType.RegistaModifica: {
+        this.registaService.cerca(this.termineRicercaRegistaModifica.trim(), this.paginaCorrenteRegistiModifica, this.pageSizeRegistiModifica)
+          .subscribe((response: PaginatedResponse<RegistaDto>) => {
+            this.risultatiRicercaRegistiModifica = response.content;
+            this.totalePagineRegistiModifica = response.totalPages;
+          });
+        break;
+      }
+  
+      case SearchType.FilmModifica: {
+        this.filmService.cerca(this.termineRicercaFilm.trim(), this.paginaCorrenteFilm, this.pageSizeFilm)
+          .subscribe((response: PaginatedResponse<FilmDto>) => {
+            this.risultatiRicercaFilm = response.content;
+            this.totalePagineFilm = response.totalPages;
+          });
+        break;
+      }
     }
   }
+  
+  
 
-  resetRisultatiRicerca(tipo: string): void {
-    switch(tipo) {
-      case 'attoreCreazione': {
-        this.risultatiRicercaAttoriCreazione = []; 
-        break;
-      }
-      case 'genereCreazione': {
-        this.risultatiRicercaGeneriCreazione = []; 
-        break;
-      }
-      case 'attoreModifica': {
-        this.risultatiRicercaAttoriModifica = []; 
-        break;
-      }
-      case 'genereModifica': {
-        this.risultatiRicercaGeneriModifica = []; 
-        break;
-      }
-      case 'registaCreazione': {
-        this.risultatiRicercaRegistiCreazione = [];
-        break;
-      }
-      case 'registaModifica': {
-        this.risultatiRicercaRegistiModifica = [];
-        break;
-      }
+  
 
-    }
-  }
 
-  gestisciErrore(tipo: string, errore: any): void {
-    console.error(`Errore nella ricerca per ${tipo}:`, errore);
-    this.resetRisultatiRicerca(tipo);
-    switch(tipo) {
-      case 'attoreCreazione': this.isLoadingAttoreCreazione = false; this.resetRisultatiRicerca(tipo); break;
-      case 'genereCreazione': this.isLoadingGenereCreazione = false; this.resetRisultatiRicerca(tipo); break;
-      case 'attoreModifica': this.isLoadingAttoreModifica = false; this.resetRisultatiRicerca(tipo); break;
-      case 'genereModifica': this.isLoadingGenereModifica = false; this.resetRisultatiRicerca(tipo); break;
-      case 'registaCreazione' : this.isLoadingRegistaCreazione = false; this.resetRisultatiRicerca(tipo); break;
-      case 'registaModifica' : this.isLoadingRegistaModifica = false; this.resetRisultatiRicerca(tipo); break;
-    }
-  }
 
 
   aggiungiElemento(element: RegistaDto | AttoreDto | GenereDto, tipo: string) : void{
     switch(tipo){
-      case "attoreCreazione" : {
+      case SearchType.AttoreCreazione : {
         if(!this.nuovoFilm.attores.some(a => a.id === element.id)) {
           this.nuovoFilm.attores.push(element as AttoreDto);
         }
         break;
       }
-      case "attoreModifica" :{
+      case SearchType.AttoreModifica :{
         if(this.filmSelezionatoModificato){
           if(!this.nuovoFilm.attores.some(a => a.id === element.id)) {
             this.filmSelezionatoModificato.attores.push(element as AttoreDto);
@@ -328,14 +231,14 @@ export class AdminFilmComponent {
         }
         break;
       }
-      case "genereCreazione" : {
+      case SearchType.GenereCreazione : {
         if(!this.nuovoFilm.generes.some(a => a.id === element.id)) {
           this.nuovoFilm.generes.push(element as GenereDto);
         }
         break
       }
 
-      case "genereModifica" : {
+      case SearchType.GenereModifica : {
         if(this.filmSelezionatoModificato){
           if(!this.nuovoFilm.generes.some(a => a.id === element.id)) {
             this.filmSelezionatoModificato.generes.push(element as GenereDto);
@@ -344,13 +247,13 @@ export class AdminFilmComponent {
         break
       }
 
-      case "registaCreazione" : {
+      case SearchType.RegistaCreazione : {
         if(!this.nuovoFilm.registas.some(a => a.id === element.id)) {
           this.nuovoFilm.registas.push(element as RegistaDto);
         }
         break
       }
-      case "registaModifica" : {
+      case SearchType.RegistaModifica : {
         if(this.filmSelezionatoModificato){
           if(!this.nuovoFilm.registas.some(a => a.id === element.id)) {
             this.filmSelezionatoModificato.registas.push(element as RegistaDto);
@@ -360,52 +263,36 @@ export class AdminFilmComponent {
       }
     }
   }
-  aggiungiAttore(attore: AttoreDto) {
-    if (!this.nuovoFilm.attores.some(a => a.id === attore.id)) {
-      this.nuovoFilm.attores.push(attore);
-    }
-  }
-
-  aggiungiRegista(regista: RegistaDto) {
-    if (!this.nuovoFilm.registas.some(r => r.id === regista.id)) {
-      this.nuovoFilm.registas.push(regista);
-    }
-  }
-
-  aggiungiGenere(genere: GenereDto) {
-    if (!this.nuovoFilm.generes.some(g => g.id === genere.id)) {
-      this.nuovoFilm.generes.push(genere);
-    }
-  }
+  
 
   // Funzioni per rimuovere attore, regista e genere
   rimuoviElemento(element: RegistaDto | AttoreDto | GenereDto, tipo: string): void {
     switch (tipo) {
-        case "attoreCreazione": {
+        case SearchType.AttoreCreazione: {
             this.nuovoFilm.attores = this.nuovoFilm.attores.filter(a => a.id !== element.id);
             break;
         }
-        case "attoreModifica": {
+        case SearchType.AttoreModifica: {
             if (this.filmSelezionatoModificato) {
                 this.filmSelezionatoModificato.attores = this.filmSelezionatoModificato.attores.filter(a => a.id !== element.id);
             }
             break;
         }
-        case "genereCreazione": {
+        case SearchType.GenereCreazione: {
             this.nuovoFilm.generes = this.nuovoFilm.generes.filter(g => g.id !== element.id);
             break;
         }
-        case "genereModifica": {
+        case SearchType.GenereModifica: {
             if (this.filmSelezionatoModificato) {
                 this.filmSelezionatoModificato.generes = this.filmSelezionatoModificato.generes.filter(g => g.id !== element.id);
             }
             break;
         }
-        case "registaCreazione": {
+        case SearchType.RegistaCreazione: {
             this.nuovoFilm.registas = this.nuovoFilm.registas.filter(r => r.id !== element.id);
             break;
         }
-        case "registaModifica": {
+        case SearchType.RegistaModifica: {
             if (this.filmSelezionatoModificato) {
                 this.filmSelezionatoModificato.registas = this.filmSelezionatoModificato.registas.filter(r => r.id !== element.id);
             }
@@ -438,7 +325,252 @@ export class AdminFilmComponent {
 
 
 
+  paginaSuccessiva(tipo: SearchType) {
+    let termineRicerca = '';
+    switch (tipo) {
+      case SearchType.FilmModifica:
+        termineRicerca = this.termineRicercaFilm;
+        if (this.paginaCorrenteFilm < this.totalePagineFilm - 1) {
+          this.paginaCorrenteFilm++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.AttoreCreazione:
+        termineRicerca = this.termineRicercaAttoreCreazione;
+        if (this.paginaCorrenteAttoriCreazione < this.totalePagineAttoriCreazione - 1) {
+          this.paginaCorrenteAttoriCreazione++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.GenereCreazione:
+        termineRicerca = this.termineRicercaGenereCreazione;
+        if (this.paginaCorrenteGeneriCreazione < this.totalePagineGeneriCreazione - 1) {
+          this.paginaCorrenteGeneriCreazione++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.RegistaCreazione:
+        termineRicerca = this.termineRicercaRegistaCreazione;
+        if (this.paginaCorrenteRegistiCreazione < this.totalePagineRegistiCreazione - 1) {
+          this.paginaCorrenteRegistiCreazione++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.AttoreModifica:
+        termineRicerca = this.termineRicercaAttoreModifica;
+        if (this.paginaCorrenteAttoriModifica < this.totalePagineAttoriModifica - 1) {
+          this.paginaCorrenteAttoriModifica++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.GenereModifica:
+        termineRicerca = this.termineRicercaGenereModifica;
+        if (this.paginaCorrenteGeneriModifica < this.totalePagineGeneriModifica - 1) {
+          this.paginaCorrenteGeneriModifica++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.RegistaModifica:
+        termineRicerca = this.termineRicercaRegistaModifica;
+        if (this.paginaCorrenteRegistiModifica < this.totalePagineRegistiModifica - 1) {
+          this.paginaCorrenteRegistiModifica++;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      default:
+        console.error('Tipo di ricerca non valido:', tipo);
+    }
+  }
+  
+  paginaPrecedente(tipo: SearchType) {
+    let termineRicerca = '';
+    switch (tipo) {
+      case SearchType.FilmModifica:
+        termineRicerca = this.termineRicercaFilm;
+        if (this.paginaCorrenteFilm > 0) {
+          this.paginaCorrenteFilm--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.AttoreCreazione:
+        termineRicerca = this.termineRicercaAttoreCreazione;
+        if (this.paginaCorrenteAttoriCreazione > 0) {
+          this.paginaCorrenteAttoriCreazione--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.GenereCreazione:
+        termineRicerca = this.termineRicercaGenereCreazione;
+        if (this.paginaCorrenteGeneriCreazione > 0) {
+          this.paginaCorrenteGeneriCreazione--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.RegistaCreazione:
+        termineRicerca = this.termineRicercaRegistaCreazione;
+        if (this.paginaCorrenteRegistiCreazione > 0) {
+          this.paginaCorrenteRegistiCreazione--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.AttoreModifica:
+        termineRicerca = this.termineRicercaAttoreModifica;
+        if (this.paginaCorrenteAttoriModifica > 0) {
+          this.paginaCorrenteAttoriModifica--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.GenereModifica:
+        termineRicerca = this.termineRicercaGenereModifica;
+        if (this.paginaCorrenteGeneriModifica > 0) {
+          this.paginaCorrenteGeneriModifica--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      case SearchType.RegistaModifica:
+        termineRicerca = this.termineRicercaRegistaModifica;
+        if (this.paginaCorrenteRegistiModifica > 0) {
+          this.paginaCorrenteRegistiModifica--;
+          termineRicerca ? this.eseguiRicerca(tipo) : this.loader(tipo);
+        }
+        break;
+  
+      default:
+        console.error('Tipo di ricerca non valido:', tipo);
+    }
+  }
+  
+  loader(tipo: SearchType) {
+    switch(tipo) {
+      case SearchType.AttoreCreazione: {
+        this.attoreService.getAllPaginated(this.paginaCorrenteAttoriCreazione, this.pageSizeAttoriCreazione)
+          .subscribe((response: PaginatedResponse<AttoreDto>) => {
+            this.risultatiRicercaAttoriCreazione = response.content;
+            this.totalePagineAttoriCreazione = response.totalPages;
+          });
+        break;
+      }
+      
+      case SearchType.GenereCreazione: {
+        this.genereService.getAllPaginated(this.paginaCorrenteGeneriCreazione, this.pageSizeGeneriCreazione)
+          .subscribe((response: PaginatedResponse<GenereDto>) => {
+            this.risultatiRicercaGeneriCreazione = response.content;
+            this.totalePagineGeneriCreazione = response.totalPages;
+          });
+        break;
+      }
+      
+      case SearchType.AttoreModifica: {
+        this.attoreService.getAllPaginated(this.paginaCorrenteAttoriModifica, this.pageSizeAttoriModifica)
+          .subscribe((response: PaginatedResponse<AttoreDto>) => {
+            this.risultatiRicercaAttoriModifica = response.content;
+            this.totalePagineAttoriModifica = response.totalPages;
+          });
+        break;
+      }
+      
+      case SearchType.GenereModifica: {
+        this.genereService.getAllPaginated(this.paginaCorrenteGeneriModifica, this.pageSizeGeneriModifica)
+          .subscribe((response: PaginatedResponse<GenereDto>) => {
+            this.risultatiRicercaGeneriModifica = response.content;
+            this.totalePagineGeneriModifica = response.totalPages;
+          });
+        break;
+      }
+      
+      case SearchType.RegistaCreazione: {
+        this.registaService.getAllPaginated(this.paginaCorrenteRegistiCreazione, this.pageSizeRegistiCreazione)
+          .subscribe((response: PaginatedResponse<RegistaDto>) => {
+            this.risultatiRicercaRegistiCreazione = response.content;
+            this.totalePagineRegistiCreazione = response.totalPages;
+          });
+        break;
+      }
+      
+      case SearchType.RegistaModifica: {
+        this.registaService.getAllPaginated(this.paginaCorrenteRegistiModifica, this.pageSizeRegistiModifica)
+          .subscribe((response: PaginatedResponse<RegistaDto>) => {
+            this.risultatiRicercaRegistiModifica = response.content;
+            this.totalePagineRegistiModifica = response.totalPages;
+          });
+        break;
+      }
+  
+      case SearchType.FilmModifica: {
+        this.filmService.getAllPaginated(this.paginaCorrenteFilm, this.pageSizeFilm)
+          .subscribe((response: PaginatedResponse<FilmDto>) => {
+            this.risultatiRicercaFilm = response.content;
+            this.totalePagineFilm = response.totalPages;
+          });
+        break;
+      }
+    }
+  }
 
 
-
+  resettaRicerca(tipo : SearchType) : void {
+    switch(tipo) {
+      case SearchType.AttoreCreazione: {
+        this.termineRicercaAttoreCreazione = '';
+        this.paginaCorrenteAttoriCreazione = 0;
+        this.loader(SearchType.AttoreCreazione);
+        break;
+      }
+      
+      case SearchType.GenereCreazione: {
+        this.termineRicercaGenereCreazione = '';
+        this.paginaCorrenteGeneriCreazione = 0;
+        this.loader(SearchType.GenereCreazione);
+        break;
+      }
+      
+      case SearchType.AttoreModifica: {
+        this.termineRicercaAttoreModifica = '';
+        this.paginaCorrenteAttoriModifica = 0;
+        this.loader(SearchType.AttoreModifica);
+        break;
+      }
+      
+      case SearchType.GenereModifica: {
+        this.termineRicercaGenereModifica = '';
+        this.paginaCorrenteGeneriModifica = 0;
+        this.loader(SearchType.GenereModifica);
+        break;
+      }
+      
+      case SearchType.RegistaCreazione: {
+        this.termineRicercaRegistaCreazione = '';
+        this.paginaCorrenteRegistiCreazione = 0;
+        this.loader(SearchType.RegistaCreazione);
+        break;
+      }
+      
+      case SearchType.RegistaModifica: {
+        this.termineRicercaRegistaModifica = '';
+        this.paginaCorrenteRegistiModifica = 0;
+        this.loader(SearchType.RegistaModifica);
+        break;
+      }
+      
+      case SearchType.FilmModifica: {
+        this.termineRicercaFilm = '';
+        this.paginaCorrenteFilm = 0;
+        this.loader(SearchType.FilmModifica);
+        break;
+      }
+    }
+  }    
 }
