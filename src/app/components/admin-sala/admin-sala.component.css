@@ -1,9 +1,12 @@
 .admin-sala-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  color: #f5c518; /* Colore giallo accento */
+  padding: 20px;
+  gap: 25px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
   }
   
   .fila-list-container {
@@ -109,6 +112,84 @@
     background-color: #dc3545;
   }
   
+
+
+  .provo {
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+  color: white;
+  }
+
+  .section {
+    background-color: #1c1c1c;
+    padding: 15px;
+    border-radius: 8px;
+    width: 70%;
+  }
+  
+  h2 {
+    color: #f5c518;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-top: 10px;
+    color: #ffffff;
+  }
+  
+  input[type="text"] {
+    width: 90%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background-color: #2a2a2a;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+  }
+  
+  button {
+    background-color: #f5c518;
+    color: #1c1c1c;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  
+  button:disabled {
+    background-color: #555;
+    cursor: unset;
+  }
+  
+  
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 8px;
+    background-color: #333;
+    margin-top: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  li:hover {
+    background-color: #555;
+  }
+  
+  .create-button{
+    display: block;
+  }
   .pagination {
     display: flex;
     justify-content: center;

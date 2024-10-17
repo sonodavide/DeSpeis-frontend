@@ -1,5 +1,6 @@
 export interface PostoResponseDto{
-    postoId : number,
-    postoSedileId : number,
+    id : number,
+    sedile : number,
     stato : string
+    fila : string
 }

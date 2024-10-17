@@ -26,7 +26,7 @@ export class SpettacoloService {
   }
   getPostiSpettacolo(spettacoloId: number): Observable<PostiSpettacoloResponseDto> {
     const params = new HttpParams().set('spettacoloId', spettacoloId);
-    return this.http.get<PostiSpettacoloResponseDto>(`${this.apiUrl}/sala`, { params });
+    return this.http.get<PostiSpettacoloResponseDto>(`${this.apiUrl}/postiSpettacolo`, { params });
   }
   // Metodo per aggiungere un nuovo spettacolo
   nuovo(nuovoSpettacolo: NuovoSpettacoloDto): Observable<NuovoSpettacoloDto> {
