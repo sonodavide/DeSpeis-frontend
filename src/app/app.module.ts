@@ -28,6 +28,7 @@ import { AdminFilmComponent } from './components/admin-film/admin-film.component
 import { AdminSpettacoloComponent } from './components/admin-spettacolo/admin-spettacolo.component';
 import { AdminSalaComponent } from './components/admin-sala/admin-sala.component';
 import { AdminUtenteComponent } from './components/admin-utente/admin-utente.component';
+import { AdminBloccaComponent } from './components/admin-blocca/admin-blocca.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +53,7 @@ import { AdminUtenteComponent } from './components/admin-utente/admin-utente.com
     AdminSpettacoloComponent,
     AdminSalaComponent,
     AdminUtenteComponent,
+    AdminBloccaComponent,
   ],
   imports: [
     FormsModule,
