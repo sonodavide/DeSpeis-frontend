@@ -17,6 +17,7 @@ import { AdminFilmComponent } from './components/admin-film/admin-film.component
 import { AdminSalaComponent } from './components/admin-sala/admin-sala.component';
 import { AdminSpettacoloComponent } from './components/admin-spettacolo/admin-spettacolo.component';
 import { AdminUtenteComponent } from './components/admin-utente/admin-utente.component';
+import { AdminBloccaComponent } from './components/admin-blocca/admin-blocca.component';
 
 const routes: Routes = [
   {path:'films', component:FilmsComponent},
@@ -35,7 +36,8 @@ const routes: Routes = [
   {path: 'admin-film', component: AdminFilmComponent},
   {path: 'admin-sala', component: AdminSalaComponent},
   {path: 'admin-spettacolo', component: AdminSpettacoloComponent},
-  {path: 'admin-utente', component: AdminUtenteComponent}
+  {path: 'admin-utente', component: AdminUtenteComponent},
+  {path: 'admin-blocca', component: AdminBloccaComponent}
 ];
 
 @NgModule({

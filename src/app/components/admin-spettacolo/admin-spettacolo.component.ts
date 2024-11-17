@@ -77,7 +77,8 @@ export class AdminSpettacoloComponent {
   }
 
   creaSpettacolo() {
-    this.spettacoloService.nuovo(this.nuovoSpettacolo)
+    
+    this.spettacoloService.nuovo(this.nuovoSpettacolo).subscribe()
     this.nuovoSpettacolo = this.resetNuovoSpettacolo()
   }
 
@@ -101,11 +102,6 @@ export class AdminSpettacoloComponent {
           });
         break;
       }
-      
-      
-        
-      
-      
       
       case SearchType.SpettacoloModifica: {
         this.spettacoloService.cerca(this.termineRicercaSpettacoloModifica.trim(), this.paginaCorrenteSpettacoloModifica, this.pageSizeSpettacoloModifica)
@@ -300,10 +296,20 @@ resettaRicerca(tipo: SearchType): void {
 
   selezionaElemento(item : any, tipo : SearchType){
     switch(tipo){
-      case SearchType.FilmCreazione : this.nuovoSpettacolo?.film!=item;break;
-      case SearchType.SalaCreazione : this.nuovoSpettacolo.sala=item;break;
-      case SearchType.FilmModifica : this.spettacoloSelezionatoModificato?.film!=item;break;
-      case SearchType.SalaCreazione : this.spettacoloSelezionatoModificato?.sala!=item;break;
+      case SearchType.FilmCreazione :
+        this.nuovoSpettacolo.film=item;
+        break;
+      case SearchType.SalaCreazione :
+        this.nuovoSpettacolo.sala=item;
+        break;
+      case SearchType.FilmModifica :
+        if(this.spettacoloSelezionatoModificato)
+          this.spettacoloSelezionatoModificato.film=item;
+        break;
+      case SearchType.SalaModifica :
+        if(this.spettacoloSelezionatoModificato)
+          this.spettacoloSelezionatoModificato.sala=item;
+        break;
     }
   }
 
@@ -407,12 +413,5 @@ resettaRicerca(tipo: SearchType): void {
     }
   }
 
-  blocca() : void {
-    if(this.spettacoloSelezionato){
-      const bloccoRequest : PrenotazioneRequestDto = {postiIds : this.postiSelezionati, userId : 1, spettacoloId : this.spettacoloSelezionato.id!}
-      alert("fatto!")
-      //this.prenotazioneService.blocca(bloccoRequest).subscribe()
-      this.postiSelezionati = []
-    }
-  }
+
 }

@@ -13,18 +13,17 @@ import { Router } from '@angular/router';
 export class SelezionePostiComponent {
   
   posti? = new Map();
-
+  spettacoloId:number = 0
   postiSelezionati: number[] = [];
 
   constructor(private router : Router ,private spettacoloService : SpettacoloService, private route: ActivatedRoute, private prenotazioneService : PrenotazioneService, private sharedBigliettiService : SharedBigliettiService) { }
 
   ngOnInit(): void {
+    this.spettacoloId = +this.route.snapshot.paramMap.get('id')!
     this.getPosti()
   }
 
-  libero(stato : string){
-    return stato==="libero"
-  }
+  
 
   isPostoSelezionato(postoId: number): boolean {
     return this.postiSelezionati.includes(postoId);
@@ -39,14 +38,14 @@ export class SelezionePostiComponent {
     }
   }
   getPosti() {
-    let spettacoloId : number = +this.route.snapshot.paramMap.get('id')!
-    this.spettacoloService.getPostiSpettacolo(spettacoloId).subscribe(posti =>{
+    
+    this.spettacoloService.getPostiSpettacolo(this.spettacoloId).subscribe(posti =>{
       this.posti = new Map(Object.entries(posti.posti));
     })
   }
 
   prenota(){
-    this.sharedBigliettiService.updateData(this.postiSelezionati)
+    this.sharedBigliettiService.updateData({postiIds: this.postiSelezionati, spettacoloId: this.spettacoloId, userId : 1})
     this.router.navigate(["/checkout"])
     //this.prenotazioneService.prenota({postiIds : this.postiSelezionati, userId : 1, spettacoloId : this.posti?.spettacoloId! }).subscribe()
   }

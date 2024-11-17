@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedBigliettiService } from '../../services/shared-biglietti.service';
 import { PrenotazioneService } from '../../services/prenotazione.service';
-
+import { SpettacoloService } from '../../services/spettacolo.service';
+import { PrenotazioneRequestDto } from '../../model/prenotazioneRequest';
 
 @Component({
   selector: 'app-checkout',
@@ -10,17 +11,24 @@ import { PrenotazioneService } from '../../services/prenotazione.service';
 })
 export class CheckoutComponent implements OnInit{
   
-  constructor(private sharedBigliettiService : SharedBigliettiService, private prenotazioneService : PrenotazioneService){}
+  constructor(private sharedBigliettiService : SharedBigliettiService, private prenotazioneService : PrenotazioneService, private spettacoloService : SpettacoloService){}
   cardholderName: string = '';
   cardNumber: string = '';
   expiryDate: string = '';
   cvv: string = '';
-  posti: number[] = []
+  prenotazione : PrenotazioneRequestDto | null = null;
+  spettacolo : SpettacoloService | null = null;
+  
   ngOnInit(){
-    this.getPosti()
+    this.getPrenotazione()
+    
   }
-  getPosti(): void {
-    this.sharedBigliettiService.currentData.subscribe(data => {this.posti = data})
+  getPrenotazione(): void {
+    this.sharedBigliettiService.currentData.subscribe(response => {
+      if(response){
+        this.prenotazione=response;
+      }
+    })
   }
   totalAmount: number = this.calculateTotal();
 
@@ -28,8 +36,12 @@ export class CheckoutComponent implements OnInit{
     return 0
   }
 
+  
   submitPayment() {
-    // Logica per inviare i dati di pagamento
-    console.log('Pagamento in corso...');
+    if(this.prenotazione){
+      this.prenotazioneService.prenota(this.prenotazione)
+    }
+    
+    
   }
 }

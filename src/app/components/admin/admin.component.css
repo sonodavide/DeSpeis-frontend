@@ -1,76 +1,70 @@
 .admin-container {
-    background-color: #121212;
-    padding: 20px;
-    border-radius: 8px;
-    color: #fff;
-    width: 80%;
-    margin: 20px auto;
-  }
-  
-  .admin-section {
-    background-color: #1c1c1c;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-  
-  h1, h2 {
-    color: #f5c518;
-    margin-bottom: 15px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  input[type="text"],
-  input[type="number"],
-  input[type="date"],
-  input[type="time"],
-  select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #444;
-    border-radius: 4px;
-  }
-  
-  button {
-    background-color: #007bff;
-    border: none;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .selected-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-  
-  .selected-list span {
-    background-color: #444;
-    padding: 3px 8px;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .selected-list button {
-    background: none;
-    color: #f5c518;
-    border: none;
-    margin-left: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  color: #f5c518; /* Colore giallo accento */
+  padding: 20px;
+  gap: 25px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.section {
+  background-color: #1c1c1c;
+  padding: 15px;
+  border-radius: 8px;
+  width: 70%;
+}
+
+h2 {
+  color: #f5c518;
+  margin-bottom: 15px;
+}
+.buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 colonne uguali */
+  grid-auto-rows: 1fr; /* Altezza uniforme per tutte le righe */
+  gap: 15px; /* Spaziatura uniforme tra celle */
+  justify-items: stretch; /* Le celle si estendono per riempire lo spazio */
+  align-items: stretch; /* Le celle si estendono per riempire lo spazio */
+}
+
+button {
+  background-color: #f5c518;
+  color: #1c1c1c;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex; /* Per centrare il contenuto del bottone */
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Il bottone occupa tutta la larghezza della cella */
+  height: 100%; /* Il bottone occupa tutta l'altezza della cella */
+}
+
+.info-container {
+  display: table;
+  background-color: #333;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.info-sinistra, .info-destra {
+  display: table-cell;
+  width: 50%;
+  vertical-align: top; /* Allinea verticalmente */
+}
+
+.info-sinistra {
+  padding-right: 20px; /* Spaziatura tra le colonne */
+}
+
+.info-destra {
+  padding-left: 20px; /* Spaziatura tra le colonne */
+}
+
+h3 {
+  margin-top: 30px;
+}

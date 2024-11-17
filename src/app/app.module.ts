@@ -29,6 +29,7 @@ import { AdminSpettacoloComponent } from './components/admin-spettacolo/admin-sp
 import { AdminSalaComponent } from './components/admin-sala/admin-sala.component';
 import { AdminUtenteComponent } from './components/admin-utente/admin-utente.component';
 import { AdminBloccaComponent } from './components/admin-blocca/admin-blocca.component';
+import { FooterComponent } from './components/footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +55,7 @@ import { AdminBloccaComponent } from './components/admin-blocca/admin-blocca.com
     AdminSalaComponent,
     AdminUtenteComponent,
     AdminBloccaComponent,
+    FooterComponent,
   ],
   imports: [
     FormsModule,
