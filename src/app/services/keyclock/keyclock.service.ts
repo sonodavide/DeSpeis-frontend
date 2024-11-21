@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Keycloak from "keycloak-js";
-import {UserProfile} from "./user-profile";
+import {UserProfile} from "../../model/user-profile";
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +31,10 @@ export class KeycloakService {
   }
   logout(){
     return this.keycloak.logout({redirectUri:'http://localhost:4200'})
+  }
+
+  manageAccount(){
+    this.keycloak.accountManagement();
   }
   constructor() { }
 

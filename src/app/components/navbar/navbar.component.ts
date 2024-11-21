@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { KeycloakService } from '../../keyclock/keyclock.service';
+import { KeycloakService } from '../../services/keyclock/keyclock.service';
 
 @Component({
   selector: 'app-navbar',

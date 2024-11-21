@@ -13,7 +13,7 @@ export class OrdineService {
 
   constructor(private http: HttpClient) {}
 
-  getOrdiniByUserPaginated(userId: number, pageNumber: number, pageSize:number): Observable<PaginatedResponse<OrdineDto>> {
+  getOrdiniByUserPaginated(userId: string, pageNumber: number, pageSize:number): Observable<PaginatedResponse<OrdineDto>> {
     let params = new HttpParams().set('pageNumber', pageNumber).set('userId', userId).set('pageSize', pageSize);
 
     return this.http.get<PaginatedResponse<OrdineDto>>(`${this.apiUrl}/paged/user`, { params });

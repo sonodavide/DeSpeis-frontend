@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import { KeycloakService } from '../keyclock/keyclock.service';
+import { KeycloakService } from '../services/keyclock/keyclock.service';
 
 
 @Injectable()

@@ -3,18 +3,12 @@
     
     <div class="info-container">
       <div class="info-sinistra">
-        <p><strong>Nome:</strong> {{ utente.nome }}</p>
-        <p><strong>Cognome:</strong> {{ utente.cognome }}</p>
+        <p><strong>Nome:</strong> {{ utente.firstName }}</p>
+        <p><strong>Cognome:</strong> {{ utente.lastName }}</p>
         <p><strong>Username:</strong> {{ utente.username }}</p> <!-- Nuovo campo username -->
-        
-      </div>
-  
-      <div class="info-destra">
-        
-        <p><strong>Telefono:</strong> {{ utente.telefono }}</p>
-        <p><strong>Data di Nascita:</strong> {{ utente.datanascita| date: 'dd/MM/yyyy' }}</p>
+        <p><strong>email:</strong> {{ utente.email }}</p>
         <button (click)="modificaInfo()">Modifica Info</button>
-      </div>
+      
     </div>
   
     <h3>Biglietti utilizzabili oggi </h3><a class="mostra-tutti" routerLink="/utente/biglietti">Mostra tutti i biglietti</a>
