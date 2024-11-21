@@ -18,26 +18,46 @@ import { AdminSalaComponent } from './components/admin-sala/admin-sala.component
 import { AdminSpettacoloComponent } from './components/admin-spettacolo/admin-spettacolo.component';
 import { AdminUtenteComponent } from './components/admin-utente/admin-utente.component';
 import { AdminBloccaComponent } from './components/admin-blocca/admin-blocca.component';
-
+import { authGuard } from './guard/auth.guard';
+import { roleGuard } from './guard/role.guard';
+import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
+import { UtenteHomepageComponent } from './components/utente-homepage/utente-homepage.component';
 const routes: Routes = [
-  {path:'films', component:FilmsComponent},
-  {path: 'film/:id', component: DettagliFilmComponent},
-  {path: 'spettacoli', component: SpettacoliComponent},
-  {path: '', component: HomepageComponent},
-  {path: 'selezione-posti/:id', component: SelezionePostiComponent},
-  {path: 'utente', component:UtenteComponent},
-  {path: 'ordini', component:OrdiniComponent},
-  {path: 'biglietti', component: BigliettiComponent},
-  {path: 'checkout', component : CheckoutComponent},
-  {path: 'admin', component : AdminComponent},
-  {path: 'admin-attore', component: AdminAttoreComponent},
-  {path: 'admin-genere', component: AdminGenereComponent},
-  {path: 'admin-regista', component: AdminRegistaComponent},
-  {path: 'admin-film', component: AdminFilmComponent},
-  {path: 'admin-sala', component: AdminSalaComponent},
-  {path: 'admin-spettacolo', component: AdminSpettacoloComponent},
-  {path: 'admin-utente', component: AdminUtenteComponent},
-  {path: 'admin-blocca', component: AdminBloccaComponent}
+  { path: '', component: HomepageComponent },
+  { path: 'films', component: FilmsComponent },
+  { path: 'film/:id', component: DettagliFilmComponent },
+  { path: 'spettacoli', component: SpettacoliComponent },
+  { path: 'selezione-posti/:id', component: SelezionePostiComponent },
+  {
+    path: 'utente',
+    component: UtenteComponent,
+    canActivate: [authGuard], // Guardia applicata a tutte le rotte figlie
+    children: [
+      { path: '', component: UtenteHomepageComponent }, // Rotta di default
+      { path: 'ordini', component: OrdiniComponent },   // Rotta utente/ordini
+      { path: 'biglietti', component: BigliettiComponent } // Rotta utente/biglietti
+    ]
+  },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard] },
+  
+  {
+    path: 'admin',
+    component: AdminComponent, // componente layout generale dell'admin (opzionale)
+    canActivate: [authGuard, roleGuard], // Guardie globali per tutto il modulo admin
+    data : {role : 'admin'},
+    children: [
+      { path: '', component: AdminHomepageComponent},
+      { path: 'film', component: AdminFilmComponent },
+      { path: 'regista', component: AdminRegistaComponent },
+      { path: 'genere', component: AdminGenereComponent },
+      { path: 'attore', component: AdminAttoreComponent },
+      { path: 'sala', component: AdminSalaComponent },
+      { path: 'spettacolo', component: AdminSpettacoloComponent },
+      { path: 'utente', component: AdminUtenteComponent },
+      { path: 'blocca', component: AdminBloccaComponent },
+    ]
+  },
+  {path : '**', redirectTo : '', pathMatch: 'full'}
 ];
 
 @NgModule({

@@ -1,0 +1,70 @@
+.utente-container {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+  
+  .info-container {
+    display: table;
+    background-color: #333;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+  
+  .info-sinistra, .info-destra {
+    display: table-cell;
+    width: 50%;
+    vertical-align: top; /* Allinea verticalmente */
+  }
+  
+  .info-sinistra {
+    padding-right: 20px; /* Spaziatura tra le colonne */
+  }
+  
+  .info-destra {
+    padding-left: 20px; /* Spaziatura tra le colonne */
+  }
+  
+  h3 {
+    margin-top: 30px;
+  }
+  
+  .ordini-sezione, .biglietti-sezione {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    background-color: #f1c40f;
+    border: none;
+    color: black;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #e0b40f;
+  }
+  .mostra-tutti {
+    float: right;
+    font-size: 14px;
+    color: #f5c518;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .mostra-tutti:hover {
+    color: #e0b40f;
+  }
+  .pagina-info {
+    color: #f1c40f; /* Colore del testo per la pagina */
+    font-weight: bold;
+  }
+  

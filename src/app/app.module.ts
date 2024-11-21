@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FilmsComponent } from './components/films/films.component';
 
-import {  provideHttpClient } from '@angular/common/http';
+import {  HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { DettagliFilmComponent } from './components/dettagli-film/dettagli-film.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TastoSopraComponent } from './components/tasto-sopra/tasto-sopra.component';
@@ -30,6 +30,15 @@ import { AdminSalaComponent } from './components/admin-sala/admin-sala.component
 import { AdminUtenteComponent } from './components/admin-utente/admin-utente.component';
 import { AdminBloccaComponent } from './components/admin-blocca/admin-blocca.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { KeycloakService } from './keyclock/keyclock.service';
+import { HttpTokenInterceptor } from './interceptor/http-token.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
+import { UtenteHomepageComponent } from './components/utente-homepage/utente-homepage.component';
+
+export function kcFactory(kcService:KeycloakService){
+  return ()=>kcService.init()
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,13 +65,28 @@ import { FooterComponent } from './components/footer/footer.component';
     AdminUtenteComponent,
     AdminBloccaComponent,
     FooterComponent,
+    AdminHomepageComponent,
+    UtenteHomepageComponent,
   ],
   imports: [
     FormsModule,
     BrowserModule,
     AppRoutingModule,
+    
   ],
-  providers: [provideHttpClient()],
+  providers: [provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpTokenInterceptor,
+      multi:true
+   },
+  {
+  provide:APP_INITIALIZER,
+  deps: [KeycloakService],
+  useFactory: kcFactory,
+  multi: true
+},
+  provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

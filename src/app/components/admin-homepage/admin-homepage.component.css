@@ -1,0 +1,71 @@
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    color: #f5c518; /* Colore giallo accento */
+    padding: 20px;
+    gap: 25px;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .section {
+    background-color: #1c1c1c;
+    padding: 15px;
+    border-radius: 8px;
+    width: 70%;
+  }
+  
+  h2 {
+    color: #f5c518;
+    margin-bottom: 15px;
+  }
+  .buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colonne uguali */
+    grid-auto-rows: 1fr; /* Altezza uniforme per tutte le righe */
+    gap: 15px; /* Spaziatura uniforme tra celle */
+    justify-items: stretch; /* Le celle si estendono per riempire lo spazio */
+    align-items: stretch; /* Le celle si estendono per riempire lo spazio */
+  }
+  
+  button {
+    background-color: #f5c518;
+    color: #1c1c1c;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex; /* Per centrare il contenuto del bottone */
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Il bottone occupa tutta la larghezza della cella */
+    height: 100%; /* Il bottone occupa tutta l'altezza della cella */
+  }
+  
+  .info-container {
+    display: table;
+    background-color: #333;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+  
+  .info-sinistra, .info-destra {
+    display: table-cell;
+    width: 50%;
+    vertical-align: top; /* Allinea verticalmente */
+  }
+  
+  .info-sinistra {
+    padding-right: 20px; /* Spaziatura tra le colonne */
+  }
+  
+  .info-destra {
+    padding-left: 20px; /* Spaziatura tra le colonne */
+  }
+  
+  h3 {
+    margin-top: 30px;
+  }
+  
