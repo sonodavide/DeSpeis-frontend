@@ -43,4 +43,9 @@ export class AttoreService {
     return this.http.get<AttoreDto[]>(`${this.apiUrl}`)
   }
 
+  getNomeById(id : number): Observable<string>{
+    const params = new HttpParams()
+    .set("id", id)
+    return this.http.get(`${this.apiUrl}/getNomeById`, {params, responseType:'text'})
+  }
 }

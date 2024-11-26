@@ -22,10 +22,12 @@ import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
 import { UtenteHomepageComponent } from './components/utente-homepage/utente-homepage.component';
+import { CercaTagComponent } from './components/cerca-tag/cerca-tag.component';
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'films', component: FilmsComponent },
   { path: 'film/:id', component: DettagliFilmComponent },
+  { path: 'cerca', component: CercaTagComponent },
   { path: 'spettacoli', component: SpettacoliComponent },
   { path: 'selezione-posti/:id', component: SelezionePostiComponent },
   {
@@ -57,7 +59,7 @@ const routes: Routes = [
       { path: 'blocca', component: AdminBloccaComponent },
     ]
   },
-  {path : '**', redirectTo : '', pathMatch: 'full'}
+  //{path : '**', redirectTo : '', pathMatch: 'full'}
 ];
 
 @NgModule({

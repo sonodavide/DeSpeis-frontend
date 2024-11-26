@@ -16,20 +16,20 @@
     <!-- Sezione Ricerca e Dettagli -->
     <div class="section search-section">
       <h2>Cerca Attore</h2>
-      <input type="text" placeholder="Cerca attore per nome o cognome" [(ngModel)]="termineRicerca" />
-      <button (click)="eseguiRicerca()">Cerca</button>
-      <button (click)="resetRicerca()">Reset</button>
+      <input type="text" placeholder="Cerca attore per nome o cognome" [(ngModel)]="searchTypeUtils.getSearchData(SearchType.AttoreModifica).termine" />
+      <button (click)="searchTypeUtils.eseguiRicerca(SearchType.AttoreModifica)">Cerca</button>
+      <button (click)="searchTypeUtils.resettaRicerca(SearchType.AttoreModifica)">Reset</button>
       
-      <ul *ngIf="attori.length > 0">
-        <li *ngFor="let attore of attori" (click)="selezionaAttore(attore)">
+      <ul *ngIf="searchTypeUtils.getSearchData(SearchType.AttoreModifica).risultati.length > 0">
+        <li *ngFor="let attore of searchTypeUtils.getSearchData(SearchType.AttoreModifica).risultati" (click)="selezionaAttore(attore)">
           > {{ attore.nome }} {{ attore.cognome }}
         </li>
       </ul>
       <!-- Sezione Paginazione -->
     <div class="pagination">
-      <button (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
-      <span>Pagina {{ paginaCorrente + 1 }} di {{ totalePagine }}</span>
-      <button (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
+      <button (click)="searchTypeUtils.paginaPrecedente(SearchType.AttoreModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.AttoreModifica).paginaCorrente === 0">Indietro</button>
+      <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.AttoreModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.AttoreModifica).totalePagine }}</span>
+      <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.AttoreModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.AttoreModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.AttoreModifica).totalePagine - 1">Avanti</button>
     </div>
     
       <!-- Dettagli Attore Selezionato -->

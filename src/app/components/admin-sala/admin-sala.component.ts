@@ -3,6 +3,8 @@ import { SalaDto } from '../../model/salaDto';
 
 import { SalaService } from '../../services/sala.service';
 import { SalaConPosti } from '../../model/salaConPostiPerFila';
+import { SearchData, SearchType } from '../../utils/searchType';
+import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 
 @Component({
   selector: 'app-admin-sala',
@@ -10,14 +12,23 @@ import { SalaConPosti } from '../../model/salaConPostiPerFila';
   styleUrl: './admin-sala.component.css'
 })
 export class AdminSalaComponent {
-  constructor(private salaService : SalaService){}
+  SearchType = SearchType
+  searchTypeUtils : SearchTypeUtils
+  constructor(private salaService : SalaService){
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, salaService)
+  }
+  searchData: Partial<Record<SearchType, SearchData>> = {
+    [SearchType.SalaModifica]: {
+      termine: '',
+      paginaCorrente: 0,
+      totalePagine: 0,
+      pageSize: 4,
+      risultati: [],
+    }
+  };
   nuovaSala : SalaConPosti= {id: undefined, postis:[]}
-  sale: SalaDto[] = [];
   salaSelezionata: SalaConPosti | null = null;
   salaSelezionataModificata: SalaConPosti | null = null;
-  paginaCorrente = 0
-  paginaSize = 4
-  totalePagine =0
   modificheAbilitate=false
   aggiungiFila() {
     const nomeFila = String.fromCharCode(65 + this.nuovaSala.postis.length);
@@ -136,32 +147,12 @@ export class AdminSalaComponent {
   }
   ngOnInit(): void {
     this.resetNuovaSala()
-    this.getSale()
+    this.searchTypeUtils.loader(SearchType.SalaModifica)
   }
 
   
 
-  getSale(): void {
-    this.salaService.getAllPaginated(this.paginaCorrente, this.paginaSize).subscribe( response => {
-        this.sale = response.content;
-        this.totalePagine = response.totalPages
-    })
-  }
-
-
-  paginaPrecedente(): void {
-    if (this.paginaCorrente > 0) {
-      this.paginaCorrente--;
-      this.getSale();
-    }
-  }
-
-  paginaSuccessiva(): void {
-    if (this.paginaCorrente < this.totalePagine - 1) {
-      this.paginaCorrente++;
-      this.getSale()
-    }
-  }
+  
 
   resetNuovaSala() : void {
     this.nuovaSala = {id: undefined, postis:[{fila : "A", sedili : 1}]}

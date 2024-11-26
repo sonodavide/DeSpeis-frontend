@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { KeycloakService } from './keyclock.service';
+import { KeycloakService } from './keycloak.service';
 
 describe('KeyclockService', () => {
   let service: KeycloakService;

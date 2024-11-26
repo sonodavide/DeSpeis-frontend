@@ -1,14 +1,25 @@
 <div class="film-gallery-container">
-    <h1 class="title">Film Showcase</h1>
+    <h1 class="title">Films</h1>
+    <div>
+      <input type="text" placeholder="Cerca Film" [(ngModel)]="searchTypeUtils.getSearchData(SearchType.FilmModifica).termine"   />
+      <button (click)="searchTypeUtils.eseguiRicerca(SearchType.FilmModifica)">Cerca</button>
+      <button (click)="searchTypeUtils.resettaRicerca(SearchType.FilmModifica)">Reset</button>
+    </div>
   
-    <div *ngIf="films.length > 0" class="film-grid">
-      <div class="film-item" *ngFor="let film of films" (click)="goToFilmDetail(film.id!)">
+    <div *ngIf="searchTypeUtils.getSearchData(SearchType.FilmModifica).risultati.length > 0" class="film-grid">
+      <div class="film-item" *ngFor="let film of searchTypeUtils.getSearchData(SearchType.FilmModifica).risultati" (click)="goToFilmDetail(film.id!)">
         <img [src]="film.img" alt="{{ film.titolo }} image" class="film-img">
         <div class="film-title">{{ film.titolo }}</div>
       </div>
     </div>
   
-    <div *ngIf="films.length === 0">
+    <div *ngIf="searchTypeUtils.getSearchData(SearchType.FilmModifica).risultati.length === 0">
       Non ho caricato alcun film
+    </div>
+
+    <div class="pagination">
+      <button (click)="searchTypeUtils.paginaPrecedente(SearchType.FilmModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente === 0">Indietro</button>
+      <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.FilmModifica).totalePagine }}</span>
+      <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.FilmModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.FilmModifica).totalePagine - 1">Avanti</button>
     </div>
   </div>

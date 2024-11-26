@@ -3,73 +3,50 @@ import { GenereDto } from '../../model/film';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { GenereService } from '../../services/genere.service';
 import { PaginatedResponse } from '../../model/paginatedResponse';
+import { SearchData, SearchType } from '../../utils/searchType';
+import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 @Component({
   selector: 'app-admin-genere',
   templateUrl: './admin-genere.component.html',
   styleUrl: './admin-genere.component.css'
 })
 export class AdminGenereComponent {
-  constructor(private genereService : GenereService){}
-
-  isLoading = false;
+  searchTypeUtils: SearchTypeUtils;
+  SerachType = SearchType
+  constructor(private genereService : GenereService){
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, undefined, undefined, genereService)
+  }
+  searchData: Partial<Record<SearchType, SearchData>> = {
+    [SearchType.GenereModifica]: {
+      termine: '',
+      paginaCorrente: 0,
+      totalePagine: 0,
+      pageSize: 4,
+      risultati: [],
+    }
+  };
   nuovoGenere: GenereDto = { id: 0, genere: ''};
-  termineRicerca: string = '';
-  generi: GenereDto[] = [];
+  
+  
   genereSelezionato: GenereDto | null = null;
   genereSelezionatoModificato: GenereDto | null = null;
   modificheAbilitate: boolean = false;
-  paginaCorrente = 0;
-  totalePagine = 0;
-  pageSize = 4; 
+  
   ngOnInit() : void{
-    this.getGeneri()
+    this.searchTypeUtils.loader(SearchType.GenereModifica)
   }
 
   
-  getGeneri() : void{
-    this.genereService.getAllPaginated(this.paginaCorrente, this.pageSize)
-    .subscribe(response => {
-      this.generi = response.content;
-      this.totalePagine = response.totalPages;
-    })
-  }
+  
   creaGenere() : void {
     this.genereService.nuovo(this.nuovoGenere).subscribe()
     this.nuovoGenere = { id: undefined, genere: '' };
   }
  
-  eseguiRicerca(): void {
-    this.paginaCorrente=0
-    if (this.termineRicerca.trim()) {
-      this.genereService.cerca(this.termineRicerca, this.paginaCorrente, this.pageSize)
-        .subscribe((response: PaginatedResponse<GenereDto>) => {
-          this.generi = response.content;
-          this.totalePagine = response.totalPages;
-        });
-    } else {
-      this.getGeneri();
-    }
-  }
+  
 
-  resetRicerca(): void {
-    this.termineRicerca = '';
-    this.paginaCorrente = 0;
-    this.getGeneri();
-  }
 
-  paginaPrecedente(): void {
-    if (this.paginaCorrente > 0) {
-      this.paginaCorrente--;
-      this.termineRicerca ? this.eseguiRicerca() : this.getGeneri();
-    }
-  }
 
-  paginaSuccessiva(): void {
-    if (this.paginaCorrente < this.totalePagine - 1) {
-      this.paginaCorrente++;
-      this.termineRicerca ? this.eseguiRicerca() : this.getGeneri();
-    }
-  }
   selezionaGenere(genere: GenereDto) {
     this.genereSelezionato = genere;
     this.genereSelezionatoModificato = { ...genere };

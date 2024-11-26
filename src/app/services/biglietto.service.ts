@@ -12,47 +12,56 @@ export class BigliettoService {
 
   constructor(private http: HttpClient) {}
 
-  // Metodo per ottenere tutti i biglietti con paginazione
-  getAllBiglietti(page: number = 0): Observable<PaginatedResponse<BigliettoDto>> {
-    const params = new HttpParams().set('page', page.toString());
-    return this.http.get<PaginatedResponse<BigliettoDto>>(this.apiUrl, { params });
+  // Recupera i biglietti dell'utente autenticato
+  getBiglietti(pageNumber: number, pageSize: number): Observable<PaginatedResponse<BigliettoDto>> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}`, { params });
   }
 
-  // Metodo per ottenere i biglietti di un utente specifico con paginazione
-  getBigliettiByUser(userId: string, pageNumber: number, pageSize : number): Observable<PaginatedResponse<BigliettoDto>> {
+  // Recupera tutti i biglietti (richiede ruolo admin)
+  getAllBiglietti(pageNumber: number, pageSize: number): Observable<PaginatedResponse<BigliettoDto>> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/all`, { params });
+  }
+
+  // Recupera tutti i biglietti per data (richiede ruolo admin)
+  getAllByDate(date: string, pageNumber: number, pageSize: number): Observable<PaginatedResponse<BigliettoDto>> {
+    const params = new HttpParams()
+      .set('date', date)
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/allByDate`, { params });
+  }
+
+  // Recupera biglietti dell'utente autenticato per data
+  getByDate(date: string, pageNumber: number, pageSize: number): Observable<PaginatedResponse<BigliettoDto>> {
+    const params = new HttpParams()
+      .set('date', date)
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/date`, { params });
+  }
+
+  // Recupera biglietti per userId e data (richiede ruolo admin)
+  getByUserIdAndDate(userId: string, date: string, pageNumber: number, pageSize: number): Observable<PaginatedResponse<BigliettoDto>> {
+    const params = new HttpParams()
+      .set('uesrId', userId) // Nota: correzione da "uesrId" a "userId" nel back-end potrebbe essere necessaria
+      .set('date', date)
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/userIdAndDate`, { params });
+  }
+
+  // Recupera biglietti per userId (richiede ruolo admin)
+  getByUserId(userId: string, pageNumber: number, pageSize: number): Observable<PaginatedResponse<BigliettoDto>> {
     const params = new HttpParams()
       .set('userId', userId)
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/paged/user`, { params });
-  }
-
-  // Metodo per ottenere i biglietti di una data specifica
-  getBigliettiByDate(date: string): Observable<BigliettoDto[]> {
-    const params = new HttpParams().set('date', date);
-    return this.http.get<BigliettoDto[]>(this.apiUrl, { params });
-  }
-
-  // Metodo per ottenere i biglietti di un utente specifico e di una data specifica
-  getBigliettiByUserAndDate(userId: string, date: string): Observable<BigliettoDto[]> {
-    const params = new HttpParams()
-      .set('user', userId.toString())
-      .set('date', date);
-    return this.http.get<BigliettoDto[]>(this.apiUrl, { params });
-  }
-
-  // Metodo per ottenere biglietti di un utente specifico e di una data specifica con paginazione
-  getBigliettiFiltered(userId?: string, date?: string, page: number = 0): Observable<BigliettoDto[]> {
-    let params = new HttpParams().set('page', page.toString());
-    
-    if (userId !== undefined) {
-      params = params.set('user', userId.toString());
-    }
-    
-    if (date) {
-      params = params.set('date', date);
-    }
-
-    return this.http.get<BigliettoDto[]>(this.apiUrl, { params });
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/userId`, { params });
   }
 }

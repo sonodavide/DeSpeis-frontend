@@ -3,27 +3,38 @@ import { AttoreDto } from '../../model/film';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { AttoreService } from '../../services/attore.service';
 import { PaginatedResponse } from '../../model/paginatedResponse';
+import { SearchData, SearchType } from '../../utils/searchType';
+import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 @Component({
   selector: 'app-admin-attore',
   templateUrl: './admin-attore.component.html',
   styleUrls: ['./admin-attore.component.css']
 })
 export class AdminAttoreComponent {
-  constructor(private attoreService : AttoreService){}
-
-  termineRicerca: string = '';
-  isLoading = false;
-  paginaCorrente = 0;
-  totalePagine = 0;
-  pageSize = 4; 
+  searchTypeUtils : SearchTypeUtils
+  constructor(private attoreService : AttoreService){
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, attoreService)
+  }
+  SearchType = SearchType
+  searchData: Partial<Record<SearchType, SearchData>> = {
+    [SearchType.AttoreModifica]: {
+      termine: '',
+      paginaCorrente: 0,
+      totalePagine: 0,
+      pageSize: 4,
+      risultati: [],
+    }
+  };
+  
   nuovoAttore: AttoreDto = { id: undefined, nome: '', cognome: '' };
-  attori: AttoreDto[] = [];
+  
   attoreSelezionato: AttoreDto | null = null;
   attoreSelezionatoModificato: AttoreDto | null = null;
   modificheAbilitate: boolean = false;
 
   ngOnInit() : void{
-    this.getAttori()
+    this.searchTypeUtils.loader(SearchType.AttoreModifica)
+    console.log()
   }
 
 
@@ -68,45 +79,5 @@ export class AdminAttoreComponent {
     }
   }
 
-  getAttori(): void {
-    this.attoreService.getAllPaginated(this.paginaCorrente, this.pageSize)
-      .subscribe(response => {
-        this.attori = response.content;
-        
-        this.totalePagine = response.totalPages;
-      });
-  }
-
-  eseguiRicerca(): void {
-    this.paginaCorrente=0
-    if (this.termineRicerca.trim()) {
-      this.attoreService.cerca(this.termineRicerca, this.paginaCorrente, this.pageSize)
-        .subscribe((response: PaginatedResponse<AttoreDto>) => {
-          this.attori = response.content;
-          this.totalePagine = response.totalPages;
-        });
-    } else {
-      this.getAttori();
-    }
-  }
-
-  resetRicerca(): void {
-    this.termineRicerca = '';
-    this.paginaCorrente = 0;
-    this.getAttori();
-  }
-
-  paginaPrecedente(): void {
-    if (this.paginaCorrente > 0) {
-      this.paginaCorrente--;
-      this.termineRicerca ? this.eseguiRicerca() : this.getAttori();
-    }
-  }
-
-  paginaSuccessiva(): void {
-    if (this.paginaCorrente < this.totalePagine - 1) {
-      this.paginaCorrente++;
-      this.termineRicerca ? this.eseguiRicerca() : this.getAttori();
-    }
-  }
+  
 }

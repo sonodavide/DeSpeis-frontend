@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import Keycloak from "keycloak-js";
-import {UserProfile} from "../../model/user-profile";
+import {UserProfile} from "../model/user-profile";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +35,19 @@ export class KeycloakService {
   }
 
   manageAccount(){
-    this.keycloak.accountManagement();
+    this.keycloak.accountManagement().then(
+      () => {
+        this.router.navigate(['/account'])
+      }
+    );
   }
-  constructor() { }
+  constructor(private router : Router) { }
 
+  updateToken(){
+    if(this.keycloak){
+      this.keycloak.updateToken()
+    }
+  }
   async init(){
     
     const authenticated = await this.keycloak.init({

@@ -2,8 +2,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UtenteDto } from '../model/utenteDto';
 import { PaginatedResponse } from '../model/paginatedResponse';
+import { UserProfile } from '../model/user-profile';
 
 @Injectable({
   providedIn: 'root'
@@ -13,41 +13,44 @@ export class UtenteService {
 
   constructor(private http: HttpClient) {}
 
-  getUtente(userId: number): Observable<UtenteDto> {
-    let params = new HttpParams();
-    
-    params = params.set('userId', userId.toString());
-    
-    return this.http.get<UtenteDto>(this.apiUrl, { params });
-  }
-  getUtenti(): Observable< UtenteDto[]>{
-    return this.http.get<UtenteDto[]>(this.apiUrl);
+  // Recupera le informazioni dell'utente autenticato
+  getUtente(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}`);
   }
 
-  getSuggestions(term: string): Observable<UtenteDto[]> {
-    return this.http.get<UtenteDto[]>(`${this.apiUrl}/cerca?query=${term}`)
-  }
-  // Metodo per aggiungere un nuovo Utente
-  nuovo(utenteDto: UtenteDto): Observable<UtenteDto> {
-    return this.http.post<UtenteDto>(`${this.apiUrl}/nuovo`, utenteDto);
+  // Recupera tutti gli utenti (richiede ruolo admin)
+  getAll(): Observable<UserProfile[]> {
+    return this.http.get<UserProfile[]>(`${this.apiUrl}/all`);
   }
 
-  // Metodo per eliminare un Utente
-  elimina(utenteDto: UtenteDto): Observable<string> {
-    return this.http.post<string>(`${this.apiUrl}/elimina`, utenteDto);
+  // Recupera informazioni di un utente specifico tramite userId (richiede ruolo admin)
+  getByUserId(userId: string): Observable<UserProfile> {
+    const params = new HttpParams().set('userId', userId);
+    return this.http.get<UserProfile>(`${this.apiUrl}/userId`, { params });
   }
 
-  getAllPaginated(pageNumber : number, pageSize : number) : Observable<PaginatedResponse<UtenteDto>>{
+  // Recupera utenti in modalità paginata (richiede ruolo admin)
+  getAllPaged(pageNumber: number, pageSize: number): Observable<PaginatedResponse<UserProfile>> {
     const params = new HttpParams()
-    .set("pageNumber", pageNumber)
-    .set("pageSize", pageSize)
-    return this.http.get<PaginatedResponse<UtenteDto>>(`${this.apiUrl}/paged`, {params})
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<UserProfile>>(`${this.apiUrl}/paged`, { params });
   }
-  cerca(term: string, pageNumber : number, pageSize : number): Observable<PaginatedResponse<UtenteDto>> {
+
+  // Effettua una ricerca con query specifica in modalità paginata (richiede ruolo admin)
+  cerca(query: string, pageNumber: number, pageSize: number): Observable<PaginatedResponse<UserProfile>> {
     const params = new HttpParams()
-    .set("query", term)
-    .set("pageNumber", pageNumber)
-    .set("pageSize", pageSize)
-    return this.http.get<PaginatedResponse<UtenteDto>>(`${this.apiUrl}/cerca`, {params})
+      .set('query', query)
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<UserProfile>>(`${this.apiUrl}/cerca`, { params });
+  }
+
+  // Conta il numero totale di utenti (richiede ruolo admin)
+  count(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/count`);
+  }
+  updateUser() : Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/update`, {})
   }
 }

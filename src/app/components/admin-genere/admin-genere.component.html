@@ -15,21 +15,21 @@
     <!-- Sezione Ricerca e Dettagli -->
     <div class="section search-section">
       <h2>Cerca Genere</h2>
-      <input type="text" placeholder="Cerca genere" [(ngModel)]="termineRicerca"   />
-      <button (click)="eseguiRicerca()">Cerca</button>
-      <button (click)="resetRicerca()">Reset</button>
+      <input type="text" placeholder="Cerca genere" [(ngModel)]="searchTypeUtils.getSearchData(SerachType.GenereModifica).termine"   />
+      <button (click)="searchTypeUtils.eseguiRicerca(SerachType.GenereModifica)">Cerca</button>
+      <button (click)="searchTypeUtils.resettaRicerca(SerachType.GenereModifica)">Reset</button>
       <!-- Loading indicator -->
 
-      <ul *ngIf="generi.length > 0">
-        <li *ngFor="let genere of generi" (click)="selezionaGenere(genere)">
+      <ul *ngIf="searchTypeUtils.getSearchData(SerachType.GenereModifica).risultati.length > 0">
+        <li *ngFor="let genere of searchTypeUtils.getSearchData(SerachType.GenereModifica).risultati" (click)="selezionaGenere(genere)">
           > {{ genere.genere }} 
         </li>
       </ul>
             <!-- Sezione Paginazione -->
     <div class="pagination">
-      <button (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
-      <span>Pagina {{ paginaCorrente + 1 }} di {{ totalePagine }}</span>
-      <button (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
+      <button (click)="searchTypeUtils.paginaPrecedente(SerachType.GenereModifica)" [disabled]="searchTypeUtils.getSearchData(SerachType.GenereModifica).paginaCorrente === 0">Indietro</button>
+      <span>Pagina {{ searchTypeUtils.getSearchData(SerachType.GenereModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SerachType.GenereModifica).totalePagine }}</span>
+      <button (click)="searchTypeUtils.paginaSuccessiva(SerachType.GenereModifica)" [disabled]="searchTypeUtils.getSearchData(SerachType.GenereModifica).paginaCorrente >= searchTypeUtils.getSearchData(SerachType.GenereModifica).totalePagine - 1">Avanti</button>
     </div>
       <!-- Dettagli Genere Selezionato -->
 <div *ngIf="genereSelezionatoModificato" class="details-section">

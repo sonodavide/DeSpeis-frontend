@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrdineService } from '../../services/ordine.service';
 import { OrdineDto } from '../../model/ordineDto';
-import { UtilsFormatter } from '../../utils/utilsFormatter';
+import { FormatterUtils} from '../../utils/formatterUtils';
 import { BigliettoDto } from '../../model/bigliettoDto';
 
 @Component({
@@ -27,8 +27,8 @@ export class OrdiniComponent implements OnInit {
     });
   }
 
-  getOrdini(): void { //hardcoded id
-    this.ordineService.getOrdiniByUserPaginated(1, this.paginaCorrente, 5).subscribe(response => {
+  getOrdini(): void {
+    this.ordineService.getOrdini(this.paginaCorrente, 5).subscribe(response => {
       this.ordini = response.content;
       this.totalePagine = response.totalPages;
     });
@@ -58,6 +58,6 @@ export class OrdiniComponent implements OnInit {
     this.router.navigate(['/utente']);
   }
   bigliettoToString(biglietto : BigliettoDto): string{
-    return UtilsFormatter.bigliettoToString(biglietto)
+    return FormatterUtils.bigliettoToString(biglietto)
   }
 }

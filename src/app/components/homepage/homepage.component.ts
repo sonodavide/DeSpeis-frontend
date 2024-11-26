@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TestService } from '../../services/test.service';
-import { KeycloakService } from '../../services/keyclock/keyclock.service';
+import { KeycloakService } from '../../services/keycloak.service';
 
 @Component({
   selector: 'app-homepage',

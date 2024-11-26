@@ -6,8 +6,8 @@ import { UserProfile } from '../../model/user-profile';
 import { OrdineService } from '../../services/ordine.service';
 import { BigliettoService } from '../../services/biglietto.service';
 import { UtenteService } from '../../services/utente.service';
-import { UtilsFormatter } from '../../utils/utilsFormatter';
-import { KeycloakService } from '../../services/keyclock/keyclock.service';
+import { FormatterUtils} from '../../utils/formatterUtils';
+import { KeycloakService } from '../../services/keycloak.service';
 @Component({
   selector: 'app-utente-homepage',
   templateUrl: './utente-homepage.component.html',
@@ -28,23 +28,24 @@ export class UtenteHomepageComponent {
   }
 
   ngOnInit(): void {
-    let userId = 1; //test
-    this.getUtente(userId)
-    this.getBigliettiOggi(userId)
-    this.getOrdini(userId)
+    this.keycloakService.updateToken()
+    this.utenteService.updateUser().subscribe()
+    this.getUtente()
+    this.getBigliettiOggi()
+    this.getOrdini()
   }
   
-  getUtente(userId : number){
-    this.utenteService.getUtente(userId).subscribe(utente => this.utente = utente)
+  getUtente(){
+    this.utente = this.keycloakService.profile!
   }
 
-  getBigliettiOggi(userId: number){
+  getBigliettiOggi(){
     
-    this.bigliettoService.getBigliettiByUserAndDate(userId, new Date().toISOString().split('T')[0]).subscribe(biglietti => this.biglietti=biglietti)
+    this.bigliettoService.getByDate(new Date().toISOString().split('T')[0], 0, 5).subscribe(biglietti => this.biglietti=biglietti.content)
   }
 
-  getOrdini(userId: number){ //hardcoded user id
-    this.ordineService.getOrdiniByUserPaginated(userId, 0, 4).subscribe(ordini => this.ordini=ordini.content)
+  getOrdini(){ 
+    this.ordineService.getOrdini(0, 4).subscribe(ordini => this.ordini=ordini.content)
   }
 
   modificaInfo(): void {
@@ -52,9 +53,9 @@ export class UtenteHomepageComponent {
   }
   
   formatTime(date: string): string{
-    return UtilsFormatter.formatTime(date)
+    return FormatterUtils.formatTime(date)
   }
   bigliettoToString(biglietto : BigliettoDto): string{
-    return UtilsFormatter.bigliettoToString(biglietto)
+    return FormatterUtils.bigliettoToString(biglietto)
   }
 }

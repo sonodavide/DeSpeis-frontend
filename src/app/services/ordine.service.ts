@@ -13,11 +13,23 @@ export class OrdineService {
 
   constructor(private http: HttpClient) {}
 
-  getOrdiniByUserPaginated(userId: string, pageNumber: number, pageSize:number): Observable<PaginatedResponse<OrdineDto>> {
-    let params = new HttpParams().set('pageNumber', pageNumber).set('userId', userId).set('pageSize', pageSize);
+   // Recupera gli ordini dell'utente autenticato
+   getOrdini(pageNumber: number, pageSize: number): Observable<PaginatedResponse<OrdineDto>> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<OrdineDto>>(`${this.apiUrl}`, { params });
+  }
 
+  // Recupera gli ordini di uno specifico utente in modalità paginata (richiede ruolo admin)
+  getAllByUserIdPaged(userId: string, pageNumber: number, pageSize: number): Observable<PaginatedResponse<OrdineDto>> {
+    const params = new HttpParams()
+      .set('userId', userId)
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
     return this.http.get<PaginatedResponse<OrdineDto>>(`${this.apiUrl}/paged/user`, { params });
   }
+
 
 
 }

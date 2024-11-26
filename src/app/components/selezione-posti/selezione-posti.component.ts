@@ -45,7 +45,7 @@ export class SelezionePostiComponent {
   }
 
   prenota(){
-    this.sharedBigliettiService.updateData({postiIds: this.postiSelezionati, spettacoloId: this.spettacoloId, userId : 1})
+    this.sharedBigliettiService.updateData({postiIds: this.postiSelezionati, spettacoloId: this.spettacoloId})
     this.router.navigate(["/checkout"])
     //this.prenotazioneService.prenota({postiIds : this.postiSelezionati, userId : 1, spettacoloId : this.posti?.spettacoloId! }).subscribe()
   }

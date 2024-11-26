@@ -20,8 +20,8 @@ export class BigliettiComponent {
     });
   }
 
-  getBiglietti() : void { //hardcoded user
-    this.bigliettoService.getBigliettiByUser(1, this.paginaCorrente, 10)
+  getBiglietti() : void {
+    this.bigliettoService.getAllBiglietti(this.paginaCorrente, 10)
     .subscribe(response =>{
       this.biglietti = response.content;
       this.totalePagine = response.totalPages;
@@ -35,8 +35,10 @@ export class BigliettiComponent {
   }
 
   paginaSuccessiva(): void {
-    this.paginaCorrente++;
-    this.aggiornaURL();
+    if(this.paginaCorrente < this.totalePagine - 1){
+      this.paginaCorrente++;
+      this.aggiornaURL();
+    }
   }
 
   aggiornaURL(): void {
