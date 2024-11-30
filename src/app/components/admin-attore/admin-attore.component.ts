@@ -5,6 +5,8 @@ import { AttoreService } from '../../services/attore.service';
 import { PaginatedResponse } from '../../model/paginatedResponse';
 import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
+import { MessagesService } from '../../services/messages.service';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-admin-attore',
   templateUrl: './admin-attore.component.html',
@@ -12,8 +14,8 @@ import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 })
 export class AdminAttoreComponent {
   searchTypeUtils : SearchTypeUtils
-  constructor(private attoreService : AttoreService){
-    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, attoreService)
+  constructor(private attoreService : AttoreService, private messageService : MessagesService){
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, attoreService, undefined, undefined, undefined, undefined, undefined, messageService)
   }
   SearchType = SearchType
   searchData: Partial<Record<SearchType, SearchData>> = {
@@ -40,7 +42,18 @@ export class AdminAttoreComponent {
 
 
   creaAttore() {
-    this.attoreService.nuovo(this.nuovoAttore).subscribe()
+    this.attoreService.nuovo(this.nuovoAttore).subscribe({
+      next : () => {
+        this.messageService.addMessageSuccess("Attore aggiunto con successo!")
+      },
+      error : (error : HttpErrorResponse) => {
+        if(error.status === 400 ){
+          this.messageService.addMessageError("alcuni dati non vanno bene.")
+        } else {
+          this.messageService.addMessageError("errore aggiunta attore.")
+        }
+      }
+    })
     this.nuovoAttore = { id: undefined, nome: '', cognome: '' };
   }
 
@@ -58,7 +71,18 @@ export class AdminAttoreComponent {
 
   modificaAttore() {
     if(this.attoreSelezionatoModificato){
-      this.attoreService.nuovo(this.attoreSelezionatoModificato).subscribe()
+      this.attoreService.nuovo(this.attoreSelezionatoModificato).subscribe({
+        next : () => {
+          this.messageService.addMessageSuccess("Attore modificato con successo!")
+        },
+        error : (error : HttpErrorResponse) => {
+          if(error.status === 400 ){
+            this.messageService.addMessageError("alcuni dati non vanno bene.")
+          } else {
+            this.messageService.addMessageError("errore aggiunta attore.")
+          }
+        }
+      })
       this.modificheAbilitate = false;
     }
     
@@ -73,7 +97,14 @@ export class AdminAttoreComponent {
 
   eliminaAttore() {
     if (this.attoreSelezionato) {
-      this.attoreService.elimina(this.attoreSelezionato).subscribe()
+      this.attoreService.elimina(this.attoreSelezionato).subscribe({
+        next : () => {
+          this.messageService.addMessageSuccess("attore eliminato con successo")
+        },
+        error : (error) => {
+          this.messageService.addMessageError("errore eliminazione attore")
+        }
+      })
       this.attoreSelezionato = null;
       this.attoreSelezionatoModificato = null;
     }

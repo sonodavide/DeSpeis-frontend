@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BigliettoDto } from '../../model/bigliettoDto';
 import { BigliettoService } from '../../services/biglietto.service';
+import { MessagesService } from '../../services/messages.service';
 @Component({
   selector: 'app-biglietti',
   templateUrl: './biglietti.component.html',
@@ -11,7 +12,7 @@ export class BigliettiComponent {
   biglietti : BigliettoDto[] = []
   paginaCorrente=0;
   totalePagine=10;
-  constructor(private bigliettoService: BigliettoService, private route: ActivatedRoute, private router : Router){}
+  constructor(private bigliettoService: BigliettoService, private route: ActivatedRoute, private router : Router, private messageService : MessagesService){}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -22,10 +23,15 @@ export class BigliettiComponent {
 
   getBiglietti() : void {
     this.bigliettoService.getAllBiglietti(this.paginaCorrente, 10)
-    .subscribe(response =>{
+    .subscribe({next : response =>{
       this.biglietti = response.content;
       this.totalePagine = response.totalPages;
-    } )
+
+    },
+    error : (error) =>{
+      this.messageService.addMessageError("impossibile caricare biglietti")
+    }
+   })
   }
   paginaPrecedente(): void {
     if (this.paginaCorrente > 0) {

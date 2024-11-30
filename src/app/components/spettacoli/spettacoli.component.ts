@@ -4,6 +4,7 @@ import { SpettacoloService } from '../../services/spettacolo.service';
 import { formatDate } from '@angular/common';
 import { FilmSpettacoliDto } from '../../model/filmSpettacoli';
 import { Router } from '@angular/router';
+import { MessagesService } from '../../services/messages.service';
 
 @Component({
   selector: 'app-spettacoli',
@@ -16,7 +17,7 @@ export class SpettacoliComponent {
   giorniSettimana: { label: string, date: string }[] = [];
   dataSelezionata: string = '';
 
-  constructor(private spettacoloService: SpettacoloService, private router: Router) {}
+  constructor(private spettacoloService: SpettacoloService, private router: Router, private messageService : MessagesService) {}
 
   ngOnInit(): void {
     this.generaGiorniSettimana(); // Genera le prossime 7 date
@@ -37,7 +38,11 @@ export class SpettacoliComponent {
 
   
    getSpettacoli(date: string): void{
-    this.spettacoloService.getByDate(date).subscribe(f => this.filmSpettacoli = f)
+    this.spettacoloService.getByDate(date).subscribe({
+      next : data => this.filmSpettacoli = data,
+      error : error => this.messageService.addMessageError("Errore caricamento spettacoli")
+
+    })
    }
    goToSelezionePosti(spettacoloId: number) {
     this.router.navigate(['/selezione-posti', spettacoloId]);  // Naviga alla rotta del film con l'ID specifico

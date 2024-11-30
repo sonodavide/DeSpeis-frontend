@@ -5,6 +5,7 @@ import { NuovoSpettacoloDto } from '../../model/nuovoSpettacolo';
 import { PaginatedResponse } from '../../model/paginatedResponse';
 import { SpettacoloDto } from '../../model/spettacolo';
 import { FormatterUtils} from '../../utils/formatterUtils';
+import { MessagesService } from '../../services/messages.service';
 @Component({
   selector: 'app-admin-blocca',
   templateUrl: './admin-blocca.component.html',
@@ -92,18 +93,25 @@ export class AdminBloccaComponent {
 
 
   blocca(){
-    console.log("blocca")
-    console.log(this.postiSelezionati.length)
-    console.log(this.spettacoloSelezionato?.id)
     if(this.spettacoloSelezionato && this.spettacoloSelezionato.id && this.postiSelezionati.length>0){
-      console.log("sto bloccando")
-      this.postiService.blocca({postiIds: this.postiSelezionati, spettacoloId: this.spettacoloSelezionato.id}).subscribe(posti =>{
+      this.postiService.blocca({postiIds: this.postiSelezionati, spettacoloId: this.spettacoloSelezionato.id}).subscribe({
+        next : posti =>{
         this.posti = new Map(Object.entries(posti.posti));
+        this.messageService.addMessageSuccess("posti bloccati/sbloccati con successo!")
+      },
+        error : (error) => {
+          if(error.status === 400){
+            this.messageService.addMessageError("posti non trovati")
+          }
+          else {
+            this.messageService.addMessageError("impossibile bloccare/sbloccare posti")
+          }
+        }
       })
     }
-    //this.prenotazioneService.prenota({postiIds : this.postiSelezionati, userId : 1, spettacoloId : this.posti?.spettacoloId! }).subscribe()
+    
   }
-  constructor(private spettacoloService : SpettacoloService, private postiService : PrenotazioneService){}
+  constructor(private spettacoloService : SpettacoloService, private postiService : PrenotazioneService, private messageService : MessagesService){}
   ngOnInit():void{
     this.getSpettacoli()
   }

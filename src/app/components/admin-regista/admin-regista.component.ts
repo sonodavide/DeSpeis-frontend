@@ -5,6 +5,8 @@ import { RegistaService } from '../../services/regista.service';
 import { PaginatedResponse } from '../../model/paginatedResponse';
 import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
+import { MessagesService } from '../../services/messages.service';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-admin-regista',
   templateUrl: './admin-regista.component.html',
@@ -13,8 +15,8 @@ import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 export class AdminRegistaComponent {
   SearchType = SearchType
   searchTypeUtils : SearchTypeUtils
-  constructor(private registaService : RegistaService){
-    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, undefined, registaService)
+  constructor(private registaService : RegistaService, private messageService : MessagesService){
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, undefined, registaService, undefined, undefined, undefined, undefined, messageService)
   }
   searchData: Partial<Record<SearchType, SearchData>> = {
     [SearchType.RegistaModifica]: {
@@ -44,7 +46,18 @@ export class AdminRegistaComponent {
   modificheAbilitate: boolean = false;
 
   creaRegista() {
-    this.registaService.nuovo(this.nuovoRegista).subscribe()
+    this.registaService.nuovo(this.nuovoRegista).subscribe({
+      next : () => {
+        this.messageService.addMessageSuccess("regista aggiunto con successo!")
+      },
+      error : (error : HttpErrorResponse) => {
+        if(error.status === 400 ){
+          this.messageService.addMessageError("alcuni dati non vanno bene.")
+        } else {
+          this.messageService.addMessageError("errore aggiunta regista.")
+        }
+      }
+    })
     this.nuovoRegista = { id: undefined, nome: '', cognome: '' };
   }
 
@@ -62,7 +75,18 @@ export class AdminRegistaComponent {
 
   modificaRegista() {
     if (this.registaSelezionatoModificato) {
-      this.registaService.nuovo(this.registaSelezionatoModificato).subscribe()
+      this.registaService.nuovo(this.registaSelezionatoModificato).subscribe({
+        next : () => {
+          this.messageService.addMessageSuccess("regista aggiunto con successo!")
+        },
+        error : (error : HttpErrorResponse) => {
+          if(error.status === 400 ){
+            this.messageService.addMessageError("alcuni dati non vanno bene.")
+          } else {
+            this.messageService.addMessageError("errore aggiunta regista.")
+          }
+        }
+      })
       this.modificheAbilitate = false;
     }
   }

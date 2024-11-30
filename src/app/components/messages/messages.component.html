@@ -1,0 +1,10 @@
+<div class="message-container">
+    <div 
+      *ngFor="let message of messageService.messages; let i = index" 
+      [ngClass]="{'light-red-background': message.type === 'error', 'light-green-background': message.type === 'success'}"
+    >
+      <button type="button" class="btn" (click)="removeMessage(i)">
+        >>> {{ message.text }}
+      </button>
+    </div>
+  </div>

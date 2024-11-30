@@ -4,6 +4,7 @@ import { OrdineService } from '../../services/ordine.service';
 import { OrdineDto } from '../../model/ordineDto';
 import { FormatterUtils} from '../../utils/formatterUtils';
 import { BigliettoDto } from '../../model/bigliettoDto';
+import { MessagesService } from '../../services/messages.service';
 
 @Component({
   selector: 'app-ordini',
@@ -17,7 +18,8 @@ export class OrdiniComponent implements OnInit {
   constructor(
     private ordineService: OrdineService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private messageService : MessagesService
   ) {}
 
   ngOnInit(): void {
@@ -28,9 +30,10 @@ export class OrdiniComponent implements OnInit {
   }
 
   getOrdini(): void {
-    this.ordineService.getOrdini(this.paginaCorrente, 5).subscribe(response => {
+    this.ordineService.getOrdini(this.paginaCorrente, 5).subscribe({next :response => {
       this.ordini = response.content;
-      this.totalePagine = response.totalPages;
+      this.totalePagine = response.totalPages;},
+      error : () => this.messageService.addMessageError("errore caricamento ordini")
     });
   }
 

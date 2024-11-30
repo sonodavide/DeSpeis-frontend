@@ -6,6 +6,7 @@ import { FilmService } from '../../services/film.service';
 import { SalaService } from '../../services/sala.service';
 import { SearchType, SearchData } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
+import { MessagesService } from '../../services/messages.service';
 @Component({
   selector: 'app-admin-spettacolo',
   templateUrl: './admin-spettacolo.component.html',
@@ -19,13 +20,21 @@ export class AdminSpettacoloComponent {
     private spettacoloService: SpettacoloService,
     private prenotazioneService: PrenotazioneService,
     private filmService: FilmService,
-    private salaService: SalaService
+    private salaService: SalaService,
+    private messageService: MessagesService
   ) {
     this.searchTypeUtils = new SearchTypeUtils(
       this.searchData,
       filmService,
       salaService,
-      spettacoloService
+      spettacoloService,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      messageService
     );
   }
 
@@ -78,7 +87,21 @@ export class AdminSpettacoloComponent {
   }
 
   creaSpettacolo() {
-    this.spettacoloService.nuovo(this.nuovoSpettacolo).subscribe();
+    this.spettacoloService.nuovo(this.nuovoSpettacolo).subscribe({
+      next : () => {
+        this.messageService.addMessageSuccess("spettacolo aggiunto con successo!")
+      },
+      error : (error) => {
+        if(error.status === 400 ){
+          this.messageService.addMessageError("alcuni dati non vanno bene.")
+        } else if(error.status === 409){
+          this.messageService.addMessageError("alcuni spettacoli sono in conflitto")
+        }
+         else {
+          this.messageService.addMessageError("errore aggiunta spettacolo.")
+        }
+      }
+    });
     this.nuovoSpettacolo = this.resetNuovoSpettacolo();
   }
 
@@ -119,7 +142,21 @@ export class AdminSpettacoloComponent {
     if (this.spettacoloSelezionatoModificato) {
       this.spettacoloService
         .nuovo(this.spettacoloSelezionatoModificato)
-        .subscribe();
+        .subscribe({
+          next : () => {
+            this.messageService.addMessageSuccess("spettacolo aggiunto con successo!")
+          },
+          error : (error) => {
+            if(error.status === 400 ){
+              this.messageService.addMessageError("alcuni dati non vanno bene.")
+            } else if(error.status === 409){
+              this.messageService.addMessageError("alcuni spettacoli sono in conflitto")
+            }
+             else {
+              this.messageService.addMessageError("errore aggiunta spettacolo.")
+            }
+          }
+        });
       this.modificheAbilitate = false;
     }
   }

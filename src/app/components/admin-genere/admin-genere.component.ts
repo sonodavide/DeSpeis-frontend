@@ -5,6 +5,8 @@ import { GenereService } from '../../services/genere.service';
 import { PaginatedResponse } from '../../model/paginatedResponse';
 import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
+import { MessagesService } from '../../services/messages.service';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-admin-genere',
   templateUrl: './admin-genere.component.html',
@@ -13,8 +15,8 @@ import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 export class AdminGenereComponent {
   searchTypeUtils: SearchTypeUtils;
   SerachType = SearchType
-  constructor(private genereService : GenereService){
-    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, undefined, undefined, genereService)
+  constructor(private genereService : GenereService, private messageService : MessagesService){
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, undefined, undefined, genereService, undefined, undefined, undefined, messageService)
   }
   searchData: Partial<Record<SearchType, SearchData>> = {
     [SearchType.GenereModifica]: {
@@ -39,7 +41,18 @@ export class AdminGenereComponent {
   
   
   creaGenere() : void {
-    this.genereService.nuovo(this.nuovoGenere).subscribe()
+    this.genereService.nuovo(this.nuovoGenere).subscribe({
+      next : () => {
+        this.messageService.addMessageSuccess("genere aggiunto con successo!")
+      },
+      error : (error : HttpErrorResponse) => {
+        if(error.status === 400 ){
+          this.messageService.addMessageError("alcuni dati non vanno bene.")
+        } else {
+          this.messageService.addMessageError("errore aggiunta genere.")
+        }
+      }
+    })
     this.nuovoGenere = { id: undefined, genere: '' };
   }
  
@@ -59,7 +72,19 @@ export class AdminGenereComponent {
 
   modificaGenere() {
     if(this.genereSelezionatoModificato){
-      this.genereService.nuovo(this.genereSelezionatoModificato).subscribe()
+      this.genereService.nuovo(this.genereSelezionatoModificato).subscribe({
+        next : () => {
+          this.messageService.addMessageSuccess("genere aggiunto con successo!")
+        },
+        error : (error : HttpErrorResponse) => {
+          if(error.status === 400 ){
+            this.messageService.addMessageError("alcuni dati non vanno bene.")
+          } else {
+            this.messageService.addMessageError("errore aggiunta genere.")
+          }
+        }
+      })
+      this.nuovoGenere = { id: undefined, genere: '' };
     }
   }
 
