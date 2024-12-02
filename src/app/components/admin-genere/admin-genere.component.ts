@@ -44,6 +44,7 @@ export class AdminGenereComponent {
     this.genereService.nuovo(this.nuovoGenere).subscribe({
       next : () => {
         this.messageService.addMessageSuccess("genere aggiunto con successo!")
+        this.nuovoGenere = { id: 0, genere: ''};
       },
       error : (error : HttpErrorResponse) => {
         if(error.status === 400 ){
@@ -75,6 +76,9 @@ export class AdminGenereComponent {
       this.genereService.nuovo(this.genereSelezionatoModificato).subscribe({
         next : () => {
           this.messageService.addMessageSuccess("genere aggiunto con successo!")
+          this.genereSelezionato=null
+          this.genereSelezionatoModificato=null
+          this.modificheAbilitate=false
         },
         error : (error : HttpErrorResponse) => {
           if(error.status === 400 ){
@@ -92,14 +96,25 @@ export class AdminGenereComponent {
     if (this.genereSelezionato) {
       this.genereSelezionatoModificato = { ...this.genereSelezionato };
       this.modificheAbilitate = false;
+      this.messageService.addMessageSuccess("ho reimpostato il genere che avevi selezionato")
     }
   }
 
   eliminaGenere() {
     if (this.genereSelezionato) {
-      this.genereService.elimina(this.genereSelezionato).subscribe()
-      this.genereSelezionato = null;
-      this.genereSelezionatoModificato = null;
+      this.genereService.elimina(this.genereSelezionato).subscribe({
+        next: () => {
+          this.messageService.addMessageSuccess(
+            'genere eliminato con successo'
+          );
+          this.genereSelezionato = null;
+          this.genereSelezionatoModificato = null;
+          this.modificheAbilitate = false;
+        },
+        error: () => {
+          this.messageService.addMessageError('errore eliminazione genere');
+        },
+      });
     }
   }
 }

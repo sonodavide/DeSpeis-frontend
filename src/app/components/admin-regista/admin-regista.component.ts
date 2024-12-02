@@ -10,13 +10,28 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-admin-regista',
   templateUrl: './admin-regista.component.html',
-  styleUrl: './admin-regista.component.css'
+  styleUrl: './admin-regista.component.css',
 })
 export class AdminRegistaComponent {
-  SearchType = SearchType
-  searchTypeUtils : SearchTypeUtils
-  constructor(private registaService : RegistaService, private messageService : MessagesService){
-    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, undefined, registaService, undefined, undefined, undefined, undefined, messageService)
+  SearchType = SearchType;
+  searchTypeUtils: SearchTypeUtils;
+  constructor(
+    private registaService: RegistaService,
+    private messageService: MessagesService
+  ) {
+    this.searchTypeUtils = new SearchTypeUtils(
+      this.searchData,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      registaService,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      messageService
+    );
   }
   searchData: Partial<Record<SearchType, SearchData>> = {
     [SearchType.RegistaModifica]: {
@@ -25,20 +40,18 @@ export class AdminRegistaComponent {
       totalePagine: 0,
       pageSize: 4,
       risultati: [],
-    }
+    },
   };
 
-  
-
   isLoading = false;
-  ngOnInit() : void{
-   this.searchTypeUtils.loader(SearchType.RegistaModifica)
+  ngOnInit(): void {
+    this.searchTypeUtils.loader(SearchType.RegistaModifica);
   }
 
   paginaCorrente = 0;
   totalePagine = 0;
-  pageSize = 4; 
-  nuovoRegista: RegistaDto = { id: 0, nome: '', cognome: '' };
+  pageSize = 4;
+  nuovoRegista: RegistaDto = { id: undefined, nome: '', cognome: '' };
   termineRicerca: string = '';
   registi: RegistaDto[] = [];
   registaSelezionato: RegistaDto | null = null;
@@ -47,21 +60,20 @@ export class AdminRegistaComponent {
 
   creaRegista() {
     this.registaService.nuovo(this.nuovoRegista).subscribe({
-      next : () => {
-        this.messageService.addMessageSuccess("regista aggiunto con successo!")
+      next: () => {
+        this.messageService.addMessageSuccess('regista aggiunto con successo!');
+        this.nuovoRegista = { id: undefined, nome: '', cognome: '' };
       },
-      error : (error : HttpErrorResponse) => {
-        if(error.status === 400 ){
-          this.messageService.addMessageError("alcuni dati non vanno bene.")
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 400) {
+          this.messageService.addMessageError('alcuni dati non vanno bene.');
         } else {
-          this.messageService.addMessageError("errore aggiunta regista.")
+          this.messageService.addMessageError('errore aggiunta regista.');
         }
-      }
-    })
+      },
+    });
     this.nuovoRegista = { id: undefined, nome: '', cognome: '' };
   }
-
-
 
   selezionaRegista(regista: RegistaDto) {
     this.registaSelezionato = regista;
@@ -76,17 +88,22 @@ export class AdminRegistaComponent {
   modificaRegista() {
     if (this.registaSelezionatoModificato) {
       this.registaService.nuovo(this.registaSelezionatoModificato).subscribe({
-        next : () => {
-          this.messageService.addMessageSuccess("regista aggiunto con successo!")
+        next: () => {
+          this.messageService.addMessageSuccess(
+            'regista aggiunto con successo!'
+          );
+          this.registaSelezionato = null;
+          this.registaSelezionatoModificato = null;
+          this.modificheAbilitate = false;
         },
-        error : (error : HttpErrorResponse) => {
-          if(error.status === 400 ){
-            this.messageService.addMessageError("alcuni dati non vanno bene.")
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 400) {
+            this.messageService.addMessageError('alcuni dati non vanno bene.');
           } else {
-            this.messageService.addMessageError("errore aggiunta regista.")
+            this.messageService.addMessageError('errore aggiunta regista.');
           }
-        }
-      })
+        },
+      });
       this.modificheAbilitate = false;
     }
   }
@@ -95,18 +112,25 @@ export class AdminRegistaComponent {
     if (this.registaSelezionato) {
       this.registaSelezionatoModificato = { ...this.registaSelezionato };
       this.modificheAbilitate = false;
+      this.messageService.addMessageSuccess("ho reimpostato il regista che avevi selezionato")
     }
   }
 
   eliminaRegista() {
     if (this.registaSelezionato) {
-      this.registaService.elimina(this.registaSelezionato).subscribe()
-      this.registaSelezionato = null;
-      this.registaSelezionatoModificato = null;
+      this.registaService.elimina(this.registaSelezionato).subscribe({
+        next: () => {
+          this.messageService.addMessageSuccess(
+            'regista eliminato con successo'
+          );
+          this.registaSelezionato = null;
+          this.registaSelezionatoModificato = null;
+          this.modificheAbilitate = false;
+        },
+        error: () => {
+          this.messageService.addMessageError('errore eliminazione regista');
+        },
+      });
     }
   }
-
-
 }
-
-

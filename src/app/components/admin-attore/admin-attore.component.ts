@@ -30,6 +30,7 @@ export class AdminAttoreComponent {
   
   nuovoAttore: AttoreDto = { id: undefined, nome: '', cognome: '' };
   
+  
   attoreSelezionato: AttoreDto | null = null;
   attoreSelezionatoModificato: AttoreDto | null = null;
   modificheAbilitate: boolean = false;
@@ -45,6 +46,7 @@ export class AdminAttoreComponent {
     this.attoreService.nuovo(this.nuovoAttore).subscribe({
       next : () => {
         this.messageService.addMessageSuccess("Attore aggiunto con successo!")
+        this.nuovoAttore = { id: undefined, nome: '', cognome: '' };
       },
       error : (error : HttpErrorResponse) => {
         if(error.status === 400 ){
@@ -74,6 +76,9 @@ export class AdminAttoreComponent {
       this.attoreService.nuovo(this.attoreSelezionatoModificato).subscribe({
         next : () => {
           this.messageService.addMessageSuccess("Attore modificato con successo!")
+          this.attoreSelezionato = null
+          this.attoreSelezionatoModificato = null
+          this.modificheAbilitate=false
         },
         error : (error : HttpErrorResponse) => {
           if(error.status === 400 ){
@@ -92,6 +97,7 @@ export class AdminAttoreComponent {
     if (this.attoreSelezionato) {
       this.attoreSelezionatoModificato = { ...this.attoreSelezionato };
       this.modificheAbilitate = false;
+      this.messageService.addMessageSuccess("ho reimpostato l'attore che avevi selezionato")
     }
   }
 
@@ -100,13 +106,14 @@ export class AdminAttoreComponent {
       this.attoreService.elimina(this.attoreSelezionato).subscribe({
         next : () => {
           this.messageService.addMessageSuccess("attore eliminato con successo")
+          this.attoreSelezionato = null;
+          this.attoreSelezionatoModificato = null;
+          this.modificheAbilitate=false
         },
         error : (error) => {
           this.messageService.addMessageError("errore eliminazione attore")
         }
       })
-      this.attoreSelezionato = null;
-      this.attoreSelezionatoModificato = null;
     }
   }
 

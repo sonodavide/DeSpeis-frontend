@@ -90,6 +90,7 @@ export class AdminSpettacoloComponent {
     this.spettacoloService.nuovo(this.nuovoSpettacolo).subscribe({
       next : () => {
         this.messageService.addMessageSuccess("spettacolo aggiunto con successo!")
+        this.nuovoSpettacolo=this.resetNuovoSpettacolo()
       },
       error : (error) => {
         if(error.status === 400 ){
@@ -102,7 +103,6 @@ export class AdminSpettacoloComponent {
         }
       }
     });
-    this.nuovoSpettacolo = this.resetNuovoSpettacolo();
   }
 
   
@@ -145,6 +145,9 @@ export class AdminSpettacoloComponent {
         .subscribe({
           next : () => {
             this.messageService.addMessageSuccess("spettacolo aggiunto con successo!")
+            this.modificheAbilitate = false;
+            this.spettacoloSelezionato=null
+            this.spettacoloSelezionatoModificato=null
           },
           error : (error) => {
             if(error.status === 400 ){
@@ -157,7 +160,6 @@ export class AdminSpettacoloComponent {
             }
           }
         });
-      this.modificheAbilitate = false;
     }
   }
 
@@ -165,14 +167,25 @@ export class AdminSpettacoloComponent {
     if (this.spettacoloSelezionato) {
       this.spettacoloSelezionatoModificato = { ...this.spettacoloSelezionato };
       this.modificheAbilitate = false;
+      this.messageService.addMessageSuccess("ho reimpostato lo spettacolo che avevi selezionato")
     }
   }
 
   eliminaSpettacolo() {
     if (this.spettacoloSelezionato) {
-      this.spettacoloService.elimina(this.spettacoloSelezionato).subscribe();
-      this.spettacoloSelezionato = null;
-      this.spettacoloSelezionatoModificato = null;
+      this.spettacoloService.elimina(this.spettacoloSelezionato).subscribe({
+        next: () => {
+          this.messageService.addMessageSuccess(
+            'spettacolo eliminato con successo'
+          );
+          this.spettacoloSelezionato = null;
+          this.spettacoloSelezionatoModificato = null;
+          this.modificheAbilitate = false;
+        },
+        error: () => {
+          this.messageService.addMessageError('errore eliminazione spettacolo');
+        },
+      });
     }
   }
 
