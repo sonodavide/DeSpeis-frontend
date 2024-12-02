@@ -29,11 +29,11 @@ export class GenereService {
 
   // Metodo per eliminare un genere
   elimina(genereDto: GenereDto): Observable<string> {
-    return this.http.post<string>(`${this.apiUrl}/elimina`, genereDto);
+    return this.http.post(`${this.apiUrl}/elimina`, genereDto, {responseType:'text'});
   }
   getNomeById(id : number): Observable<string>{
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get<string>(`${this.apiUrl}/getNomeById`, {params})
+    return this.http.get(`${this.apiUrl}/getNomeById`, {params, responseType:'text'})
   }
 }

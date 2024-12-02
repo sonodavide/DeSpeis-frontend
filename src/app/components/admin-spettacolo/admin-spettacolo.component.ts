@@ -144,7 +144,7 @@ export class AdminSpettacoloComponent {
         .nuovo(this.spettacoloSelezionatoModificato)
         .subscribe({
           next : () => {
-            this.messageService.addMessageSuccess("spettacolo aggiunto con successo!")
+            this.messageService.addMessageSuccess("spettacolo modificato con successo!")
             this.modificheAbilitate = false;
             this.spettacoloSelezionato=null
             this.spettacoloSelezionatoModificato=null
@@ -153,7 +153,7 @@ export class AdminSpettacoloComponent {
             if(error.status === 400 ){
               this.messageService.addMessageError("alcuni dati non vanno bene.")
             } else if(error.status === 409){
-              this.messageService.addMessageError("alcuni spettacoli sono in conflitto")
+              this.messageService.addMessageError("alcuni spettacoli sono in conflitto/qualcuno ha già prenotato")
             }
              else {
               this.messageService.addMessageError("errore aggiunta spettacolo.")

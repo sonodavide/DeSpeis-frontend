@@ -30,11 +30,11 @@ export class RegistaService {
 
   // Metodo per eliminare un regista
   elimina(registaDto: RegistaDto): Observable<string> {
-    return this.http.post<string>(`${this.apiUrl}/elimina`, registaDto);
+    return this.http.post(`${this.apiUrl}/elimina`, registaDto, {responseType:'text'});
   }
   getNomeById(id : number): Observable<string>{
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get<string>(`${this.apiUrl}/getNomeById`, {params})
+    return this.http.get(`${this.apiUrl}/getNomeById`, {params, responseType:'text'})
   }
 }

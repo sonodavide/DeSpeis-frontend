@@ -8,6 +8,7 @@ import { BigliettoDto } from '../../model/bigliettoDto';
 import { OrdineDto } from '../../model/ordineDto';
 import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
+import { MessagesService } from '../../services/messages.service';
 
 @Component({
   selector: 'app-admin-utente',
@@ -40,8 +41,8 @@ export class AdminUtenteComponent {
       risultati: [],
     },
   };
-  constructor(private utenteService: UtenteService, private bigliettoService: BigliettoService, private ordineService: OrdineService) {
-    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, undefined, undefined, undefined, utenteService, bigliettoService, ordineService)
+  constructor(private utenteService: UtenteService, private bigliettoService: BigliettoService, private ordineService: OrdineService, private messageService : MessagesService) {
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, undefined, undefined, undefined, utenteService, bigliettoService, ordineService, messageService)
   }
 
 
@@ -65,8 +66,8 @@ export class AdminUtenteComponent {
 
   selezionaUtente(utente: UserProfile) {
     this.utenteSelezionato = utente;
-    this.searchTypeUtils.loader(SearchType.Ordine)
-    this.searchTypeUtils.loader(SearchType.Biglietto)
+    this.searchTypeUtils.loader(SearchType.Ordine, utente.id)
+    this.searchTypeUtils.loader(SearchType.Biglietto, utente.id)
   }
 
 

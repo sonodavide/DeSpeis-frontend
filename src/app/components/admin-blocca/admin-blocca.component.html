@@ -28,7 +28,7 @@
         <span class="etichetta-fila">{{ fila }}</span>
         <div class="fila">
           <div  *ngFor="let posto of posti?.get(fila) ?? []" [ngClass]="posto.stato"
-            [class.selezionato]="isPostoSelezionato(posto.postoId)" class="posto"(click)="selezionaPosto(posto.postoId)">
+            [class.selezionato]="isPostoSelezionato(posto)" class="posto"(click)="selezionaPosto(posto)">
             <span> {{posto.postoSedileId}}</span>
 
           </div>

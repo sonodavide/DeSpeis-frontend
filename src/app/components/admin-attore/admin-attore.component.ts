@@ -56,7 +56,7 @@ export class AdminAttoreComponent {
         }
       }
     })
-    this.nuovoAttore = { id: undefined, nome: '', cognome: '' };
+   
   }
 
 

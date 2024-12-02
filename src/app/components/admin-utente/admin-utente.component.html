@@ -10,7 +10,7 @@
     <ul *ngIf="searchTypeUtils.getSearchData(SearchType.Utente).risultati.length > 0">
       <p>Consigliati:</p>
       <li *ngFor="let utente of searchTypeUtils.getSearchData(SearchType.Utente).risultati" (click)="selezionaUtente(utente)">
-        > {{ utente.username }} - {{ utente.firstName }} {{ utente.lastName }}
+        > {{ utente.username }} - {{ utente.firstName }} - {{ utente.lastName }}
       </li>
     </ul>
     <!-- Sezione Paginazione -->
@@ -43,8 +43,8 @@
       <!-- Sezione Biglietti -->
       <div class="biglietti-container">
         <h3>Biglietti dell'Utente</h3>
-        <div *ngIf="biglietti.length > 0; else nessunBiglietto">
-          <div *ngFor="let biglietto of biglietti" class="biglietto">
+        <div *ngIf="searchData.biglietto?.risultati?.length!>0; else nessunBiglietto">
+          <div *ngFor="let biglietto of searchData.biglietto?.risultati" class="biglietto">
             <!-- Dettagli biglietto -->
             <p><strong>Codice Biglietto:</strong> {{ biglietto.id }}</p>
             <p><strong>Film:</strong> {{ biglietto.postospettacoloSpettacoloFilmTitolo }}</p>
@@ -65,8 +65,8 @@
       <!-- Sezione Ordini -->
       <div class="ordini-container">
         <h3>Ordini dell'Utente</h3>
-        <div *ngIf="ordini.length > 0; else nessunOrdine">
-          <div *ngFor="let ordine of ordini" class="ordine">
+        <div *ngIf="searchData.ordine?.risultati?.length!>0; else nessunOrdine">
+          <div *ngFor="let ordine of searchData.ordine?.risultati" class="ordine">
             <!-- Dettagli ordine -->
             <p><strong>Codice Ordine:</strong> {{ ordine.id }}</p>
             <p><strong>Data:</strong> {{ ordine.data | date: 'dd/MM/yyyy' }}</p>

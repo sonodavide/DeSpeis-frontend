@@ -59,4 +59,16 @@ export class SpettacoloService {
     .set("pageSize", pageSize)
     return this.http.get<PaginatedResponse<NuovoSpettacoloDto>>(`${this.apiUrl}/paged`, {params})
   }
+
+  getById(id : number): Observable<SpettacoloDto> {
+    const params = new HttpParams()
+    .set("id", id)
+    return this.http.get<SpettacoloDto>(`${this.apiUrl}/getById`, {params})
+  }
+
+  getByIdAcquistabile(id : number): Observable<SpettacoloDto> {
+    const params = new HttpParams()
+    .set("id", id)
+    return this.http.get<SpettacoloDto>(`${this.apiUrl}/getByIdAcquistabile`, {params})
+  }
 }
