@@ -83,13 +83,11 @@
   .posto {
     width: 30px;
     height: 30px;
-    background-color: lightgray;
-    margin: 2px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    border-radius: 5px;
-    border: 1px solid black;
+    justify-content: center;
+    border: 2px solid #333;
+    border-radius: 4px;
   }
   
   .fila-buttons {

@@ -1,28 +1,29 @@
-<div class="selezione-posti-container">
-    <div class="schermo">
-      <span>Schermo</span>
-    </div>
+
+
+<div class="container">
+  <!-- Schermo -->
+  <div class="screen">
+    SCHERMO
+  </div>
   
-    <div class="fila-container" *ngFor="let fila of posti?.keys()">
-      <span class="etichetta-fila">{{ fila }}</span>
-      <div class="fila">
-        <div class="posto" 
-             *ngFor="let posto of posti?.get(fila) ?? []"
-             [ngClass]="posto.stato"
-             [class.selezionato]="isPostoSelezionato(posto.postoId)"
-             (click)="selezionaPosto(posto.postoId)">
-          <span> {{posto.postoSedileId}}</span>
-         
+  <!-- Layout posti -->
+  
+    <div class="fila-container" *ngFor="let fila of formattafile(posti!)">
+      <div class="fila-etichetta">{{ fila }}</div>
+      <div class="posti">
+        <div class="posto" [ngClass]="posto.stato"
+        [class.selezionato]="isPostoSelezionato(posto)" (click)="selezionaPosto(posto)" *ngFor="let posto of posti?.get(fila)">
+          {{ posto.postoSedileId }}
         </div>
       </div>
     </div>
-  </div>
   
+</div>
+
   <div class="posti-selezionati">
     <h3>Posti Selezionati</h3>
-    <button (click)="prenota()">prenota</button>
+    <button type="button" (click)="prenota()">prenota</button>
     <div *ngFor="let posto of postiSelezionati">
       {{ posto}}
     </div>
   </div>
-  
