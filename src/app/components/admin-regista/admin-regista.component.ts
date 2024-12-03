@@ -7,6 +7,7 @@ import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 import { MessagesService } from '../../services/messages.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import cloneDeep  from 'lodash/cloneDeep';
 @Component({
   selector: 'app-admin-regista',
   templateUrl: './admin-regista.component.html',
@@ -76,8 +77,8 @@ export class AdminRegistaComponent {
   }
 
   selezionaRegista(regista: RegistaDto) {
-    this.registaSelezionato = regista;
-    this.registaSelezionatoModificato = { ...regista };
+    this.registaSelezionato = cloneDeep(regista);
+    this.registaSelezionatoModificato = cloneDeep(regista)
     this.modificheAbilitate = false;
   }
 
@@ -90,17 +91,18 @@ export class AdminRegistaComponent {
       this.registaService.nuovo(this.registaSelezionatoModificato).subscribe({
         next: () => {
           this.messageService.addMessageSuccess(
-            'regista aggiunto con successo!'
+            'regista modificato con successo!'
           );
           this.registaSelezionato = null;
           this.registaSelezionatoModificato = null;
           this.modificheAbilitate = false;
+          this.searchTypeUtils.loader(this.SearchType.RegistaModifica)
         },
         error: (error: HttpErrorResponse) => {
           if (error.status === 400) {
             this.messageService.addMessageError('alcuni dati non vanno bene.');
           } else {
-            this.messageService.addMessageError('errore aggiunta regista.');
+            this.messageService.addMessageError('errore modifica regista.');
           }
         },
       });
@@ -110,7 +112,7 @@ export class AdminRegistaComponent {
 
   annullaModifiche() {
     if (this.registaSelezionato) {
-      this.registaSelezionatoModificato = { ...this.registaSelezionato };
+      this.registaSelezionatoModificato = cloneDeep(this.registaSelezionato)
       this.modificheAbilitate = false;
       this.messageService.addMessageSuccess("ho reimpostato il regista che avevi selezionato")
     }
@@ -126,6 +128,7 @@ export class AdminRegistaComponent {
           this.registaSelezionato = null;
           this.registaSelezionatoModificato = null;
           this.modificheAbilitate = false;
+          this.searchTypeUtils.loader(this.SearchType.RegistaModifica)
         },
         error: () => {
           this.messageService.addMessageError('errore eliminazione regista');
