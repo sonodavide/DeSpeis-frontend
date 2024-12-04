@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SpettacoloDto } from '../model/spettacolo';
 import { FilmSpettacoliDto } from '../model/filmSpettacoli';
-import { PostiSpettacoloResponseDto } from '../model/postiSpettacolo';
+import { PostiSpettacoloResponseDto } from '../model/postiSpettacoloResponseDto';
 import { NuovoSpettacoloDto } from '../model/nuovoSpettacolo';
 import { SpettacoloRicercaDto } from '../model/spettacoloRicercaDto';
 import { PaginatedResponse } from '../model/paginatedResponse';
+import { SpettacoloSenzaFilmDto } from '../model/spettacoloSenzaFilm';
 
 @Injectable({
   providedIn: 'root'
@@ -71,4 +72,11 @@ export class SpettacoloService {
     .set("id", id)
     return this.http.get<SpettacoloDto>(`${this.apiUrl}/getByIdAcquistabile`, {params})
   }
+
+  getSenzaFilmAcquistabileById(id : number): Observable<SpettacoloSenzaFilmDto> {
+    const params = new HttpParams()
+    .set("id", id)
+    return this.http.get<SpettacoloSenzaFilmDto>(`${this.apiUrl}/getSenzaFilmAcquistabileById`, {params})
+  }
+
 }

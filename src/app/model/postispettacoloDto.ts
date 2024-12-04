@@ -1,4 +1,4 @@
-export interface PostoResponseDto{
+export interface PostispettacoloDto{
     id : number,
     sedile : number,
     stato : string

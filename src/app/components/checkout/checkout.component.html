@@ -58,8 +58,8 @@
       <div class="items-container">
         <h3>Stai compando:</h3>
         <ul>
-          <li *ngFor="let posto of prenotazione?.postiIds">
-            {{ posto }}
+          <li *ngFor="let posto of postiPerFilaUtils.toPostiSpettacoloDto()">
+            {{ posto.fila }} - {{ posto.sedile }}
           </li>
         </ul>
       </div>

@@ -4,13 +4,16 @@ import { PrenotazioneService } from '../../services/prenotazione.service';
 import { NuovoSpettacoloDto } from '../../model/nuovoSpettacolo';
 import { PaginatedResponse } from '../../model/paginatedResponse';
 import { SpettacoloDto } from '../../model/spettacolo';
-import { FormatterUtils} from '../../utils/formatterUtils';
+import { FormatterUtils } from '../../utils/formatterUtils';
 import { MessagesService } from '../../services/messages.service';
-import { PostoResponseDto } from '../../model/postoResponseDto';
+import { PostiPerFila } from '../../model/postiSpettacoloResponseDto';
+import { PostiPerFilaUtils } from '../../utils/postiPerFilaUtils';
+import { PostiResponse } from '../../model/postiResponse';
+
 @Component({
   selector: 'app-admin-blocca',
   templateUrl: './admin-blocca.component.html',
-  styleUrl: './admin-blocca.component.css'
+  styleUrl: './admin-blocca.component.css',
 })
 export class AdminBloccaComponent {
   // Variabili per la paginazione di Spettacolo - Modifica
@@ -24,100 +27,131 @@ export class AdminBloccaComponent {
   spettacoloSelezionatoModificato: NuovoSpettacoloDto | null = null;
   modificheAbilitate: boolean = false;
 
-  posti? = new Map();
+  postiPerFila: PostiPerFila[] = [];
 
-  postiSelezionati: PostoResponseDto[] = [];
-  eseguiRicerca(){
-    this.spettacoloService.cerca(this.termineRicercaSpettacoloModifica.trim(), this.paginaCorrenteSpettacoloModifica, this.pageSizeSpettacoloModifica)
-          .subscribe((response: PaginatedResponse<NuovoSpettacoloDto>) => {
-            this.risultatiRicercaSpettacolo = response.content;
-            this.totalePagineSpettacoloModifica = response.totalPages;
-          });
+  postiSelezionati: PostiPerFila[] = [];
+
+  eseguiRicerca() {
+    this.spettacoloService
+      .cerca(
+        this.termineRicercaSpettacoloModifica.trim(),
+        this.paginaCorrenteSpettacoloModifica,
+        this.pageSizeSpettacoloModifica
+      )
+      .subscribe((response: PaginatedResponse<NuovoSpettacoloDto>) => {
+        this.risultatiRicercaSpettacolo = response.content;
+        this.totalePagineSpettacoloModifica = response.totalPages;
+      });
   }
 
-  resettaRicerca(){
+  resettaRicerca() {
     this.termineRicercaSpettacoloModifica = '';
-      this.paginaCorrenteSpettacoloModifica = 0;
+    this.paginaCorrenteSpettacoloModifica = 0;
   }
 
-  getSpettacoli(){
-    this.spettacoloService.getAllPaginated(this.paginaCorrenteSpettacoloModifica, this.pageSizeSpettacoloModifica)
-        .subscribe((response: PaginatedResponse<NuovoSpettacoloDto>) => {
-          this.risultatiRicercaSpettacolo = response.content;
-          this.totalePagineSpettacoloModifica = response.totalPages;
-        });
+  getSpettacoli() {
+    this.spettacoloService
+      .getAllPaginated(
+        this.paginaCorrenteSpettacoloModifica,
+        this.pageSizeSpettacoloModifica
+      )
+      .subscribe((response: PaginatedResponse<NuovoSpettacoloDto>) => {
+        this.risultatiRicercaSpettacolo = response.content;
+        this.totalePagineSpettacoloModifica = response.totalPages;
+      });
   }
-  paginaSuccessiva(){
-    let termineRicerca = ''
+  paginaSuccessiva() {
+    let termineRicerca = '';
     termineRicerca = this.termineRicercaSpettacoloModifica;
-        if (this.paginaCorrenteSpettacoloModifica < this.totalePagineSpettacoloModifica - 1) {
-          this.paginaCorrenteSpettacoloModifica++;
-          termineRicerca ? this.eseguiRicerca() : this.getSpettacoli()
-        }
-        
+    if (
+      this.paginaCorrenteSpettacoloModifica <
+      this.totalePagineSpettacoloModifica - 1
+    ) {
+      this.paginaCorrenteSpettacoloModifica++;
+      termineRicerca ? this.eseguiRicerca() : this.getSpettacoli();
+    }
   }
 
-  paginaPrecedente(){
-    let termineRicerca = ''
+  paginaPrecedente() {
+    let termineRicerca = '';
     termineRicerca = this.termineRicercaSpettacoloModifica;
     if (this.paginaCorrenteSpettacoloModifica > 0) {
       this.paginaCorrenteSpettacoloModifica--;
-      termineRicerca ? this.eseguiRicerca() : this.getSpettacoli()
+      termineRicerca ? this.eseguiRicerca() : this.getSpettacoli();
     }
   }
 
-  selezionaSpettacolo(spettacolo : NuovoSpettacoloDto){
-    if(spettacolo.id){
-      this.spettacoloSelezionato=spettacolo
-      this.spettacoloService.getPostiSpettacolo(spettacolo.id).subscribe(posti =>{
-        this.posti = new Map(Object.entries(posti.posti));
-      })
-    
+  selezionaSpettacolo(spettacolo: NuovoSpettacoloDto) {
+    if (spettacolo.id) {
+      this.spettacoloSelezionato = spettacolo;
+      this.spettacoloService
+        .getPostiSpettacolo(spettacolo.id)
+        .subscribe((response) => {
+          this.postiPerFila = response.postiPerFila;
+          this.postiPerFilaUtilsMiei.setPostiPerFila(this.postiPerFila);
+        });
     }
   }
 
-
-
-
-  isPostoSelezionato(posto: PostoResponseDto): boolean {
-    return this.postiSelezionati.includes(posto);
+  isPostoSelezionato(fila: string, posto: PostiResponse): boolean {
+    return this.postiPerFilaUtilsResponse.include(fila, posto);
   }
 
-  selezionaPosto(posto : PostoResponseDto){
-    if(this.postiSelezionati.includes(posto)){
-      let index = this.postiSelezionati.indexOf(posto);
-      this.postiSelezionati.splice(index)
-    } else {
-      this.postiSelezionati.push(posto)
-    }
+  selezionaPosto(fila: string, posto: PostiResponse) {
+    this.postiPerFilaUtilsResponse.togglePosto(fila, posto);
+    console.log(this.postiSelezionati)
   }
 
-
-  blocca(){
-    if(this.spettacoloSelezionato && this.spettacoloSelezionato.id && this.postiSelezionati.length>0){
-      this.postiService.blocca({postiIds: this.postiSelezionati, spettacoloId: this.spettacoloSelezionato.id}).subscribe({
-        next : posti =>{
-        this.posti = new Map(Object.entries(posti.posti));
-        this.messageService.addMessageSuccess("posti bloccati/sbloccati con successo!")
-      },
-        error : (error) => {
-          if(error.status === 400){
-            this.messageService.addMessageError("posti non trovati")
+  blocca() {
+    if (
+      this.spettacoloSelezionato &&
+      this.spettacoloSelezionato.id &&
+      this.postiPerFilaUtilsResponse.getTotalePosti() > 0
+    ) {
+      this.spettacoloService
+        .getSenzaFilmAcquistabileById(this.spettacoloSelezionato.id)
+        .subscribe({
+          next: (response) => {
+            this.postiService.blocca({postiSpettacoloResponseDto : {spettacoloSenzaFilmDto : response, postiPerFila : this.postiSelezionati}}).subscribe({
+              next: (response) => {
+                this.postiPerFila = response.postiPerFila;
+                this.postiPerFilaUtilsMiei.setPostiPerFila(this.postiPerFila);
+                this.messageService.addMessageSuccess(
+                  'posti bloccati/sbloccati con successo!'
+                );
+              },
+              error: (error) => {
+                if (error.status === 400) {
+                  this.messageService.addMessageError('posti non trovati');
+                } else {
+                  this.messageService.addMessageError(
+                    'impossibile bloccare/sbloccare posti'
+                  );
+                }
+              },
+            });
+          },
+          error : () => {
+            this.messageService.addMessageError("Errore")
           }
-          else {
-            this.messageService.addMessageError("impossibile bloccare/sbloccare posti")
-          }
-        }
-      })
+        });
     }
-    
   }
-  constructor(private spettacoloService : SpettacoloService, private postiService : PrenotazioneService, private messageService : MessagesService){}
-  ngOnInit():void{
-    this.getSpettacoli()
+  public postiPerFilaUtilsMiei: PostiPerFilaUtils = new PostiPerFilaUtils();
+  private postiPerFilaUtilsResponse: PostiPerFilaUtils = new PostiPerFilaUtils();
+  constructor(
+    private spettacoloService: SpettacoloService,
+    private postiService: PrenotazioneService,
+    private messageService: MessagesService,
+
+  ) {
+    this.postiPerFilaUtilsResponse.setPostiPerFila(this.postiSelezionati)
   }
-  
-  formattafile(map : Map<any, any>) : any[]{
-    return FormatterUtils.mapKeysToArrayReversed(map)
+  ngOnInit(): void {
+    this.getSpettacoli();
+  }
+
+  formattafile(map: Map<any, any>): any[] {
+    return FormatterUtils.mapKeysToArrayReversed(map);
   }
 }

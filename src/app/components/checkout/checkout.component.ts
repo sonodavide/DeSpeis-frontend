@@ -6,6 +6,7 @@ import { PrenotazioneRequestDto } from '../../model/prenotazioneRequest';
 import { MessagesService } from '../../services/messages.service';
 import { NgForm } from '@angular/forms';
 import { Route, Router } from '@angular/router';
+import { PostiPerFilaUtils } from '../../utils/postiPerFilaUtils';
 
 @Component({
   selector: 'app-checkout',
@@ -13,7 +14,7 @@ import { Route, Router } from '@angular/router';
   styleUrls: ['./checkout.component.css'],
 })
 export class CheckoutComponent implements OnInit {
-  
+  public postiPerFilaUtils : PostiPerFilaUtils = new PostiPerFilaUtils()
   constructor(
     private sharedBigliettiService: SharedBigliettiService,
     private prenotazioneService: PrenotazioneService,
@@ -27,32 +28,18 @@ export class CheckoutComponent implements OnInit {
   cvv: string = '';
   prenotazione: PrenotazioneRequestDto | null = null;
   totale: number = 0;
+  
   ngOnInit() {
     this.getPrenotazione();
   }
+
   getPrenotazione(): void {
     this.sharedBigliettiService.currentData.subscribe((response) => {
       if (response) {
         this.prenotazione = response;
-        this.spettacoloService
-          .getByIdAcquistabile(this.prenotazione?.spettacoloId)
-          .subscribe({
-            next: (spettacolo) => {
-              this.totale =
-                this.prenotazione!.postiIds.length * spettacolo.prezzo;
-            },
-            error: (error) => {
-              if (error.status === 404) {
-                this.messageService.addMessageError(
-                  'Impossibile trovare lo spettacolo richiesto'
-                );
-              } else {
-                this.messageService.addMessageError(
-                  'si è verificato un errore.'
-                );
-              }
-            },
-          });
+        this.postiPerFilaUtils.setPostiPerFila(this.prenotazione.postiSpettacoloResponseDto.postiPerFila)
+        this.totale=this.prenotazione.postiSpettacoloResponseDto.spettacoloSenzaFilmDto.prezzo*this.postiPerFilaUtils.getTotalePosti()
+        this.prenotazione.prezzo=this.totale
       }
     });
   }

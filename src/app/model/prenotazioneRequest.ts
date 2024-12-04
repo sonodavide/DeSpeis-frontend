@@ -1,8 +1,8 @@
-import { PostoResponseDto } from "./postoResponseDto";
+import { PostispettacoloDto } from "./postispettacoloDto";
+import { PostiSpettacoloResponseDto } from "./postiSpettacoloResponseDto";
 
 export interface PrenotazioneRequestDto {
-    postiIds: PostoResponseDto[];
-    spettacoloId: number;
+    postiSpettacoloResponseDto : PostiSpettacoloResponseDto
     prezzo?: number
   }
   

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PrenotazioneRequestDto } from '../model/prenotazioneRequest';
-import { PostiSpettacoloResponseDto } from '../model/postiSpettacolo';
+import { PostiSpettacoloResponseDto } from '../model/postiSpettacoloResponseDto';
 import { Observable } from 'rxjs';
 
 @Injectable({
