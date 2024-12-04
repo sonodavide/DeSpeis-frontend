@@ -9,7 +9,7 @@
       <label for="cognome">Cognome:</label>
       <input type="text" id="cognome" [(ngModel)]="nuovoRegista.cognome" name="cognome" required />
 
-      <button type="submit" class="create-button">Crea</button>
+      <button id="crea" type="submit" class="create-button">Crea</button>
     </form>
   </div>
 
@@ -21,8 +21,8 @@
       placeholder="Cerca regista per nome o cognome"
       [(ngModel)]="searchTypeUtils.getSearchData(SearchType.RegistaModifica).termine"
     />
-    <button (click)="searchTypeUtils.eseguiRicerca(SearchType.RegistaModifica)">Cerca</button>
-    <button (click)="searchTypeUtils.resettaRicerca(SearchType.RegistaModifica)">Reset</button>
+    <button id="cerca" type="button"(click)="searchTypeUtils.eseguiRicerca(SearchType.RegistaModifica)">Cerca</button>
+    <button id="reset-ricerca" type="button"(click)="searchTypeUtils.resettaRicerca(SearchType.RegistaModifica)">Reset</button>
     <ul *ngIf="searchTypeUtils.getSearchData(SearchType.RegistaModifica).risultati.length > 0">
       <li
         *ngFor="let regista of searchTypeUtils.getSearchData(SearchType.RegistaModifica).risultati"
@@ -34,7 +34,7 @@
 
     <!-- Sezione Paginazione -->
     <div class="pagination">
-      <button
+      <button id="precedente" 
         (click)="searchTypeUtils.paginaPrecedente(SearchType.RegistaModifica)"
         [disabled]="searchTypeUtils.getSearchData(SearchType.RegistaModifica).paginaCorrente === 0"
       >
@@ -45,7 +45,7 @@
         {{ searchTypeUtils.getSearchData(SearchType.RegistaModifica).paginaCorrente + 1 }} di
         {{ searchTypeUtils.getSearchData(SearchType.RegistaModifica).totalePagine }}
       </span>
-      <button
+      <button id="successivo" 
         (click)="searchTypeUtils.paginaSuccessiva(SearchType.RegistaModifica)"
         [disabled]="
           searchTypeUtils.getSearchData(SearchType.RegistaModifica).paginaCorrente >=
@@ -75,21 +75,21 @@
         (input)="abilitaModifiche()"
       />
 
-      <button
+      <button id="modifica" 
         class="edit-button"
         [disabled]="!modificheAbilitate"
         (click)="modificaRegista()"
       >
         Modifica
       </button>
-      <button
+      <button id="reset" 
         class="cancel-button"
         [disabled]="!modificheAbilitate"
         (click)="annullaModifiche()"
       >
         Annulla Modifica
-      </button>
-      <button class="delete-button" (click)="eliminaRegista()">Elimina</button>
+      </button> 
+      <button id="elimina"  type="button"class="delete-button" (click)="eliminaRegista()">Elimina</button>
     </div>
   </div>
 </div>

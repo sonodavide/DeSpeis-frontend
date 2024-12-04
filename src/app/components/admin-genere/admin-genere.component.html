@@ -8,7 +8,7 @@
   
         
   
-        <button type="submit" class="create-button">Crea</button>
+        <button id="crea" type="submit" class="create-button">Crea</button>
       </form>
     </div>
   
@@ -16,8 +16,8 @@
     <div class="section search-section">
       <h2>Cerca Genere</h2>
       <input type="text" placeholder="Cerca genere" [(ngModel)]="searchTypeUtils.getSearchData(SerachType.GenereModifica).termine"   />
-      <button (click)="searchTypeUtils.eseguiRicerca(SerachType.GenereModifica)">Cerca</button>
-      <button (click)="searchTypeUtils.resettaRicerca(SerachType.GenereModifica)">Reset</button>
+      <button id="cerca" type="button" (click)="searchTypeUtils.eseguiRicerca(SerachType.GenereModifica)">Cerca</button>
+      <button id="reset-ricerca" type="button" (click)="searchTypeUtils.resettaRicerca(SerachType.GenereModifica)">Reset</button>
       <!-- Loading indicator -->
 
       <ul *ngIf="searchTypeUtils.getSearchData(SerachType.GenereModifica).risultati.length > 0">
@@ -27,9 +27,9 @@
       </ul>
             <!-- Sezione Paginazione -->
     <div class="pagination">
-      <button (click)="searchTypeUtils.paginaPrecedente(SerachType.GenereModifica)" [disabled]="searchTypeUtils.getSearchData(SerachType.GenereModifica).paginaCorrente === 0">Indietro</button>
+      <button id="precedente" type="button" (click)="searchTypeUtils.paginaPrecedente(SerachType.GenereModifica)" [disabled]="searchTypeUtils.getSearchData(SerachType.GenereModifica).paginaCorrente === 0">Indietro</button>
       <span>Pagina {{ searchTypeUtils.getSearchData(SerachType.GenereModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SerachType.GenereModifica).totalePagine }}</span>
-      <button (click)="searchTypeUtils.paginaSuccessiva(SerachType.GenereModifica)" [disabled]="searchTypeUtils.getSearchData(SerachType.GenereModifica).paginaCorrente >= searchTypeUtils.getSearchData(SerachType.GenereModifica).totalePagine - 1">Avanti</button>
+      <button id="successivo" type="button" (click)="searchTypeUtils.paginaSuccessiva(SerachType.GenereModifica)" [disabled]="searchTypeUtils.getSearchData(SerachType.GenereModifica).paginaCorrente >= searchTypeUtils.getSearchData(SerachType.GenereModifica).totalePagine - 1">Avanti</button>
     </div>
       <!-- Dettagli Genere Selezionato -->
 <div *ngIf="genereSelezionatoModificato" class="details-section">
@@ -44,13 +44,13 @@
   
     
   
-    <button class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaGenere()">
+    <button id="modifica" type="button" class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaGenere()">
       Modifica
     </button>
-    <button class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">
+    <button id="reset" type="button" class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">
       Annulla Modifica
     </button>
-    <button class="delete-button" (click)="eliminaGenere()">
+    <button id="elimina" type="button" class="delete-button" (click)="eliminaGenere()">
       Elimina
     </button>
   </div>

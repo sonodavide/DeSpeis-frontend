@@ -13,8 +13,8 @@
     </div>
 
     <div class="pagination">
-      <button (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
+      <button id="precedente" type="button" (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
       <span>Pagina {{ paginaCorrente + 1 }} di {{ totalePagine }}</span>
-      <button (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
+      <button id="successivo" type="button" (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
     </div>
   </div>

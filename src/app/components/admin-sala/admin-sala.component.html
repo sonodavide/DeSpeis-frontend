@@ -6,8 +6,8 @@
     <div class="fila-list-container">
         <div class="fila-container" *ngFor="let posto of  nuovaSala.postis.slice().reverse()">
           <span class="etichetta-fila">{{ posto.fila }}</span>
-          <button (click)="aggiungiPosto(posto.fila)" class="posto-add">+</button>
-          <button (click)="rimuoviPosto(posto.fila)" class="posto-remove">-</button>
+          <button id="aggiungiPosto" type="button" (click)="aggiungiPosto(posto.fila)" class="posto-add">+</button>
+          <button id="rimuoviPosto" (click)="rimuoviPosto(posto.fila)" class="posto-remove">-</button>
         </div>
       </div>
     
@@ -29,12 +29,12 @@
       
       <!-- Pulsanti per aggiungere/rimuovere file -->
       <div class="fila-buttons">
-        <button (click)="aggiungiFila()" class="fila-add">+ Fila</button>
-        <button (click)="rimuoviFila()" class="fila-remove">- Fila</button>
+        <button id="aggiungiFila" type="button" (click)="aggiungiFila()" class="fila-add">+ Fila</button>
+        <button id="rimuoviFila" type="button" (click)="rimuoviFila()" class="fila-remove">- Fila</button>
       </div>
     </div>
   </div>
-  <button (click)="creaSala()">Crea</button>
+  <button id="crea" type="button" (click)="creaSala()">Crea</button>
 </div>
 <div class="section">
   <h2>Modifica Sala: <span *ngIf="salaSelezionata">{{salaSelezionata.id}} </span></h2>
@@ -47,17 +47,17 @@
   </ul>
           <!-- Sezione Paginazione -->
   <div class="pagination">
-    <button (click)="searchTypeUtils.paginaPrecedente(SearchType.SalaModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente === 0">Indietro</button>
+    <button id="precedente" type="button" (click)="searchTypeUtils.paginaPrecedente(SearchType.SalaModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente === 0">Indietro</button>
     <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine }}</span>
-    <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.SalaModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine - 1">Avanti</button>
+    <button id="successivo" type="button"(click)="searchTypeUtils.paginaSuccessiva(SearchType.SalaModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine - 1">Avanti</button>
   </div>
   <div class="provo">
     <!-- Colonna per la lista delle file -->
     <div class="fila-list-container" *ngIf="salaSelezionataModificata">
         <div class="fila-container" *ngFor="let posto of  salaSelezionataModificata.postis.slice().reverse()">
           <span class="etichetta-fila">{{ posto.fila }}</span>
-          <button (click)="aggiungiPostoModifica(posto.fila)" class="posto-add">+</button>
-          <button (click)="rimuoviPostoModifica(posto.fila)" class="posto-remove">-</button>
+          <button id="aggiungiPostoModifica" type="button" (click)="aggiungiPostoModifica(posto.fila)" class="posto-add">+</button>
+          <button id="rimuoviPostoModifica" type="button" (click)="rimuoviPostoModifica(posto.fila)" class="posto-remove">-</button>
         </div>
       </div>
     
@@ -79,24 +79,24 @@
       
       <!-- Pulsanti per aggiungere/rimuovere file -->
       <div class="fila-buttons">
-        <button (click)="aggiungiFilaModifica()" class="fila-add">+ Fila</button>
-        <button (click)="rimuoviFilaModifica()" class="fila-remove">- Fila</button>
+        <button id="aggiungiFilaModifica" type="button" (click)="aggiungiFilaModifica()" class="fila-add">+ Fila</button>
+        <button id="rimuoviFilaModifica" type="button" (click)="rimuoviFilaModifica()" class="fila-remove">- Fila</button>
       </div>
     </div>
   </div>
-  <button class="edit-button" 
+  <button class="edit-button" id="modifica" 
   type="submit"
         [disabled]="!modificheAbilitate" 
         (click)="modificaSala()">
   Modifica
 </button>
-<button class="cancel-button" 
+<button class="cancel-button" id="reset"
 type="button"
         [disabled]="!modificheAbilitate" 
         (click)="annullaModifiche()">
   Annulla Modifica
 </button>
-<button typeclass="delete-button" 
+<button typeclass="delete-button" id="elimina"
 type="button"
         (click)="eliminaSala()">
   Elimina

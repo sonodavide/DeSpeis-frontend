@@ -62,7 +62,6 @@ export class CheckoutComponent implements OnInit {
   private compilato() : boolean {
     if(this.proprietarioCarta.trim()==="") return false;
     if(!this.isCreditCardFormatValid(this.numeroCarta)) return false;
-    if(isNaN(Number(this.numeroCarta.trim()))) return false
     if(!this.isData(this.dataScadenza)) return false;
     if(!this.isCVV(this.cvv)) return false;
 

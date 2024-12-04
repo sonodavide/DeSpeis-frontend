@@ -79,4 +79,9 @@ export class SpettacoloService {
     return this.http.get<SpettacoloSenzaFilmDto>(`${this.apiUrl}/getSenzaFilmAcquistabileById`, {params})
   }
 
+  getSenzaFilmById(id : number): Observable<SpettacoloSenzaFilmDto> {
+    const params = new HttpParams()
+    .set("id", id)
+    return this.http.get<SpettacoloSenzaFilmDto>(`${this.apiUrl}/getSenzaFilmById`, {params})
+  }
 }

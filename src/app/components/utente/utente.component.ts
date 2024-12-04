@@ -9,13 +9,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./utente.component.css']
 })
 export class UtenteComponent  {
-  isAdminRoute: boolean = false;
+  isUtenteRoute: boolean = false;
 
   constructor(private router: Router) {}
   ngOnInit() {
     // Controlla l'URL corrente
     this.router.events.subscribe(() => {
-      this.isAdminRoute = this.router.url==='/utente'
+      this.isUtenteRoute = this.router.url==='/utente'
     });
   }
 
