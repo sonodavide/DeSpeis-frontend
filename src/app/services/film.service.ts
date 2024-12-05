@@ -54,4 +54,7 @@ export class FilmService {
     .set("pageNumber", pageNumber)
     return this.http.get<PaginatedResponse<FilmDto>>(`${this.apiUrl}/cercaTag`, {params})
   }
+  ultimeUscite() : Observable<FilmDto[]>{
+    return this.http.get<FilmDto[]>(`${this.apiUrl}/ultimeUscite`)
+  }
 }

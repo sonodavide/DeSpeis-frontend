@@ -181,3 +181,144 @@
   .pagination span {
     color: #ffffff;
   }
+
+
+
+  .legenda {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #1c1c1c;
+    border-radius: 8px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .legenda-titolo {
+    color: #f5c518;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+  }
+  
+  .legenda-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    color: #ffffff;
+  }
+  
+  .posto-esempio {
+    width: 25px;
+    height: 25px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  
+  .posto-esempio.libero {
+    background-color: lightgray;
+  }
+  
+  .posto-esempio.prenotato {
+    background-color: grey;
+  }
+  
+  .posto-esempio.bloccato {
+    background-color: red;
+  }
+  
+  .posto-esempio.selezionato {
+    border-color: orange;
+    background-color: #1c1c1c;
+  }
+
+  .posto.libero {
+    background-color: lightgray;
+  }
+  
+  .posto.prenotato {
+    background-color: grey;
+    cursor: not-allowed;
+  }
+  
+  .posto.bloccato {
+    background-color: red;
+  }
+  
+  .posto.selezionato {
+    border-color: orange; 
+    color: white;
+  }
+  
+  /* Contenitore generale */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Schermo */
+  .screen {
+    background-color: lightgray;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    width: 100%;
+    max-width: 500px;
+    border: 2px solid black;
+  }
+  
+  /* Contenitore delle file */
+  .fila-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  /* Etichetta della fila */
+  .fila-etichetta {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+    width: 20px; /* Dimensione fissa per allineamento */
+    text-align: center;
+  }
+  
+  /* Contenitore dei posti */
+  .posti {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Spaziatura tra i posti */
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  /* Singolo posto */
+  .posto {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .set.libero {
+    background-color: lightgray;
+  }
+  
+  .posto.prenotato {
+    background-color: grey;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  .posto.bloccato {
+    background-color: red;
+    cursor: not-allowed;
+    pointer-events: none;
+  }

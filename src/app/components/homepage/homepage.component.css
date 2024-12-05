@@ -1,92 +1,119 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
-  }
-  
-  h1, h2 {
-    margin-bottom: 20px;
-  }
-  
-  p {
-    margin-bottom: 15px;
-  }
-  
-  .main-section {
-    position: relative;
-    background-size: cover;
-    background-position: center;
-    height: 90vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .main-overlay {
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 50px;
-    text-align: center;
-    width: 80%;
-    border-radius: 10px;
-  }
-  
-  .main-section h1 {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
-  }
-  
-  .main-section p {
-    font-size: 1.5rem;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.5;
-  }
-  
-  .about-section {
-    padding: 40px 20px;
-    background-color: #ffffff;
-    text-align: center;
-  }
-  
-  .films-showcase-section {
-    padding: 40px 20px;
-    background-color: #e9ecef;
-  }
-  
-  .film-gallery {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-  
-  .film {
-    width: 250px;
-    margin-bottom: 30px;
-  }
-  
-  .film img {
-    width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-  }
-  
-  .film img:hover {
-    transform: scale(1.05);
-  }
-  
-  .film p {
-    text-align: center;
-    font-size: 1.1rem;
-    margin-top: 10px;
-    font-weight: bold;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  background-color: #121212;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 600px;
+  background: black;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hero-content {
+  max-width: 800px;
+  padding: 20px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #f5c518;
+}
+
+.hero p {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.cta-button {
+  background-color: #f5c518;
+  color: #000000;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+
+
+/* Now Showing Section */
+.now-showing {
+  background: black;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.section-title {
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #f5c518;
+  text-align: center;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.movie-card {
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.movie-image {
+  width: 100%;
+  height: 375px;
+  object-fit: cover;
+}
+
+.movie-info {
+  padding: 20px;
+}
+
+.movie-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.movie-details {
+  color: #cccccc;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.book-button {
+  display: inline-block;
+  background-color: #f5c518;
+  color: #000000;
+  padding: 8px 16px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+

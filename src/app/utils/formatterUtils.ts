@@ -1,6 +1,6 @@
 import { BigliettoDto } from "../model/bigliettoDto";
 import { SpettacoloDto } from "../model/spettacolo";
-import { SpettacoloSenzaFilmDto } from "../model/spettacoloSenzaFilm";
+import { SpettacoloSenzaFilmTagsDto } from "../model/spettacoloSenzaFilmTags";
 
 export class FormatterUtils {
     static bigliettoToString(biglietto : BigliettoDto) : string{
@@ -12,7 +12,7 @@ export class FormatterUtils {
     static mapKeysToArrayReversed(map : Map<any, any>) : any[] {
         return Array.from(map.keys()).reverse()
     }
-    static spettacoloSenzaFilmFromSpettacolo(spettacolo : SpettacoloDto) : SpettacoloSenzaFilmDto {
+    static spettacoloSenzaFilmTagsFromSpettacolo(spettacolo : SpettacoloDto) : SpettacoloSenzaFilmTagsDto {
         if(!spettacolo.id) spettacolo.id=-1
         return {
             id: spettacolo.id!,
@@ -21,7 +21,9 @@ export class FormatterUtils {
             ora : spettacolo.ora,
             oraFine : spettacolo.oraFine,
             prezzo : spettacolo.prezzo,
-            salaId : spettacolo.salaId
+            salaId : spettacolo.salaId,
+            filmId : spettacolo.film.id!,
+            filmTitolo : spettacolo.film.titolo
         }
     }
 }

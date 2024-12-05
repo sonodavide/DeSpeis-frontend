@@ -4,7 +4,7 @@
   <div class="provo">
     <!-- Colonna per la lista delle file -->
     <div class="fila-list-container">
-        <div class="fila-container" *ngFor="let posto of  nuovaSala.postis.slice().reverse()">
+        <div class="fila-container" *ngFor="let posto of  nuovaSala.postis.slice()">
           <span class="etichetta-fila">{{ posto.fila }}</span>
           <button id="aggiungiPosto" type="button" (click)="aggiungiPosto(posto.fila)" class="posto-add">+</button>
           <button id="rimuoviPosto" (click)="rimuoviPosto(posto.fila)" class="posto-remove">-</button>
@@ -17,7 +17,7 @@
         <div class="schermo">
           <span>Schermo</span>
         </div>
-        <div class="fila-posti-container" *ngFor="let fila of nuovaSala.postis.slice().reverse()">
+        <div class="fila-posti-container" *ngFor="let fila of nuovaSala.postis.slice()">
           <div class="fila">
             <div class="posto" *ngFor="let n of [].constructor(fila.sedili); let i=index">
               <span>{{ i+1 }}</span>
@@ -54,7 +54,7 @@
   <div class="provo">
     <!-- Colonna per la lista delle file -->
     <div class="fila-list-container" *ngIf="salaSelezionataModificata">
-        <div class="fila-container" *ngFor="let posto of  salaSelezionataModificata.postis.slice().reverse()">
+        <div class="fila-container" *ngFor="let posto of  salaSelezionataModificata.postis.slice()">
           <span class="etichetta-fila">{{ posto.fila }}</span>
           <button id="aggiungiPostoModifica" type="button" (click)="aggiungiPostoModifica(posto.fila)" class="posto-add">+</button>
           <button id="rimuoviPostoModifica" type="button" (click)="rimuoviPostoModifica(posto.fila)" class="posto-remove">-</button>
@@ -67,7 +67,7 @@
         <div class="schermo">
           <span>Schermo</span>
         </div>
-        <div class="fila-posti-container" *ngFor="let fila of salaSelezionataModificata.postis.slice().reverse()">
+        <div class="fila-posti-container" *ngFor="let fila of salaSelezionataModificata.postis.slice()">
           <div class="fila">
             <div class="posto" *ngFor="let n of [].constructor(fila.sedili); let i=index">
               <span>{{ i+1 }}</span>

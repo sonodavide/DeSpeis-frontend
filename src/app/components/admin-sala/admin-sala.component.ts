@@ -137,7 +137,7 @@ export class AdminSalaComponent {
           this.searchTypeUtils.loader(this.SearchType.SalaModifica)
         },
         error: () => {
-          this.messageService.addMessageError('errore eliminazione sala');
+          this.messageService.addMessageError('errore eliminazione sala. Possibile che ci siano spettacoli che si devono effettuare in questa sala?');
         },
       });
     }
@@ -155,7 +155,10 @@ export class AdminSalaComponent {
         error: (error) => {
           if (error.status === 400) {
             this.messageService.addMessageError('alcuni dati non vanno bene.');
-          } else {
+          } else if(error.status === 409){
+            this.messageService.addMessageError('ci sono spettacoli che devono ancora essere fatti in questa sala. Non posso modificarlo/eliminarlo')
+          }
+          else {
             this.messageService.addMessageError('errore modifica sala.');
           }
         },

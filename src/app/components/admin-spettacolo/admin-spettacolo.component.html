@@ -24,15 +24,19 @@
       <div class="pagination">
         <button id="precedente-salaC" type="button" (click)="searchTypeUtils.paginaPrecedente(SearchType.SalaCreazione)"
           [disabled]="searchTypeUtils.getSearchData(SearchType.SalaCreazione).paginaCorrente === 0">Indietro</button>
-        <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SalaCreazione).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.SalaCreazione).totalePagine }}</span>
+        <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SalaCreazione).paginaCorrente + 1 }} di {{
+          searchTypeUtils.getSearchData(SearchType.SalaCreazione).totalePagine }}</span>
         <button id="successivo-salaC" type="button" (click)="searchTypeUtils.paginaSuccessiva(SearchType.SalaCreazione)"
           [disabled]="searchTypeUtils.getSearchData(SearchType.SalaCreazione).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.SalaCreazione).totalePagine - 1">Avanti</button>
       </div>
       <label for="FilmCreazione"> Film: {{nuovoSpettacolo.film.id ? nuovoSpettacolo.film.titolo + " - " +
         nuovoSpettacolo.film.datauscita : ""}}</label>
-      <input type="text" placeholder="Cerca film per titolo" [(ngModel)]="searchTypeUtils.getSearchData(SearchType.FilmCreazione).termine" name="film" />
-      <button id="cerca-filmC" type="button" (click)="searchTypeUtils.eseguiRicerca(SearchType.FilmCreazione)">Cerca</button>
-      <button id="reset-cercaFilmC" type="button" (click)="searchTypeUtils.resettaRicerca(SearchType.FilmCreazione)">Reset</button>
+      <input type="text" placeholder="Cerca film per titolo"
+        [(ngModel)]="searchTypeUtils.getSearchData(SearchType.FilmCreazione).termine" name="film" />
+      <button id="cerca-filmC" type="button"
+        (click)="searchTypeUtils.eseguiRicerca(SearchType.FilmCreazione)">Cerca</button>
+      <button id="reset-cercaFilmC" type="button"
+        (click)="searchTypeUtils.resettaRicerca(SearchType.FilmCreazione)">Reset</button>
 
       <ul *ngIf="searchTypeUtils.getSearchData(SearchType.FilmCreazione).risultati.length > 0">
         <li *ngFor="let film of searchTypeUtils.getSearchData(SearchType.FilmCreazione).risultati"
@@ -44,7 +48,8 @@
       <div class="pagination">
         <button id="precedente-filmC" type="button" (click)="searchTypeUtils.paginaPrecedente(SearchType.FilmCreazione)"
           [disabled]="searchTypeUtils.getSearchData(SearchType.FilmCreazione).paginaCorrente === 0">Indietro</button>
-        <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.FilmCreazione).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.FilmCreazione).totalePagine }}</span>
+        <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.FilmCreazione).paginaCorrente + 1 }} di {{
+          searchTypeUtils.getSearchData(SearchType.FilmCreazione).totalePagine }}</span>
         <button id="successivo-filmC" type="button" (click)="searchTypeUtils.paginaSuccessiva(SearchType.FilmCreazione)"
           [disabled]="searchTypeUtils.getSearchData(SearchType.FilmCreazione).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.FilmCreazione).totalePagine - 1">Avanti</button>
       </div>
@@ -52,28 +57,35 @@
       <label for="acquistabile">Acquistabile:</label>
       <input type="checkbox" id="acquistabile" [(ngModel)]="nuovoSpettacolo.acquistabile" name="acquistabile" />
 
-      <button id="crea" type="submit" (click)="creaSpettacolo()"class="create-button">Crea</button>
+      <button id="crea" type="submit" (click)="creaSpettacolo()" class="create-button">Crea</button>
     </form>
   </div>
 
   <!-- Sezione Ricerca e Dettagli -->
   <div class="section search-section">
     <h2>Cerca Spettacolo per data</h2>
-    <input type="date" name="dataModifica" [(ngModel)]="searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).termine" />
-    <button id="cerca-spettacoloM" type="button" (click)="searchTypeUtils.eseguiRicerca(SearchType.SpettacoloModifica)">Cerca</button>
-    <button id="reset-cercaSpettacoloM" type="button" (click)="searchTypeUtils.resettaRicerca(SearchType.SpettacoloModifica)">Reset</button>
+    <input type="date" name="dataModifica"
+      [(ngModel)]="searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).termine" />
+    <button id="cerca-spettacoloM" type="button"
+      (click)="searchTypeUtils.eseguiRicerca(SearchType.SpettacoloModifica)">Cerca</button>
+    <button id="reset-cercaSpettacoloM" type="button"
+      (click)="searchTypeUtils.resettaRicerca(SearchType.SpettacoloModifica)">Reset</button>
     <ul *ngIf="searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).risultati">
-      <li *ngFor="let spettacolo of searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).risultati" (click)="selezionaSpettacolo(spettacolo);">
+      <li *ngFor="let spettacolo of searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).risultati"
+        (click)="selezionaSpettacolo(spettacolo);">
         > Spettacolo: {{ spettacolo.data }} - {{spettacolo.ora}} Film: {{ spettacolo.film.titolo }} - {{
         spettacolo.film.datauscita}}
       </li>
     </ul>
     <!-- Sezione Paginazione -->
     <div class="pagination">
-      <button id="precedente-spettacoloM" type="button" (click)="searchTypeUtils.paginaPrecedente(SearchType.SpettacoloModifica)"
+      <button id="precedente-spettacoloM" type="button"
+        (click)="searchTypeUtils.paginaPrecedente(SearchType.SpettacoloModifica)"
         [disabled]=" searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).paginaCorrente === 0">Indietro</button>
-      <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).totalePagine }}</span>
-      <button id="successivo-spettacoloM" type="button" (click)="searchTypeUtils.paginaSuccessiva(SearchType.SpettacoloModifica)"
+      <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).paginaCorrente + 1 }} di {{
+        searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).totalePagine }}</span>
+      <button id="successivo-spettacoloM" type="button"
+        (click)="searchTypeUtils.paginaSuccessiva(SearchType.SpettacoloModifica)"
         [disabled]="searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).totalePagine - 1">Avanti</button>
     </div>
     <!-- Dettagli Spettacolo Selezionato -->
@@ -84,7 +96,8 @@
       <input type="date" id="data" [(ngModel)]="spettacoloSelezionatoModificato.data" (input)="abilitaModifiche()" />
 
       <label for="ora">Ora:</label>
-      <input type="time" id="ora" [(ngModel)]="spettacoloSelezionatoModificato.ora" (input)="abilitaModifiche()" />
+      <input type="time" id="ora" step="60" [(ngModel)]="spettacoloSelezionatoModificato.ora"
+        (input)="abilitaModifiche()" />
 
       <label for="prezzo">Prezzo:</label>
       <input type="number" id="prezzo" [(ngModel)]="spettacoloSelezionatoModificato.prezzo"
@@ -102,15 +115,19 @@
       <div class="pagination">
         <button id="precedente-salaM" type="button" (click)="searchTypeUtils.paginaPrecedente(SearchType.SalaModifica)"
           [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente === 0">Indietro</button>
-        <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine }}</span>
+        <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente + 1 }} di {{
+          searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine }}</span>
         <button id="successivo-salaM" type="button" (click)="searchTypeUtils.paginaSuccessiva(SearchType.SalaModifica)"
           [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine - 1">Avanti</button>
       </div>
       <label for="film">Film: {{spettacoloSelezionatoModificato.film.id ? spettacoloSelezionatoModificato.film.titolo +
         " - " + spettacoloSelezionatoModificato.film.datauscita : ""}}</label>
-      <input type="text" name="filmModifica" [(ngModel)]="searchTypeUtils.getSearchData(SearchType.FilmModifica).termine" />
-      <button id="cerca-filmM" type="button" (click)="searchTypeUtils.eseguiRicerca(SearchType.FilmModifica)">Cerca</button>
-      <button id="resetcercaFilmM" type="button" (click)="searchTypeUtils.resettaRicerca(SearchType.FilmModifica)">Reset</button>
+      <input type="text" name="filmModifica"
+        [(ngModel)]="searchTypeUtils.getSearchData(SearchType.FilmModifica).termine" />
+      <button id="cerca-filmM" type="button"
+        (click)="searchTypeUtils.eseguiRicerca(SearchType.FilmModifica)">Cerca</button>
+      <button id="resetcercaFilmM" type="button"
+        (click)="searchTypeUtils.resettaRicerca(SearchType.FilmModifica)">Reset</button>
 
       <ul *ngIf="searchTypeUtils.getSearchData(SearchType.FilmModifica).risultati.length > 0">
         <li *ngFor="let film of searchTypeUtils.getSearchData(SearchType.FilmModifica).risultati"
@@ -120,9 +137,10 @@
       </ul>
       <!-- Sezione Paginazione -->
       <div class="pagination">
-        <button id="precedente-filmM"ype="button" (click)="searchTypeUtils.paginaPrecedente(SearchType.FilmModifica)"
+        <button id="precedente-filmM" ype="button" (click)="searchTypeUtils.paginaPrecedente(SearchType.FilmModifica)"
           [disabled]="searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente === 0">Indietro</button>
-        <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.FilmModifica).totalePagine }}</span>
+        <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente + 1 }} di {{
+          searchTypeUtils.getSearchData(SearchType.FilmModifica).totalePagine }}</span>
         <button id="successivo-filmM" type="button" (click)="searchTypeUtils.paginaSuccessiva(SearchType.FilmModifica)"
           [disabled]="searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.FilmModifica).totalePagine - 1">Avanti</button>
       </div>
@@ -134,9 +152,46 @@
 
       <button id="modifica" type="button" class="edit-button" [disabled]="!modificheAbilitate"
         (click)="modificaSpettacolo()">Modifica</button>
-      <button id="reset" type="button" class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">Annulla
+      <button id="reset" type="button" class="cancel-button" [disabled]="!modificheAbilitate"
+        (click)="annullaModifiche()">Annulla
         Modifica</button>
       <button id="elimina" type="button" class="delete-button" (click)="eliminaSpettacolo()">Elimina</button>
+
+      <h4>Prenotazioni attuali:</h4>
+      
+      <div class="container">
+        <!-- Schermo -->
+        <div class="screen">
+          SCHERMO
+        </div>
+    
+        <!-- Layout posti -->
+    
+        <div class="fila-container" *ngFor="let fila of postiPerFilaUtilsMiei.getFile()">
+          <div class="fila-etichetta">{{ fila }}</div>
+          <div class="posti">
+            <div class="posto" [ngClass]="posto.stato"
+               *ngFor="let posto of postiPerFilaUtilsMiei.getPostiPerFila(fila)">
+              {{ posto.postoSedile}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="legenda">
+      <h3 class="legenda-titolo">Legenda posti</h3>
+      <div class="legenda-item">
+        <div class="posto-esempio libero"></div>
+        <span>Posto libero</span>
+      </div>
+      <div class="legenda-item">
+        <div class="posto-esempio prenotato"></div>
+        <span>Posto prenotato</span>
+      </div>
+      <div class="legenda-item">
+        <div class="posto-esempio bloccato"></div>
+        <span>Posto bloccato</span>
+      </div>
+    </div> 
     </div>
   </div>
-</div>

@@ -7,7 +7,7 @@ import { PostiSpettacoloResponseDto } from '../model/postiSpettacoloResponseDto'
 import { NuovoSpettacoloDto } from '../model/nuovoSpettacolo';
 import { SpettacoloRicercaDto } from '../model/spettacoloRicercaDto';
 import { PaginatedResponse } from '../model/paginatedResponse';
-import { SpettacoloSenzaFilmDto } from '../model/spettacoloSenzaFilm';
+import { SpettacoloSenzaFilmTagsDto } from '../model/spettacoloSenzaFilmTags';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,10 @@ export class SpettacoloService {
   getPostiSpettacolo(spettacoloId: number): Observable<PostiSpettacoloResponseDto> {
     const params = new HttpParams().set('spettacoloId', spettacoloId);
     return this.http.get<PostiSpettacoloResponseDto>(`${this.apiUrl}/postiSpettacolo`, { params });
+  }
+  getPostiSpettacoloAcquistabile(spettacoloId: number): Observable<PostiSpettacoloResponseDto> {
+    const params = new HttpParams().set('spettacoloId', spettacoloId);
+    return this.http.get<PostiSpettacoloResponseDto>(`${this.apiUrl}/postiSpettacoloAcquistabile`, { params });
   }
   // Metodo per aggiungere un nuovo spettacolo
   nuovo(nuovoSpettacolo: NuovoSpettacoloDto): Observable<NuovoSpettacoloDto> {
@@ -73,15 +77,15 @@ export class SpettacoloService {
     return this.http.get<SpettacoloDto>(`${this.apiUrl}/getByIdAcquistabile`, {params})
   }
 
-  getSenzaFilmAcquistabileById(id : number): Observable<SpettacoloSenzaFilmDto> {
+  getSenzaFilmAcquistabileById(id : number): Observable<SpettacoloSenzaFilmTagsDto> {
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get<SpettacoloSenzaFilmDto>(`${this.apiUrl}/getSenzaFilmAcquistabileById`, {params})
+    return this.http.get<SpettacoloSenzaFilmTagsDto>(`${this.apiUrl}/getSenzaFilmAcquistabileById`, {params})
   }
 
-  getSenzaFilmById(id : number): Observable<SpettacoloSenzaFilmDto> {
+  getSenzaFilmById(id : number): Observable<SpettacoloSenzaFilmTagsDto> {
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get<SpettacoloSenzaFilmDto>(`${this.apiUrl}/getSenzaFilmById`, {params})
+    return this.http.get<SpettacoloSenzaFilmTagsDto>(`${this.apiUrl}/getSenzaFilmById`, {params})
   }
 }

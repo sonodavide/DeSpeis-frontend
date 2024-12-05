@@ -1,6 +1,6 @@
 import { FilmDto } from "./film";
 
-export interface SpettacoloSenzaFilmDto {
+export interface SpettacoloSenzaFilmTagsDto {
     id: number;
     data: string;       // LocalDate rappresentato come stringa in formato 'YYYY-MM-DD'
     ora: string;        // LocalTime rappresentato come stringa in formato 'HH:mm:ss'
@@ -8,4 +8,6 @@ export interface SpettacoloSenzaFilmDto {
     salaId: number;
     dataFine: string;   // LocalDate rappresentato come stringa in formato 'YYYY-MM-DD'
     oraFine: string;    // LocalTime rappresentato come stringa in formato 'HH:mm:ss'
+    filmId: number;
+    filmTitolo: string;
   }

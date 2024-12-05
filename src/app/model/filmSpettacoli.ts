@@ -1,7 +1,7 @@
 import { FilmDto } from "./film";
-import { SpettacoloSenzaFilmDto } from "./spettacoloSenzaFilm";
+import { SpettacoloSenzaFilmTagsDto } from "./spettacoloSenzaFilmTags";
 
 export interface FilmSpettacoliDto{
     film: FilmDto,
-    spettacoli: SpettacoloSenzaFilmDto[]
+    spettacoli: SpettacoloSenzaFilmTagsDto[]
 }

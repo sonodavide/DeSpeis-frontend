@@ -1,29 +1,47 @@
+<div class="seleziona-posti-container">
+  <h3>Seleziona i posti</h3>
+  <h2>{{spettacolo?.data ?? ""}} - {{spettacolo?.ora ?? ""}} - {{spettacolo?.filmTitolo ?? ""}}</h2>
+  <div class="container">
+    <!-- Schermo -->
+    <div class="screen">
+      SCHERMO
+    </div>
 
+    <!-- Layout posti -->
 
-<div class="container">
-  <!-- Schermo -->
-  <div class="screen">
-    SCHERMO
-  </div>
-  
-  <!-- Layout posti -->
-  
     <div class="fila-container" *ngFor="let fila of postiPerFilaUtilsMiei.getFile()">
       <div class="fila-etichetta">{{ fila }}</div>
       <div class="posti">
-        <div class="posto" [ngClass]="posto.stato"
-        [class.selezionato]="isPostoSelezionato(fila, posto)" (click)="selezionaPosto(fila, posto)" *ngFor="let posto of postiPerFilaUtilsMiei.getPostiPerFila(fila)">
+        <div class="posto" [ngClass]="posto.stato" [class.selezionato]="isPostoSelezionato(fila, posto)"
+          (click)="selezionaPosto(fila, posto)" *ngFor="let posto of postiPerFilaUtilsMiei.getPostiPerFila(fila)">
           {{ posto.postoSedile}}
         </div>
       </div>
     </div>
-  
-</div>
+
+  </div>
 
   <div class="posti-selezionati">
-    <h3>Posti Selezionati</h3>
     <button id="prenota" type="button" (click)="prenota()">prenota</button>
-    <div *ngFor="let posto of postiSelezionati">
-      {{ posto}}
+  </div>
+  
+  <div class="legenda">
+    <h3 class="legenda-titolo">Legenda posti</h3>
+    <div class="legenda-item">
+      <div class="posto-esempio libero"></div>
+      <span>Posto libero</span>
+    </div>
+    <div class="legenda-item">
+      <div class="posto-esempio prenotato"></div>
+      <span>Posto prenotato</span>
+    </div>
+    <div class="legenda-item">
+      <div class="posto-esempio bloccato"></div>
+      <span>Posto bloccato</span>
+    </div>
+    <div class="legenda-item">
+      <div class="posto-esempio selezionato"></div>
+      <span>Posto selezionato</span>
     </div>
   </div>
+</div>

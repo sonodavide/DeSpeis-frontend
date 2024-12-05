@@ -1,4 +1,4 @@
-.admin-blocca-container {
+.seleziona-posti-container {
   display: flex;
   flex-direction: column;
   color: #f5c518; /* Colore giallo accento */
@@ -209,4 +209,53 @@ li:hover {
 
 .pagination span {
   color: #ffffff;
+}
+
+
+.legenda {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #1c1c1c;
+  border-radius: 8px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.legenda-titolo {
+  color: #f5c518;
+  margin-bottom: 15px;
+  font-size: 1.1em;
+}
+
+.legenda-item {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  color: #ffffff;
+}
+
+.posto-esempio {
+  width: 25px;
+  height: 25px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.posto-esempio.libero {
+  background-color: lightgray;
+}
+
+.posto-esempio.prenotato {
+  background-color: grey;
+}
+
+.posto-esempio.bloccato {
+  background-color: red;
+}
+
+.posto-esempio.selezionato {
+  border-color: orange;
+  background-color: #1c1c1c;
 }

@@ -8,6 +8,7 @@ import { SearchType, SearchData } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 import { MessagesService } from '../../services/messages.service';
 import cloneDeep  from 'lodash/cloneDeep';
+import { PostiPerFilaUtils } from '../../utils/postiPerFilaUtils';
 @Component({
   selector: 'app-admin-spettacolo',
   templateUrl: './admin-spettacolo.component.html',
@@ -17,6 +18,7 @@ export class AdminSpettacoloComponent {
   nuovoSpettacolo: NuovoSpettacoloDto = this.resetNuovoSpettacolo();
   SearchType = SearchType;
   searchTypeUtils: SearchTypeUtils;
+  public postiPerFilaUtilsMiei: PostiPerFilaUtils = new PostiPerFilaUtils();
   constructor(
     private spettacoloService: SpettacoloService,
     private prenotazioneService: PrenotazioneService,
@@ -128,6 +130,10 @@ export class AdminSpettacoloComponent {
   }
 
   selezionaSpettacolo(spettacolo: NuovoSpettacoloDto) {
+    spettacolo.ora=spettacolo.ora.substring(0, 5); 
+    this.spettacoloService.getPostiSpettacolo(spettacolo.id!).subscribe(response =>{
+      this.postiPerFilaUtilsMiei.setPostiPerFila(response.postiPerFila)
+    })
     this.spettacoloSelezionato = cloneDeep(spettacolo);
     this.spettacoloSelezionatoModificato = cloneDeep(spettacolo)
     this.modificheAbilitate = false;
@@ -155,7 +161,7 @@ export class AdminSpettacoloComponent {
             if(error.status === 400 ){
               this.messageService.addMessageError("alcuni dati non vanno bene.")
             } else if(error.status === 409){
-              this.messageService.addMessageError("alcuni spettacoli sono in conflitto/qualcuno ha già prenotato")
+              this.messageService.addMessageError("alcuni spettacoli sono in conflitto/qualcuno ha già prenotato/è finito")
             }
              else {
               this.messageService.addMessageError("errore modifica spettacolo.")
@@ -215,4 +221,5 @@ export class AdminSpettacoloComponent {
       acquistabile: false, // Impostato a false come predefinito
     };
   }
+  
 }

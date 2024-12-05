@@ -1,8 +1,8 @@
 import { PostiResponse } from "./postiResponse";
-import { SpettacoloSenzaFilmDto } from "./spettacoloSenzaFilm";
+import { SpettacoloSenzaFilmTagsDto } from "./spettacoloSenzaFilmTags";
 
 export interface PostiSpettacoloResponseDto {
-    spettacoloSenzaFilmDto : SpettacoloSenzaFilmDto
+    spettacoloSenzaFilmDto : SpettacoloSenzaFilmTagsDto
     postiPerFila : PostiPerFila[]
 }
 
