@@ -20,7 +20,7 @@ import cloneDeep  from 'lodash/cloneDeep';
 })
 export class AdminFilmComponent {
   SearchType = SearchType;
-
+  esisteInUnoSpettacoloDaProiettare=false
   // Search data for different types
   searchData: Partial<Record<SearchType, SearchData>> = {
     [SearchType.FilmModifica]: {
@@ -124,6 +124,7 @@ export class AdminFilmComponent {
       next : () => {
         this.messageService.addMessageSuccess("film aggiunto con successo!")
         this.resetNuovoFilm()
+        this.searchTypeUtils.loader(SearchType.FilmModifica)
       },
       error : (error) => {
         if(error.status === 409){
@@ -182,8 +183,12 @@ export class AdminFilmComponent {
           this.filmSelezionatoModificato=null
           this.modificheAbilitate=false
         },
-        error : () => {
-          this.messageService.addMessageError("errore eliminazione film")
+        error : (error) => {
+          if(error.status === 409){
+            this.messageService.addMessageError("errore eliminazione, il film serve per uno spettacolo ancora non proietato.")
+          }else{
+            this.messageService.addMessageError("errore eliminazione film")
+          }
         }
       });
     }
@@ -199,7 +204,14 @@ export class AdminFilmComponent {
     this.searchTypeUtils.loader(SearchType.AttoreModifica);
     this.searchTypeUtils.loader(SearchType.GenereModifica);
     this.searchTypeUtils.loader(SearchType.RegistaModifica);
-    this.searchTypeUtils.getSearchData(SearchType.FilmModifica).risultati = [];
+    this.filmService.esisteInUnoSpettacoloDaProiettare(this.filmSelezionato.id!).subscribe({
+      next : (response) => {
+        this.esisteInUnoSpettacoloDaProiettare=response
+      },
+      error : () => {
+        this.messageService.addMessageError("errore, non so se è prevista una proiezione del film")
+      }
+    })
   }
 
   aggiungiElemento(

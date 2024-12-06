@@ -94,6 +94,7 @@ export class AdminSpettacoloComponent {
       next : () => {
         this.messageService.addMessageSuccess("spettacolo aggiunto con successo!")
         this.nuovoSpettacolo=this.resetNuovoSpettacolo()
+        this.searchTypeUtils.loader(SearchType.SpettacoloModifica)
       },
       error : (error) => {
         if(error.status === 400 ){

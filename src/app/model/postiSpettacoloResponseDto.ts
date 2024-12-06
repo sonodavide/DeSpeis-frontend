@@ -2,7 +2,7 @@ import { PostiResponse } from "./postiResponse";
 import { SpettacoloSenzaFilmTagsDto } from "./spettacoloSenzaFilmTags";
 
 export interface PostiSpettacoloResponseDto {
-    spettacoloSenzaFilmDto : SpettacoloSenzaFilmTagsDto
+    spettacoloSenzaFilmTagsDto : SpettacoloSenzaFilmTagsDto
     postiPerFila : PostiPerFila[]
 }
 

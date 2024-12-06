@@ -160,10 +160,14 @@
   background-color: lightgray;
 }
 
+
+.posto.libero {
+  background-color: lightgray;
+}
+
 .posto.prenotato {
   background-color: grey;
   cursor: not-allowed;
-  pointer-events: none;
 }
 
 .posto.bloccato {

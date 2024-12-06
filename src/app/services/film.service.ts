@@ -57,4 +57,10 @@ export class FilmService {
   ultimeUscite() : Observable<FilmDto[]>{
     return this.http.get<FilmDto[]>(`${this.apiUrl}/ultimeUscite`)
   }
+
+  esisteInUnoSpettacoloDaProiettare(id : number){
+    const params = new HttpParams()
+    .set("id", id)
+    return this.http.get<boolean>(`${this.apiUrl}/esisteInUnoSpettacoloDaProiettare`, {params})
+  }
 }

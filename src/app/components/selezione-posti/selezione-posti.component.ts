@@ -55,7 +55,7 @@ export class SelezionePostiComponent {
   prenota(){
     if(this.postiPerFilaUtilsResponse.getTotalePosti() > 0){
       if(this.spettacolo){
-        this.sharedBigliettiService.updateData({postiSpettacoloResponseDto : {postiPerFila : this.postiSelezionati, spettacoloSenzaFilmDto : this.spettacolo}})
+        this.sharedBigliettiService.updateData({postiSpettacoloResponseDto : {postiPerFila : this.postiSelezionati, spettacoloSenzaFilmTagsDto : this.spettacolo}})
         this.router.navigate(["/checkout"])
       }
     } else {
@@ -67,6 +67,12 @@ export class SelezionePostiComponent {
   }
   formattafile(map : Map<any, any>) : any[]{
     return FormatterUtils.mapKeysToArrayReversed(map)
+  }
+  formatTime(time: string): string {
+    if(!time){
+      return ""
+    }
+    return time.substring(0, 5); // Mostra solo ore e minuti (HH:mm)
   }
 
 }
