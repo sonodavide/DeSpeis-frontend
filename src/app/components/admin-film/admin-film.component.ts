@@ -21,7 +21,7 @@ import cloneDeep  from 'lodash/cloneDeep';
 export class AdminFilmComponent {
   SearchType = SearchType;
   esisteInUnoSpettacoloDaProiettare=false
-  // Search data for different types
+
   searchData: Partial<Record<SearchType, SearchData>> = {
     [SearchType.FilmModifica]: {
       termine: '',
@@ -118,7 +118,7 @@ export class AdminFilmComponent {
   filmSelezionato: FilmDto | null = null;
   filmSelezionatoModificato: FilmDto | null = null;
 
-  // Funzione per creare un nuovo film
+
   creaFilm() {
     this.filmService.nuovo(this.nuovoFilm).subscribe({
       next : () => {
@@ -138,7 +138,6 @@ export class AdminFilmComponent {
     });
   }
 
-  // Funzione per modificare il film selezionato
   modificaFilm() {
     if (this.filmSelezionatoModificato) {
       this.filmService.nuovo(this.filmSelezionatoModificato).subscribe({
@@ -173,7 +172,6 @@ export class AdminFilmComponent {
     }
   }
 
-  // Funzione per eliminare il film selezionato
   eliminaFilm() {
     if (this.filmSelezionato) {
       this.filmService.elimina(this.filmSelezionato).subscribe({
@@ -194,7 +192,6 @@ export class AdminFilmComponent {
     }
   }
 
-  // Funzione per selezionare un film dalla lista dei risultati
   selezionaFilm(film: FilmDto) {
     this.filmSelezionato = cloneDeep(film)
     this.filmSelezionatoModificato = cloneDeep(this.filmSelezionato);
@@ -266,7 +263,6 @@ export class AdminFilmComponent {
     }
   }
 
-  // Funzioni per rimuovere attore, regista e genere
   rimuoviElemento(
     element: RegistaDto | AttoreDto | GenereDto,
     tipo: string

@@ -20,8 +20,8 @@ export class SpettacoliComponent {
   constructor(private spettacoloService: SpettacoloService, private router: Router, private messageService : MessagesService) {}
 
   ngOnInit(): void {
-    this.generaGiorniSettimana(); // Genera le prossime 7 date
-    this.selezionaGiorno(this.giorniSettimana[0].date); // Richiedi gli spettacoli per "Oggi"
+    this.generaGiorniSettimana(); 
+    this.selezionaGiorno(this.giorniSettimana[0].date); 
 
   }
 
@@ -45,7 +45,7 @@ export class SpettacoliComponent {
     })
    }
    goToSelezionePosti(spettacoloId: number) {
-    this.router.navigate(['/selezione-posti', spettacoloId]);  // Naviga alla rotta del film con l'ID specifico
+    this.router.navigate(['/selezione-posti', spettacoloId]);  
     }
   // Metodo per formattare l'orario in maniera più leggibile
   formatTime(time: string): string {
@@ -54,6 +54,6 @@ export class SpettacoliComponent {
 
   selezionaGiorno(date: string) {
     this.dataSelezionata = date;
-    this.getSpettacoli(date);  // Aggiorna gli spettacoli per la data selezionata
+    this.getSpettacoli(date);  
   }
 }

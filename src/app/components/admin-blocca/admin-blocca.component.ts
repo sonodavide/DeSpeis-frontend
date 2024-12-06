@@ -16,7 +16,7 @@ import { PostiResponse } from '../../model/postiResponse';
   styleUrl: './admin-blocca.component.css',
 })
 export class AdminBloccaComponent {
-  // Variabili per la paginazione di Spettacolo - Modifica
+
   paginaCorrenteSpettacoloModifica: number = 0;
   totalePagineSpettacoloModifica: number = 0;
   pageSizeSpettacoloModifica: number = 4;
@@ -99,7 +99,6 @@ export class AdminBloccaComponent {
 
   selezionaPosto(fila: string, posto: PostiResponse) {
     this.postiPerFilaUtilsResponse.togglePosto(fila, posto);
-    console.log(this.postiSelezionati)
   }
 
   blocca() {

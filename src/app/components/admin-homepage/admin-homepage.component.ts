@@ -16,7 +16,7 @@ export class AdminHomepageComponent {
   numeroGeneri: number = 0;
   numeroBiglietti: number = 0;
   numeroUtenti: number = 0;
-  incassiTotali: number = 0; // Sostituisci con il calcolo appropriato
+  incassiTotali: number = 0; 
   numeroOrdini: number = 0;
   numeroSpettacoli: number = 0;
   numeroSale: number = 0;

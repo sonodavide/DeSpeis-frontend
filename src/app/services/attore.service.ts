@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AttoreDto } from '../model/film';
 import { PaginatedResponse } from '../model/paginatedResponse';
@@ -10,42 +10,44 @@ import { PaginatedResponse } from '../model/paginatedResponse';
 
 
 export class AttoreService {
-  private apiUrl = 'http://localhost:9999/attore'; // Cambia l'URL base se necessario
-  constructor(private http: HttpClient) { }
-  getSuggestions(term: string): Observable<AttoreDto[]> {
-    return this.http.get<AttoreDto[]>(`${this.apiUrl}/cerca?query=${term}`)
+  private endpoint = ``; 
+  constructor(@Inject('API_URL') private readonly apiUrl: string, private http: HttpClient) { 
+    this.endpoint = `${this.apiUrl}/attore`; 
   }
-  // Metodo per aggiungere un nuovo attore
-  nuovo(attoreDto: AttoreDto): Observable<AttoreDto> {
-    return this.http.post<AttoreDto>(`${this.apiUrl}/nuovo`, attoreDto);
+  getSuggestions(term: string): Observable<AttoreDto[]> {
+    return this.http.get<AttoreDto[]>(`${this.endpoint}/cerca?query=${term}`)
   }
 
-  // Metodo per eliminare un attore
+  nuovo(attoreDto: AttoreDto): Observable<AttoreDto> {
+    return this.http.post<AttoreDto>(`${this.endpoint}/nuovo`, attoreDto);
+  }
+
+
   elimina(attoreDto: AttoreDto): Observable<string> {
-    return this.http.post<string>(`${this.apiUrl}/elimina`, attoreDto);
+    return this.http.post<string>(`${this.endpoint}/elimina`, attoreDto);
   }
 
   getAllPaginated(pageNumber : number, pageSize : number) : Observable<PaginatedResponse<AttoreDto>>{
     const params = new HttpParams()
     .set("pageNumber", pageNumber)
     .set("pageSize", pageSize)
-    return this.http.get<PaginatedResponse<AttoreDto>>(`${this.apiUrl}/paged`, {params})
+    return this.http.get<PaginatedResponse<AttoreDto>>(`${this.endpoint}/paged`, {params})
   }
   cerca(term: string, pageNumber : number, pageSize : number): Observable<PaginatedResponse<AttoreDto>> {
     const params = new HttpParams()
     .set("query", term)
     .set("pageNumber", pageNumber)
     .set("pageSize", pageSize)
-    return this.http.get<PaginatedResponse<AttoreDto>>(`${this.apiUrl}/cerca`, {params})
+    return this.http.get<PaginatedResponse<AttoreDto>>(`${this.endpoint}/cerca`, {params})
   }
 
   getAll() : Observable<AttoreDto[]>{
-    return this.http.get<AttoreDto[]>(`${this.apiUrl}`)
+    return this.http.get<AttoreDto[]>(`${this.endpoint}`)
   }
 
   getNomeById(id : number): Observable<string>{
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get(`${this.apiUrl}/getNomeById`, {params, responseType:'text'})
+    return this.http.get(`${this.endpoint}/getNomeById`, {params, responseType:'text'})
   }
 }

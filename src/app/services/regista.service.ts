@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { RegistaDto } from '../model/film';
 import { Observable } from 'rxjs';
 import { PaginatedResponse } from '../model/paginatedResponse';
@@ -8,33 +8,35 @@ import { PaginatedResponse } from '../model/paginatedResponse';
 })
 export class RegistaService {
 
-  private apiUrl = 'http://localhost:9999/regista'; // Cambia l'URL base se necessario
-  constructor(private http: HttpClient) { }
+  private endpoint = ``; 
+  constructor(@Inject('API_URL') private readonly apiUrl: string, private http: HttpClient) {
+    this.endpoint = `${this.apiUrl}/regista`; 
+  }
   getAllPaginated(pageNumber : number, pageSize : number) : Observable<PaginatedResponse<RegistaDto>>{
     const params = new HttpParams()
     .set("pageNumber", pageNumber)
     .set("pageSize", pageSize)
-    return this.http.get<PaginatedResponse<RegistaDto>>(`${this.apiUrl}/paged`, {params})
+    return this.http.get<PaginatedResponse<RegistaDto>>(`${this.endpoint}/paged`, {params})
   }
   cerca(term: string, pageNumber : number, pageSize : number): Observable<PaginatedResponse<RegistaDto>> {
     const params = new HttpParams()
     .set("query", term)
     .set("pageNumber", pageNumber)
     .set("pageSize", pageSize)
-    return this.http.get<PaginatedResponse<RegistaDto>>(`${this.apiUrl}/cerca`, {params})
-  }
-  // Metodo per aggiungere un nuovo regista
-  nuovo(registaDto: RegistaDto): Observable<RegistaDto> {
-    return this.http.post<RegistaDto>(`${this.apiUrl}/nuovo`, registaDto);
+    return this.http.get<PaginatedResponse<RegistaDto>>(`${this.endpoint}/cerca`, {params})
   }
 
-  // Metodo per eliminare un regista
+  nuovo(registaDto: RegistaDto): Observable<RegistaDto> {
+    return this.http.post<RegistaDto>(`${this.endpoint}/nuovo`, registaDto);
+  }
+
+
   elimina(registaDto: RegistaDto): Observable<string> {
-    return this.http.post(`${this.apiUrl}/elimina`, registaDto, {responseType:'text'});
+    return this.http.post(`${this.endpoint}/elimina`, registaDto, {responseType:'text'});
   }
   getNomeById(id : number): Observable<string>{
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get(`${this.apiUrl}/getNomeById`, {params, responseType:'text'})
+    return this.http.get(`${this.endpoint}/getNomeById`, {params, responseType:'text'})
   }
 }

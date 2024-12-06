@@ -37,6 +37,7 @@ import { AdminHomepageComponent } from './components/admin-homepage/admin-homepa
 import { UtenteHomepageComponent } from './components/utente-homepage/utente-homepage.component';
 import { CercaTagComponent } from './components/cerca-tag/cerca-tag.component';
 import { MessagesComponent } from './components/messages/messages.component';
+import { DeSpeinsConfig } from './config';
 
 export function kcFactory(kcService:KeycloakService){
   return ()=>kcService.init()
@@ -78,7 +79,11 @@ export function kcFactory(kcService:KeycloakService){
     AppRoutingModule,
     
   ],
-  providers: [provideHttpClient(withInterceptorsFromDi()),
+  providers: [{ provide: "API_URL", useValue: DeSpeinsConfig.apiUrl },
+    {provide : "KEYCLOAK_REALM", useValue : DeSpeinsConfig.keycloakRealm},
+    {provide : "KEYCLOAK_CLIENT_ID", useValue : DeSpeinsConfig.keycloakClientId},
+    {provide : "KEYCLOAK_URL", useValue : DeSpeinsConfig.keycloakUrl},
+    provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpTokenInterceptor,
@@ -91,6 +96,6 @@ export function kcFactory(kcService:KeycloakService){
   multi: true
 },
   provideAnimationsAsync()],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

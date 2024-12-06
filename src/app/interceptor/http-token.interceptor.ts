@@ -23,10 +23,10 @@ export class HttpTokenInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${token}`
         })
       });
-      console.log("ooooooooooooook")
+
       return next.handle(authReq);
     }
-    console.log("addio")
+
     return next.handle(request);
   }
 }

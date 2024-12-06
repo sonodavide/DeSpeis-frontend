@@ -7,7 +7,7 @@ import { PrenotazioneRequestDto } from '../model/prenotazioneRequest';
 })
 export class SharedBigliettiService {
   private dataArray = new BehaviorSubject<PrenotazioneRequestDto | null>(
-    this.getStoredData() // Recupera i dati salvati se presenti
+    this.getStoredData() 
   );
   currentData = this.dataArray.asObservable();
 
@@ -18,7 +18,7 @@ export class SharedBigliettiService {
 
   updateData(prenotazione: PrenotazioneRequestDto) {
     this.dataArray.next(prenotazione);
-    // Salva i dati nel localStorage
+
     localStorage.setItem('prenotazione', JSON.stringify(prenotazione));
   }
 

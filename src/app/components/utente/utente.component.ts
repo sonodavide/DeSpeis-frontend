@@ -13,7 +13,7 @@ export class UtenteComponent  {
 
   constructor(private router: Router) {}
   ngOnInit() {
-    // Controlla l'URL corrente
+
     this.router.events.subscribe(() => {
       this.isUtenteRoute = this.router.url==='/utente'
     });

@@ -68,7 +68,7 @@ export class AdminSalaComponent {
   }
 
   rimuoviPosto(nomeFila: string) {
-    // Se c'è solo una fila, non permettiamo di rimuovere l'ultimo posto
+
     if (
       this.nuovaSala.postis.length === 1 &&
       this.nuovaSala.postis[0].fila === 'A' &&
@@ -85,13 +85,13 @@ export class AdminSalaComponent {
       const posto = this.nuovaSala.postis[filaIndex];
 
       if (posto.sedili > 1) {
-        // Se ci sono più posti, ne rimuoviamo solo uno
+      
         posto.sedili--;
       } else {
-        // Se c'è un solo posto, rimuoviamo la fila e facciamo lo shift delle file successive
+       
         this.nuovaSala.postis.splice(filaIndex, 1);
 
-        // Aggiorniamo le lettere delle file successive
+       
         for (let i = filaIndex; i < this.nuovaSala.postis.length; i++) {
           this.nuovaSala.postis[i].fila = String.fromCharCode(65 + i);
         }
@@ -230,7 +230,7 @@ export class AdminSalaComponent {
       return;
     }
   
-    // Se c'è solo una fila, non permettiamo di rimuovere l'ultimo posto
+
     if (this.salaSelezionataModificata.postis.length === 1 && 
         this.salaSelezionataModificata.postis[0].fila === 'A' &&
         this.salaSelezionataModificata.postis[0].sedili === 1) {
@@ -245,14 +245,14 @@ export class AdminSalaComponent {
       const posto = this.salaSelezionataModificata.postis[filaIndex];
       
       if (posto.sedili > 1) {
-        // Se ci sono più posti, ne rimuoviamo solo uno
+
         posto.sedili--;
         this.modificheAbilitate = true;
       } else {
-        // Se c'è un solo posto, rimuoviamo la fila e facciamo lo shift delle file successive
+
         this.salaSelezionataModificata.postis.splice(filaIndex, 1);
         
-        // Aggiorniamo le lettere delle file successive
+
         for (let i = filaIndex; i < this.salaSelezionataModificata.postis.length; i++) {
           this.salaSelezionataModificata.postis[i].fila = String.fromCharCode(65 + i);
         }

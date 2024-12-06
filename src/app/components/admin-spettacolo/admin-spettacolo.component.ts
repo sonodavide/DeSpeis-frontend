@@ -202,24 +202,24 @@ export class AdminSpettacoloComponent {
   private resetNuovoSpettacolo(): NuovoSpettacoloDto {
     return {
       id: undefined,
-      data: '', // Valore stringa vuoto per la data
-      ora: '', // Valore stringa vuoto per l'ora
-      prezzo: 0, // Imposta il prezzo a zero per iniziare
+      data: '', 
+      ora: '', 
+      prezzo: 0, 
       sala: {
         id: undefined,
       },
       film: {
         id: undefined,
-        titolo: '', // Stringa vuota per il titolo
-        durata: 0, // Durata inizializzata a zero
-        trama: '', // Stringa vuota per la trama
-        img: '', // Stringa vuota per l'immagine
-        datauscita: '', // Stringa vuota per la data di uscita
-        attores: [], // Array vuoto per gli attori
-        generes: [], // Array vuoto per i generi
-        registas: [], // Array vuoto per i registi
+        titolo: '', 
+        durata: 0, 
+        trama: '', 
+        img: '', 
+        datauscita: '', 
+        attores: [], 
+        generes: [], 
+        registas: [], 
       },
-      acquistabile: false, // Impostato a false come predefinito
+      acquistabile: false, 
     };
   }
   

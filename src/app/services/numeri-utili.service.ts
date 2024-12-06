@@ -1,49 +1,51 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NumeriUtiliService {
-  private apiUrl = 'http://localhost:9999/'; 
-  constructor(private http: HttpClient) { }
+  private endpoint = ``; 
+  constructor(@Inject('API_URL') private readonly apiUrl: string, private http: HttpClient) {
+    this.endpoint = `${this.apiUrl}/`; 
+  }
 
   getNumeroFilms() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}film/count`)
+    return this.http.get<number>(`${this.endpoint}film/count`)
   }
 
   getNumeroGeneri() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}genere/count`)
+    return this.http.get<number>(`${this.endpoint}genere/count`)
   }
   getNumeroAttori() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}attore/count`)
+    return this.http.get<number>(`${this.endpoint}attore/count`)
   }
 
   getNumeroBiglietti() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}biglietto/count`)
+    return this.http.get<number>(`${this.endpoint}biglietto/count`)
   }
 
   getNumeroRegisti() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}regista/count`)
+    return this.http.get<number>(`${this.endpoint}regista/count`)
   }
 
   getNumeroSpettacoli() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}spettacolo/count`)
+    return this.http.get<number>(`${this.endpoint}spettacolo/count`)
   }
 
   getNumeroUtenti() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}film/count`)
+    return this.http.get<number>(`${this.endpoint}film/count`)
   }
 
   getNumeroOrdini() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}ordine/count`)
+    return this.http.get<number>(`${this.endpoint}ordine/count`)
   }
 
   getNumeroSale() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}sala/count`)
+    return this.http.get<number>(`${this.endpoint}sala/count`)
   }
   getIncassiTotali() : Observable<number>{
-    return this.http.get<number>(`${this.apiUrl}ordine/incassiTotali`)
+    return this.http.get<number>(`${this.endpoint}ordine/incassiTotali`)
   }
 }

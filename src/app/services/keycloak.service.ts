@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import Keycloak from "keycloak-js";
 import {UserProfile} from "../model/user-profile";
 import { Router } from '@angular/router';
@@ -14,10 +14,10 @@ export class KeycloakService {
   get keycloak(){
     if(!this._keycloak){
       this._keycloak= new Keycloak({
-          url: 'http://localhost:8080',
+          url: this.keycloakUrl,
           
-          realm: 'spero',
-          clientId: 'fronte'
+          realm: this.keycloakRealm,
+          clientId: this.keycloakClientId
       })
     }
     return this._keycloak
@@ -27,7 +27,7 @@ export class KeycloakService {
   }
   login(redirectUri: string = window.location.href){
     return this.keycloak.login({
-      redirectUri: redirectUri // Specifica dove deve andare dopo il login
+      redirectUri: redirectUri 
     })
   }
   logout(){
@@ -41,7 +41,7 @@ export class KeycloakService {
       }
     );
   }
-  constructor(private router : Router) { }
+  constructor(@Inject('KEYCLOAK_URL') private readonly keycloakUrl: string, @Inject('KEYCLOAK_REALM') private readonly keycloakRealm: string, @Inject('KEYCLOAK_CLIENT_ID') private readonly keycloakClientId: string, private router : Router) { }
 
   updateToken(){
     if(this.keycloak){
@@ -57,9 +57,8 @@ export class KeycloakService {
     
     if(authenticated){
       this._profile = (await this.keycloak?.loadUserProfile()) as UserProfile;
-      console.log(this.keycloak.token)
-      console.log(this._profile.username)
-      console.log("sei loggato.")
+      
+
     }
   }
 

@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SpettacoloDto } from '../model/spettacolo';
 import { FilmSpettacoliDto } from '../model/filmSpettacoli';
@@ -13,12 +13,13 @@ import { SpettacoloSenzaFilmTagsDto } from '../model/spettacoloSenzaFilmTags';
   providedIn: 'root'
 })
 export class SpettacoloService {
-  private apiUrl = 'http://localhost:9999/spettacolo'; 
-
-  constructor(private http: HttpClient) {}
+  private endpoint = ``; 
+  constructor(@Inject('API_URL') private readonly apiUrl: string, private http: HttpClient) {
+    this.endpoint = `${this.apiUrl}/spettacolo`; 
+  }
 
   getByDate(date: string): Observable<FilmSpettacoliDto[]> {
-    const url = `${this.apiUrl}/byDate`;
+    const url = `${this.endpoint}/byDate`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
@@ -27,24 +28,23 @@ export class SpettacoloService {
   }
   getPostiSpettacolo(spettacoloId: number): Observable<PostiSpettacoloResponseDto> {
     const params = new HttpParams().set('spettacoloId', spettacoloId);
-    return this.http.get<PostiSpettacoloResponseDto>(`${this.apiUrl}/postiSpettacolo`, { params });
+    return this.http.get<PostiSpettacoloResponseDto>(`${this.endpoint}/postiSpettacolo`, { params });
   }
   getPostiSpettacoloAcquistabile(spettacoloId: number): Observable<PostiSpettacoloResponseDto> {
     const params = new HttpParams().set('spettacoloId', spettacoloId);
-    return this.http.get<PostiSpettacoloResponseDto>(`${this.apiUrl}/postiSpettacoloAcquistabile`, { params });
+    return this.http.get<PostiSpettacoloResponseDto>(`${this.endpoint}/postiSpettacoloAcquistabile`, { params });
   }
-  // Metodo per aggiungere un nuovo spettacolo
+
   nuovo(nuovoSpettacolo: NuovoSpettacoloDto): Observable<NuovoSpettacoloDto> {
-    const url = `${this.apiUrl}/nuovo`;
+    const url = `${this.endpoint}/nuovo`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
     return this.http.post<NuovoSpettacoloDto>(url, nuovoSpettacolo, { headers });
   }
 
-  // Metodo per eliminare uno spettacolo esistente
   elimina(spettacolo: NuovoSpettacoloDto): Observable<any> {
-    const url = `${this.apiUrl}/elimina`;
+    const url = `${this.endpoint}/elimina`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
@@ -56,36 +56,36 @@ export class SpettacoloService {
     .set('date', date)
     .set("pageNumber", pageNumber)
     .set("pageSize", pageSize);
-    return this.http.get<PaginatedResponse<NuovoSpettacoloDto>>(`${this.apiUrl}/cerca`, { params });
+    return this.http.get<PaginatedResponse<NuovoSpettacoloDto>>(`${this.endpoint}/cerca`, { params });
   }
   getAllPaginated(pageNumber : number, pageSize : number) : Observable<PaginatedResponse<NuovoSpettacoloDto>>{
     const params = new HttpParams()
     .set("pageNumber", pageNumber)
     .set("pageSize", pageSize)
-    return this.http.get<PaginatedResponse<NuovoSpettacoloDto>>(`${this.apiUrl}/paged`, {params})
+    return this.http.get<PaginatedResponse<NuovoSpettacoloDto>>(`${this.endpoint}/paged`, {params})
   }
 
   getById(id : number): Observable<SpettacoloDto> {
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get<SpettacoloDto>(`${this.apiUrl}/getById`, {params})
+    return this.http.get<SpettacoloDto>(`${this.endpoint}/getById`, {params})
   }
 
   getByIdAcquistabile(id : number): Observable<SpettacoloDto> {
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get<SpettacoloDto>(`${this.apiUrl}/getByIdAcquistabile`, {params})
+    return this.http.get<SpettacoloDto>(`${this.endpoint}/getByIdAcquistabile`, {params})
   }
 
   getSenzaFilmAcquistabileById(id : number): Observable<SpettacoloSenzaFilmTagsDto> {
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get<SpettacoloSenzaFilmTagsDto>(`${this.apiUrl}/getSenzaFilmAcquistabileById`, {params})
+    return this.http.get<SpettacoloSenzaFilmTagsDto>(`${this.endpoint}/getSenzaFilmAcquistabileById`, {params})
   }
 
   getSenzaFilmById(id : number): Observable<SpettacoloSenzaFilmTagsDto> {
     const params = new HttpParams()
     .set("id", id)
-    return this.http.get<SpettacoloSenzaFilmTagsDto>(`${this.apiUrl}/getSenzaFilmById`, {params})
+    return this.http.get<SpettacoloSenzaFilmTagsDto>(`${this.endpoint}/getSenzaFilmById`, {params})
   }
 }

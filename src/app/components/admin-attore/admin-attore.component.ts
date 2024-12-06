@@ -38,7 +38,6 @@ export class AdminAttoreComponent {
 
   ngOnInit() : void{
     this.searchTypeUtils.loader(SearchType.AttoreModifica)
-    console.log()
   }
 
 
