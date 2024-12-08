@@ -160,7 +160,7 @@ export class AdminSpettacoloComponent {
           },
           error : (error) => {
             if(error.status === 400 ){
-              this.messageService.addMessageError("alcuni dati non vanno bene.")
+              this.messageService.addMessageError("alcuni dati non vanno bene. O forse stai cercando di modificare uno spettacolo che ormai è finito.")
             } else if(error.status === 409){
               this.messageService.addMessageError("alcuni spettacoli sono in conflitto/qualcuno ha già prenotato/è finito")
             }

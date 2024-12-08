@@ -18,7 +18,7 @@ export class BigliettoService {
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}`, { params });
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.endpoint}`, { params });
   }
 
 
@@ -26,7 +26,7 @@ export class BigliettoService {
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/all`, { params });
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.endpoint}/all`, { params });
   }
 
 
@@ -35,7 +35,7 @@ export class BigliettoService {
       .set('date', date)
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/allByDate`, { params });
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.endpoint}/allByDate`, { params });
   }
 
 
@@ -44,7 +44,7 @@ export class BigliettoService {
       .set('date', date)
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/date`, { params });
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.endpoint}/date`, { params });
   }
 
 
@@ -54,7 +54,7 @@ export class BigliettoService {
       .set('date', date)
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/userIdAndDate`, { params });
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.endpoint}/userIdAndDate`, { params });
   }
 
 
@@ -63,6 +63,6 @@ export class BigliettoService {
       .set('userId', userId)
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/userId`, { params });
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.endpoint}/userId`, { params });
   }
 }

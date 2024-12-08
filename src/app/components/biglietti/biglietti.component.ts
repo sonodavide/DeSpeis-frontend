@@ -22,7 +22,7 @@ export class BigliettiComponent {
   }
 
   getBiglietti() : void {
-    this.bigliettoService.getAllBiglietti(this.paginaCorrente, 10)
+    this.bigliettoService.getBiglietti(this.paginaCorrente, 10)
     .subscribe({next : response =>{
       this.biglietti = response.content;
       this.totalePagine = response.totalPages;
