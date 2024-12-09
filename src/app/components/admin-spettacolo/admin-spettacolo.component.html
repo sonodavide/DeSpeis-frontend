@@ -73,8 +73,7 @@
     <ul *ngIf="searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).risultati">
       <li *ngFor="let spettacolo of searchTypeUtils.getSearchData(SearchType.SpettacoloModifica).risultati"
         (click)="selezionaSpettacolo(spettacolo);">
-        > Spettacolo: {{ spettacolo.data }} - {{spettacolo.ora}} Film: {{ spettacolo.film.titolo }} - {{
-        spettacolo.film.datauscita}}
+        > Spettacolo: {{ spettacolo.data }} - {{spettacolo.ora}} Film: {{ spettacolo.filmTitolo }}
       </li>
     </ul>
     <!-- Sezione Paginazione -->
@@ -91,7 +90,7 @@
     <!-- Dettagli Spettacolo Selezionato -->
     <div *ngIf="spettacoloSelezionatoModificato">
       <h3>Dettagli Spettacolo</h3>
-
+      <span  class="mini-avviso-proiezione"> [{{ stato }}]</span>
       <label for="data">Data:</label>
       <input type="date" id="data" [(ngModel)]="spettacoloSelezionatoModificato.data" (input)="abilitaModifiche()" />
 

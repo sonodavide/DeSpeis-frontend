@@ -9,6 +9,7 @@ import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 import { MessagesService } from '../../services/messages.service';
 import cloneDeep  from 'lodash/cloneDeep';
 import { PostiPerFilaUtils } from '../../utils/postiPerFilaUtils';
+import { SpettacoloSenzaFilmTagsDto } from '../../model/spettacoloSenzaFilmTags';
 @Component({
   selector: 'app-admin-spettacolo',
   templateUrl: './admin-spettacolo.component.html',
@@ -18,6 +19,7 @@ export class AdminSpettacoloComponent {
   nuovoSpettacolo: NuovoSpettacoloDto = this.resetNuovoSpettacolo();
   SearchType = SearchType;
   searchTypeUtils: SearchTypeUtils;
+  stato : string = "";
   public postiPerFilaUtilsMiei: PostiPerFilaUtils = new PostiPerFilaUtils();
   constructor(
     private spettacoloService: SpettacoloService,
@@ -130,16 +132,28 @@ export class AdminSpettacoloComponent {
     }
   }
 
-  selezionaSpettacolo(spettacolo: NuovoSpettacoloDto) {
-    spettacolo.ora=spettacolo.ora.substring(0, 5); 
-    this.spettacoloService.getPostiSpettacolo(spettacolo.id!).subscribe(response =>{
-      this.postiPerFilaUtilsMiei.setPostiPerFila(response.postiPerFila)
+  selezionaSpettacolo(spettacolo: SpettacoloSenzaFilmTagsDto) {
+    this.spettacoloService.getNuovoSpettacoloById(spettacolo.id).subscribe({
+      next : (data) =>{
+        data.ora=data.ora.substring(0, 5); 
+        this.spettacoloService.getPostiSpettacolo(data.id!).subscribe(response =>{
+          this.postiPerFilaUtilsMiei.setPostiPerFila(response.postiPerFila)
+        })
+        this.spettacoloSelezionato = cloneDeep(data);
+        this.spettacoloSelezionatoModificato = cloneDeep(data)
+        this.modificheAbilitate = false;
+        this.searchTypeUtils.loader(SearchType.FilmModifica);
+        this.searchTypeUtils.loader(SearchType.SalaModifica);
+        this.spettacoloService.getStato(data.id!).subscribe(response => {
+          console.log(response)
+          this.stato=response
+        })
+      },
+      error : (error) =>{
+        this.messageService.addMessageError("non sono riuscito a selezionare lo spettacolo")
+      }
     })
-    this.spettacoloSelezionato = cloneDeep(spettacolo);
-    this.spettacoloSelezionatoModificato = cloneDeep(spettacolo)
-    this.modificheAbilitate = false;
-    this.searchTypeUtils.loader(SearchType.FilmModifica);
-    this.searchTypeUtils.loader(SearchType.SalaModifica);
+    
   }
 
   abilitaModifiche() {
@@ -160,9 +174,9 @@ export class AdminSpettacoloComponent {
           },
           error : (error) => {
             if(error.status === 400 ){
-              this.messageService.addMessageError("alcuni dati non vanno bene. O forse stai cercando di modificare uno spettacolo che ormai è finito.")
+              this.messageService.addMessageError("alcuni dati non vanno bene. O forse stai cercando di modificare sala/film di uno spettacolo che ormai è finito/in corso.")
             } else if(error.status === 409){
-              this.messageService.addMessageError("alcuni spettacoli sono in conflitto/qualcuno ha già prenotato/è finito")
+              this.messageService.addMessageError("alcuni spettacoli sono in conflitto/qualcuno ha già prenotato/è finito/in corso")
             }
              else {
               this.messageService.addMessageError("errore modifica spettacolo.")
