@@ -30,7 +30,7 @@
     <div class="ordini-sezione" *ngIf="ordini.length>0">
       <div *ngFor="let ordine of ordini">
         <p><strong>Codice Ordine:</strong> {{ ordine.id }}</p>
-        <p><strong>Prezzo:</strong> {{ ordine.totale | currency }}</p>
+        <p><strong>Prezzo:</strong> {{ ordine.totale | currency:"€" }}</p>
         <p><strong>Stato:</strong> {{ ordine.stato }}</p>
         <p><strong>Data:</strong> {{ ordine.data }}</p>
         <p><strong>Biglietti:</strong> </p>

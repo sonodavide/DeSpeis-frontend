@@ -180,7 +180,7 @@ export class AdminSpettacoloComponent {
             }
              else {
               this.messageService.addMessageError("errore modifica spettacolo.")
-            }
+            } 
           }
         });
     }
@@ -207,7 +207,7 @@ export class AdminSpettacoloComponent {
           this.searchTypeUtils.loader(SearchType.SpettacoloModifica)
         },
         error: () => {
-          this.messageService.addMessageError('errore eliminazione spettacolo');
+          this.messageService.addMessageError('errore eliminazione spettacolo. Forse è già finito?');
         },
       });
     }
