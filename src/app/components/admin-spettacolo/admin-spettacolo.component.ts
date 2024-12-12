@@ -207,7 +207,7 @@ export class AdminSpettacoloComponent {
           this.searchTypeUtils.loader(SearchType.SpettacoloModifica)
         },
         error: () => {
-          this.messageService.addMessageError('errore eliminazione spettacolo. Forse è già finito?');
+          this.messageService.addMessageError('errore eliminazione spettacolo. Forse è già finito/in corso/ci sono prenotazioni?');
         },
       });
     }

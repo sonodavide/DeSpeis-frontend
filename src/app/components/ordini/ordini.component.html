@@ -7,7 +7,7 @@
         <p><strong>Codice Ordine:</strong> {{ ordine.id }}</p>
         <p><strong>Data:</strong> {{ ordine.data | date: 'dd/MM/yyyy' }}</p>
         <p><strong>Stato:</strong> {{ ordine.stato }}</p>
-        <p><strong>Totale:</strong> {{ ordine.totale | currency: 'EUR' }}</p>
+        <p><strong>Totale:</strong> {{ ordine.totale | currency: '€' }}</p>
         <p><strong>Biglietti:</strong> </p>
         <ul>
           <li *ngFor="let biglietto of ordine.bigliettos">

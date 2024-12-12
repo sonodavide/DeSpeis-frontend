@@ -13,7 +13,7 @@ import cloneDeep  from 'lodash/cloneDeep';
   styleUrl: './admin-sala.component.css',
 })
 export class AdminSalaComponent {
-  esisteInUnoSpettacoloDaProiettare=false
+
   SearchType = SearchType;
   searchTypeUtils: SearchTypeUtils;
   constructor(
@@ -123,14 +123,6 @@ export class AdminSalaComponent {
         next: (response) => {
           this.salaSelezionata = cloneDeep(response);
           this.salaSelezionataModificata = cloneDeep(response);
-          this.salaService.esisteInUnoSpettacoloDaProiettare(sala.id!).subscribe({
-            next : (response) => {
-              this.esisteInUnoSpettacoloDaProiettare=response
-            },
-            error : () => {
-              this.messageService.addMessageError("errore, non so se è prevista una proiezione del film")
-            }
-          })
         },
         error: (error) => {
           this.messageService.addMessageError('impossibile caricare la sala');
@@ -149,8 +141,12 @@ export class AdminSalaComponent {
           this.modificheAbilitate = false;
           this.searchTypeUtils.loader(this.SearchType.SalaModifica)
         },
-        error: () => {
-          this.messageService.addMessageError('errore eliminazione sala. Possibile che ci siano spettacoli che si devono effettuare in questa sala?');
+        error: (error) => {
+          if(error.status === 409){
+            this.messageService.addMessageError('errore eliminazione sala. La sala è legata a uno o più spettacoli')
+          }else {
+            this.messageService.addMessageError('errore eliminazione sala.');
+          }
         },
       });
     }
@@ -169,7 +165,7 @@ export class AdminSalaComponent {
           if (error.status === 400) {
             this.messageService.addMessageError('alcuni dati non vanno bene.');
           } else if(error.status === 409){
-            this.messageService.addMessageError('ci sono spettacoli che devono ancora essere fatti in questa sala. Non posso modificarlo/eliminarlo')
+            this.messageService.addMessageError('ci sono spettacoli in devono ancora essere fatti/in corso in questa sala. Non posso modificarlo/eliminarlo')
           }
           else {
             this.messageService.addMessageError('errore modifica sala.');

@@ -53,7 +53,7 @@
     <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine }}</span>
     <button id="successivo" type="button"(click)="searchTypeUtils.paginaSuccessiva(SearchType.SalaModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine - 1">Avanti</button>
   </div>
-  <span *ngIf="esisteInUnoSpettacoloDaProiettare===true" class="mini-avviso-proiezione">Attenzione! Questo film è occupato in uno spettacolo che deve ancora avvenire!</span>
+  
   <div class="provo">
     <!-- Colonna per la lista delle file -->
     <div class="fila-list-container" *ngIf="salaSelezionataModificata">
