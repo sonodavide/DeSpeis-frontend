@@ -19,22 +19,25 @@
         [disabled]="paginaCorrenteSpettacoloModifica >= totalePagineSpettacoloModifica - 1">Avanti</button>
     </div>
   </div>
-  <div class="selezione-posti-container">
-    <div class="schermo">
-      <span>Schermo</span>
-    </div>
-    <div *ngIf="posti">
-      <div class="fila-container" *ngFor="let fila of formattafile(posti)">
-        <span class="etichetta-fila">{{ fila }}</span>
-        <div class="fila">
-          <div  *ngFor="let posto of posti?.get(fila) ?? []" [ngClass]="posto.stato"
-            [class.selezionato]="isPostoSelezionato(posto)" class="posto"(click)="selezionaPosto(posto)">
-            <span> {{posto.postoSedileId}}</span>
 
+  <div class="container">
+    <!-- Schermo -->
+    <div class="screen">
+      SCHERMO
+    </div>
+    
+    <!-- Layout posti -->
+    
+      <div class="fila-container" *ngFor="let fila of formattafile(posti!)">
+        <div class="fila-etichetta">{{ fila }}</div>
+        <div class="posti">
+          <div class="posto" [ngClass]="posto.stato"
+          [class.selezionato]="isPostoSelezionato(posto)" (click)="selezionaPosto(posto)" *ngFor="let posto of posti?.get(fila)">
+            {{ posto.postoSedileId }}
           </div>
         </div>
       </div>
-    </div>
+    
   </div>
 
   <div class="posti-selezionati">
@@ -46,4 +49,5 @@
   </div>
 
 
+  
 </div>

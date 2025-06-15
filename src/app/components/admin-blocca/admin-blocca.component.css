@@ -21,7 +21,7 @@
     margin-bottom: 15px;
   }
   
-  label {
+  etichetta {
     display: block;
     margin-top: 10px;
     color: #ffffff;
@@ -98,85 +98,78 @@
   }
   
 
-  .posto.libero {
-    background-color: lightgray;
-  }
-  
-  .posto.prenotato {
-    background-color: grey;
-    cursor: not-allowed;
-  }
-  
-  .posto.bloccato {
-    background-color: red;
-  }
-  
-  .posto.selezionato {
-    border-color: orange; 
-    color: white;
-  }
+/* Contenitore generale */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .selezione-posti-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .schermo {
-    background-color: gray;
-    padding: 10px;
-    margin-bottom: 20px;
-    width: 300px;
-    text-align: center;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-  }
-  
-  .fila-container {
-    display: flex;
-    align-items: center; /* Allinea verticalmente gli elementi */
-    margin-bottom: 10px;
-  }
-  
-  .etichetta-fila {
-    margin-right: 10px;
-    font-weight: bold;
-    color: white;
-    width: 30px; /* Assicura che ci sia spazio sufficiente per l'etichetta */
-  }
-  
-  .fila {
-    display: flex;
-  }
-  
-  .posto {
-    width: 40px;
-    height: 40px;
-    background-color: lightgray;
-    margin: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-    border: 2px solid black;
-  }
+/* Schermo */
+.screen {
+  background-color: lightgray;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+  max-width: 500px;
+  border: 2px solid black;
+}
 
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  .pagination button {
-    padding: 8px 12px;
-  }
-  
-  .pagination span {
-    color: #ffffff;
-  }
+/* Contenitore delle file */
+.fila-container {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+/* Etichetta della fila */
+.fila-etichetta {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+  width: 20px; /* Dimensione fissa per allineamento */
+  text-align: center;
+}
+
+/* Contenitore dei posti */
+.posti {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Spaziatura tra i posti */
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Singolo posto */
+.posto {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.set.libero {
+  background-color: lightgray;
+}
+
+.posto.prenotato {
+  background-color: grey;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.posto.bloccato {
+  background-color: red;
+}
+
+.posto.selezionato {
+  border-color: orange; 
+  color: white;
+}
