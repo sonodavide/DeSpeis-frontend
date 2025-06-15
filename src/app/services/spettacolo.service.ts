@@ -88,4 +88,33 @@ export class SpettacoloService {
     .set("id", id)
     return this.http.get<SpettacoloSenzaFilmTagsDto>(`${this.endpoint}/getSenzaFilmById`, {params})
   }
+
+  getAllSenzaFilmTags(pageNumber: number, pageSize: number) : Observable<PaginatedResponse<SpettacoloSenzaFilmTagsDto[]>> {
+    const params = new HttpParams()
+    .set("pageNumber", pageNumber)
+    .set("pageSize", pageSize)
+    return this.http.get<PaginatedResponse<SpettacoloSenzaFilmTagsDto[]>>(`${this.endpoint}/getAllSenzaFilmTags`, {params})
+  }
+
+  cercaSenzaFilmTags(date: string, pageNumber : number, pageSize : number): Observable<PaginatedResponse<SpettacoloSenzaFilmTagsDto>> {
+
+    const params = new HttpParams()
+    .set('date', date)
+    .set("pageNumber", pageNumber)
+    .set("pageSize", pageSize);
+    return this.http.get<PaginatedResponse<SpettacoloSenzaFilmTagsDto>>(`${this.endpoint}/cerca`, { params });
+  }
+
+  getNuovoSpettacoloById(id : number): Observable<NuovoSpettacoloDto>{
+    const params = new HttpParams()
+    .set("id", id)
+
+    return this.http.get<NuovoSpettacoloDto>(`${this.endpoint}/getNuovoSpettacoloById`, {params})
+  }
+  getStato(id : number) : Observable<string> {
+    const params = new HttpParams()
+    .set("id", id)
+
+    return this.http.get(`${this.endpoint}/getStato`, {params, responseType: "text"})
+  }
 }

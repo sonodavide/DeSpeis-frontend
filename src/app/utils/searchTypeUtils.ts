@@ -54,7 +54,7 @@ export class SearchTypeUtils {
           serviceCall = this.salaService?.getAllPaginated(data.paginaCorrente, data.pageSize);
           break;
         case SearchType.SpettacoloModifica:
-          serviceCall = this.spettacoloService?.getAllPaginated(data.paginaCorrente, data.pageSize);
+          serviceCall = this.spettacoloService?.getAllSenzaFilmTags(data.paginaCorrente, data.pageSize);
           break;
         case SearchType.AttoreModifica:
         case SearchType.AttoreCreazione:
@@ -126,7 +126,7 @@ export class SearchTypeUtils {
           serviceCall = this.genereService?.cerca(termine, data.paginaCorrente, data.pageSize);
           break;
         case SearchType.SpettacoloModifica:
-          serviceCall = this.spettacoloService?.cerca(termine, data.paginaCorrente, data.pageSize);
+          serviceCall = this.spettacoloService?.cercaSenzaFilmTags(termine, data.paginaCorrente, data.pageSize);
           break;
         // Aggiungere eventuali nuovi tipi di ricerca
         default:
