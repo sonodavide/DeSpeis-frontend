@@ -15,10 +15,8 @@ export class HomepageComponent {
   constructor(private testService : TestService, private keycloakService : KeycloakService, private filmService : FilmService, private messageService : MessagesService){}
   films : FilmDto[] = []
   ngOnInit() : void {
-    console.log(this.testService.test().subscribe())
     if(this.keycloakService.keycloak.authenticated && this.keycloakService.keycloak.tokenParsed && this.keycloakService.keycloak.clientId){
       let roles = this.keycloakService.keycloak.tokenParsed['resource_access']?.[this.keycloakService.keycloak.clientId]?.['roles'] || []
-      console.log(roles)
       
     }
     this.filmService.ultimeUscite().subscribe({
