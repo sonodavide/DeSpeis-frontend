@@ -73,6 +73,7 @@ export class SearchTypeUtils {
           break
         case SearchType.Biglietto:
           if(userId){
+            
             serviceCall = this.bigliettoService?.getByUserId(userId, data.paginaCorrente, data.pageSize);
           }
           break

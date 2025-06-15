@@ -6,6 +6,7 @@ import { PaginatedResponse } from '../../model/paginatedResponse';
 import { SpettacoloDto } from '../../model/spettacolo';
 import { FormatterUtils} from '../../utils/formatterUtils';
 import { MessagesService } from '../../services/messages.service';
+import { PostoResponseDto } from '../../model/postoResponseDto';
 @Component({
   selector: 'app-admin-blocca',
   templateUrl: './admin-blocca.component.html',
@@ -25,7 +26,7 @@ export class AdminBloccaComponent {
 
   posti? = new Map();
 
-  postiSelezionati: number[] = [];
+  postiSelezionati: PostoResponseDto[] = [];
   eseguiRicerca(){
     this.spettacoloService.cerca(this.termineRicercaSpettacoloModifica.trim(), this.paginaCorrenteSpettacoloModifica, this.pageSizeSpettacoloModifica)
           .subscribe((response: PaginatedResponse<NuovoSpettacoloDto>) => {
@@ -78,16 +79,16 @@ export class AdminBloccaComponent {
 
 
 
-  isPostoSelezionato(postoId: number): boolean {
-    return this.postiSelezionati.includes(postoId);
+  isPostoSelezionato(posto: PostoResponseDto): boolean {
+    return this.postiSelezionati.includes(posto);
   }
 
-  selezionaPosto(postoId : number){
-    if(this.postiSelezionati.includes(postoId)){
-      let index = this.postiSelezionati.indexOf(postoId);
+  selezionaPosto(posto : PostoResponseDto){
+    if(this.postiSelezionati.includes(posto)){
+      let index = this.postiSelezionati.indexOf(posto);
       this.postiSelezionati.splice(index)
     } else {
-      this.postiSelezionati.push(postoId)
+      this.postiSelezionati.push(posto)
     }
   }
 

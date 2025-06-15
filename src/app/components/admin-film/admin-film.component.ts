@@ -126,15 +126,14 @@ export class AdminFilmComponent {
       },
       error : (error) => {
         if(error.status === 409){
-          this.messageService.addMessageSuccess("errore accavallamento spettacoli")
+          this.messageService.addMessageError("errore accavallamento spettacoli")
         }else if(error.status === 400){
-          this.messageService.addMessageSuccess("alcuni dati non vanno bene/film non trovato")
+          this.messageService.addMessageError("alcuni dati non vanno bene/film non trovato")
         }else{
-          this.messageService.addMessageSuccess("errore aggiunta film")
+          this.messageService.addMessageError("errore aggiunta film")
         }
       }
     });
-    this.resetNuovoFilm();
   }
 
   // Funzione per modificare il film selezionato
@@ -149,11 +148,11 @@ export class AdminFilmComponent {
         },
         error : (error) => {
           if(error.status === 409){
-            this.messageService.addMessageSuccess("errore accavallamento spettacoli")
+            this.messageService.addMessageError("errore accavallamento spettacoli")
           }else if(error.status === 400){
-            this.messageService.addMessageSuccess("alcuni dati non vanno bene/film non trovato")
+            this.messageService.addMessageError("alcuni dati non vanno bene/film non trovato")
           }else{
-            this.messageService.addMessageSuccess("errore aggiunta film")
+            this.messageService.addMessageError("errore aggiunta film")
           }
         }
       });
@@ -167,7 +166,7 @@ export class AdminFilmComponent {
     if (this.filmSelezionato) {
       this.filmSelezionatoModificato = { ...this.filmSelezionato };
       this.modificheAbilitate = false;
-      this.messageService.addMessageSuccess("ho resettato il film che avevi selezionato")
+      this.messageService.addMessageSuccess("ho reimpostato il film che avevi selezionato")
     }
   }
 

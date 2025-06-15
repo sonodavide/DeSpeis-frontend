@@ -51,6 +51,7 @@
     background-color: #757575;
     color: white;
     cursor: not-allowed;
+    pointer-events: none;
   }
   
   .posto.selezionato {

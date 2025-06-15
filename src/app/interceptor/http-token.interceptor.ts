@@ -13,7 +13,11 @@ export class HttpTokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.keycloakService.keycloak.token;
+    
     if (token) {
+      if(this.keycloakService.keycloak.isTokenExpired()){
+        this.keycloakService.keycloak.updateToken()
+      }
       const authReq = request.clone({
         headers: new HttpHeaders({
           Authorization: `Bearer ${token}`

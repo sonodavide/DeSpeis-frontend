@@ -6,34 +6,34 @@
   
     <form (ngSubmit)="submitPayment()">
       <!-- Campo per il nome dell'intestatario -->
-      <label for="cardholderName">Nome Intestatario</label>
+      <label for="proprietarioCarta">Nome Intestatario</label>
       <input 
         type="text" 
-        id="cardholderName" 
-        name="cardholderName" 
-        [(ngModel)]="cardholderName" 
+        id="proprietarioCarta" 
+        name="proprietarioCarta" 
+        [(ngModel)]="proprietarioCarta" 
         required 
       />
       
       <!-- Campo per il numero della carta -->
-      <label for="cardNumber">Numero della Carta</label>
+      <label for="numeroCarta">Numero della Carta</label>
       <input 
         type="text" 
-        id="cardNumber" 
-        name="cardNumber" 
-        [(ngModel)]="cardNumber" 
+        id="numeroCarta" 
+        name="numeroCarta" 
+        [(ngModel)]="numeroCarta" 
         required 
         maxlength="19" 
         placeholder="1234 1234 1234 1234" 
       />
   
       <!-- Campo per la data di scadenza -->
-      <label for="expiryDate">Data di Scadenza</label>
+      <label for="dataScadenza">Data di Scadenza</label>
       <input 
         type="text" 
-        id="expiryDate" 
-        name="expiryDate" 
-        [(ngModel)]="expiryDate" 
+        id="dataScadenza" 
+        name="dataScadenza" 
+        [(ngModel)]="dataScadenza" 
         required 
         placeholder="MM/AA" 
         maxlength="5" 
@@ -49,11 +49,12 @@
         required 
         maxlength="3" 
         placeholder="123" 
+        req
       />
   
       <!-- Campo per l'importo totale (di sola lettura) -->
       <label>Totale da Pagare</label>
-      <div>{{ totalAmount | currency: 'EUR' }}</div>
+      <div>{{ totale | currency: 'EUR' }}</div>
       <div class="items-container">
         <h3>Stai compando:</h3>
         <ul>

@@ -159,6 +159,7 @@
              id="editDurata" 
              [(ngModel)]="filmSelezionatoModificato.durata" 
              name="editDurata" 
+             (input)="abilitaModifiche()"
              required />
   
       <label for="trama">Trama:</label>

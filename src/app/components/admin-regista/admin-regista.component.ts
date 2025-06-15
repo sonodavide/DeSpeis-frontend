@@ -72,7 +72,7 @@ export class AdminRegistaComponent {
         }
       },
     });
-    this.nuovoRegista = { id: undefined, nome: '', cognome: '' };
+
   }
 
   selezionaRegista(regista: RegistaDto) {
