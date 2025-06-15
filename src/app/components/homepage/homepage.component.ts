@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { TestService } from '../../services/test.service';
 import { KeycloakService } from '../../services/keycloak.service';
+import { FilmService } from '../../services/film.service';
+import { FilmDto } from '../../model/film';
+import { MessagesService } from '../../services/messages.service';
 
 @Component({
   selector: 'app-homepage',
@@ -9,7 +12,8 @@ import { KeycloakService } from '../../services/keycloak.service';
 })
 export class HomepageComponent {
 
-  constructor(private testService : TestService, private keycloakService : KeycloakService){}
+  constructor(private testService : TestService, private keycloakService : KeycloakService, private filmService : FilmService, private messageService : MessagesService){}
+  films : FilmDto[] = []
   ngOnInit() : void {
     console.log(this.testService.test().subscribe())
     if(this.keycloakService.keycloak.authenticated && this.keycloakService.keycloak.tokenParsed && this.keycloakService.keycloak.clientId){
@@ -17,6 +21,16 @@ export class HomepageComponent {
       console.log(roles)
       
     }
+    this.filmService.ultimeUscite().subscribe({
+      next : (response) => {
+        this.films=response
+      },
+      error : () => {
+        this.messageService.addMessageError("errore caricamento ultime uscite")
+      }
+    })
   }
+
+  
 
 }

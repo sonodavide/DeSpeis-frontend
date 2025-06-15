@@ -10,7 +10,7 @@ import { FormatterUtils } from '../../utils/formatterUtils';
 import { PostiPerFilaUtils } from '../../utils/postiPerFilaUtils';
 import { PostiResponse } from '../../model/postiResponse';
 import { MessagesService } from '../../services/messages.service';
-import { SpettacoloSenzaFilmDto } from '../../model/spettacoloSenzaFilm';
+import { SpettacoloSenzaFilmTagsDto } from '../../model/spettacoloSenzaFilmTags';
 @Component({
   selector: 'app-selezione-posti',
   templateUrl: './selezione-posti.component.html',
@@ -21,7 +21,7 @@ export class SelezionePostiComponent {
   postiPerFila : PostiPerFila[] = []
   spettacoloId:number = 0
   postiSelezionati: PostiPerFila[] = [];
-  
+  spettacolo: SpettacoloSenzaFilmTagsDto | null = null;
   public postiPerFilaUtilsMiei: PostiPerFilaUtils = new PostiPerFilaUtils();
   private postiPerFilaUtilsResponse: PostiPerFilaUtils = new PostiPerFilaUtils();
   constructor(private router : Router ,private spettacoloService : SpettacoloService, private route: ActivatedRoute, private prenotazioneService : PrenotazioneService, private sharedBigliettiService : SharedBigliettiService, private messageService : MessagesService) {
@@ -30,9 +30,17 @@ export class SelezionePostiComponent {
 
   ngOnInit(): void {
     this.spettacoloId = +this.route.snapshot.paramMap.get('id')!
-    this.spettacoloService.getPostiSpettacolo(this.spettacoloId).subscribe(response =>{
+    this.spettacoloService.getPostiSpettacoloAcquistabile(this.spettacoloId).subscribe(response =>{
       this.postiPerFila = response.postiPerFila
       this.postiPerFilaUtilsMiei.setPostiPerFila(this.postiPerFila)
+    })
+    this.spettacoloService.getSenzaFilmAcquistabileById(this.spettacoloId).subscribe({
+      next : (response) => {
+        this.spettacolo=response
+      },
+      error : () => {
+        this.messageService.addMessageError("non sono riuscito a caricare i dati dello spettacolo")
+      }
     })
   }
 
@@ -45,15 +53,15 @@ export class SelezionePostiComponent {
   }
 
   prenota(){
-    this.spettacoloService.getSenzaFilmAcquistabileById(this.spettacoloId).subscribe({
-      next: (response : SpettacoloSenzaFilmDto) =>{
-        this.sharedBigliettiService.updateData({postiSpettacoloResponseDto : {postiPerFila : this.postiSelezionati, spettacoloSenzaFilmDto : response}})
+    if(this.postiPerFilaUtilsResponse.getTotalePosti() > 0){
+      if(this.spettacolo){
+        this.sharedBigliettiService.updateData({postiSpettacoloResponseDto : {postiPerFila : this.postiSelezionati, spettacoloSenzaFilmDto : this.spettacolo}})
         this.router.navigate(["/checkout"])
-      },
-      error : () =>{
-        this.messageService.addMessageError("Errore durante il passaggio al checkout")
       }
-    })
+    } else {
+      this.messageService.addMessageError("non hai selezionato alcun posto")
+    }
+     
     
     
   }
