@@ -8,6 +8,7 @@ import { BigliettoService } from '../../services/biglietto.service';
 import { UtenteService } from '../../services/utente.service';
 import { FormatterUtils} from '../../utils/formatterUtils';
 import { KeycloakService } from '../../services/keycloak.service';
+import { MessagesService } from '../../services/messages.service';
 @Component({
   selector: 'app-utente-homepage',
   templateUrl: './utente-homepage.component.html',
@@ -24,7 +25,7 @@ export class UtenteHomepageComponent {
   };
   biglietti : BigliettoDto[] = []
   ordini : OrdineDto[] = []
-  constructor(private router: Router, private utenteService : UtenteService, private bigliettoService : BigliettoService, private ordineService : OrdineService, private keycloakService : KeycloakService) {
+  constructor(private router: Router, private utenteService : UtenteService, private bigliettoService : BigliettoService, private ordineService : OrdineService, private keycloakService : KeycloakService, private messageService : MessagesService) {
   }
 
   ngOnInit(): void {
@@ -41,11 +42,18 @@ export class UtenteHomepageComponent {
 
   getBigliettiOggi(){
     
-    this.bigliettoService.getByDate(new Date().toISOString().split('T')[0], 0, 5).subscribe(biglietti => this.biglietti=biglietti.content)
+    this.bigliettoService.getByDate(new Date().toISOString().split('T')[0], 0, 5).subscribe({
+      next : biglietti => this.biglietti=biglietti.content,
+      error : error => this.messageService.addMessageError("errore caricamento biglietti")
+
+    })
   }
 
   getOrdini(){ 
-    this.ordineService.getOrdini(0, 4).subscribe(ordini => this.ordini=ordini.content)
+    this.ordineService.getOrdini(0, 4).subscribe({
+      next : ordini => this.ordini=ordini.content,
+      error : error => this.messageService.addMessageError("errore caricamento ordini")
+    })
   }
 
   modificaInfo(): void {

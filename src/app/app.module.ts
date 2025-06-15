@@ -36,6 +36,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
 import { UtenteHomepageComponent } from './components/utente-homepage/utente-homepage.component';
 import { CercaTagComponent } from './components/cerca-tag/cerca-tag.component';
+import { MessagesComponent } from './components/messages/messages.component';
 
 export function kcFactory(kcService:KeycloakService){
   return ()=>kcService.init()
@@ -69,6 +70,7 @@ export function kcFactory(kcService:KeycloakService){
     AdminHomepageComponent,
     UtenteHomepageComponent,
     CercaTagComponent,
+    MessagesComponent,
   ],
   imports: [
     FormsModule,

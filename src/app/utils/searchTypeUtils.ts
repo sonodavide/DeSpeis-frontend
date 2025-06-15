@@ -10,6 +10,7 @@ import { GenereService } from '../services/genere.service';
 import { UtenteService } from '../services/utente.service';
 import { BigliettoService } from '../services/biglietto.service';
 import { OrdineService } from '../services/ordine.service';
+import { MessagesService } from '../services/messages.service';
 
 export class SearchTypeUtils {
   constructor(
@@ -22,7 +23,8 @@ export class SearchTypeUtils {
     private genereService?: GenereService,
     private utenteService?: UtenteService,
     private bigliettoService?: BigliettoService,
-    private ordineService?: OrdineService
+    private ordineService?: OrdineService,
+    private messageService?: MessagesService
   ){}
   getSearchData(
     searchType: SearchType
@@ -85,10 +87,15 @@ export class SearchTypeUtils {
       }
 
       if (serviceCall) {
-        serviceCall.subscribe((response: PaginatedResponse<any>) => {
-          data.risultati = response.content;
-          console.log(data.risultati)
-          data.totalePagine = response.totalPages;
+        serviceCall.subscribe({
+          next : (response: PaginatedResponse<any>) => {
+            data.risultati = response.content;
+            
+            data.totalePagine = response.totalPages;
+          },
+          error : (err) => {
+            this.messageService?.addMessageError("errore caricamento entità")
+          }
         });
       }
     }
@@ -126,9 +133,14 @@ export class SearchTypeUtils {
       }
 
       if (serviceCall) {
-        serviceCall.subscribe((response: PaginatedResponse<any>) => {
-          data.risultati = response.content;
-          data.totalePagine = response.totalPages;
+        serviceCall.subscribe({
+          next : (response: PaginatedResponse<any>) => {
+            data.risultati = response.content;
+            data.totalePagine = response.totalPages;
+          },
+          error : (error) =>{
+            this.messageService?.addMessageError("errore ricerca")
+          }
         });
       }
     }

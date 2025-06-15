@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AttoreService } from '../../services/attore.service';
 import { GenereService } from '../../services/genere.service';
 import { RegistaService } from '../../services/regista.service';
+import { MessagesService } from '../../services/messages.service';
 @Component({
   selector: 'app-dettagli-film',
   templateUrl: './dettagli-film.component.html',
@@ -20,6 +21,7 @@ export class DettagliFilmComponent implements OnInit {
     private filmService: FilmService,
     private route: ActivatedRoute,  // Per accedere ai parametri della rotta
     private router: Router,
+    private messageService : MessagesService
 
   ) {}
 
@@ -32,9 +34,10 @@ export class DettagliFilmComponent implements OnInit {
   }
 
   getFilmDetails(id: number): void {
-    this.filmService.getFilm(id).subscribe(
-      film => this.film = film,  // Supponendo che il risultato sia un array e prendi il primo elemento
-    )
+    this.filmService.getFilm(id).subscribe({
+      next : (film) => this.film = film,  
+      error : () => this.messageService.addMessageError("errore caricamento dettagli")
+  })
   }
 
 

@@ -11,6 +11,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { PaginatedResponse } from '../../model/paginatedResponse';
 import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
+import { MessagesService } from '../../services/messages.service';
 @Component({
   selector: 'app-admin-film',
   templateUrl: './admin-film.component.html',
@@ -77,7 +78,8 @@ export class AdminFilmComponent {
     private filmService: FilmService,
     private genereService: GenereService,
     private registaService: RegistaService,
-    private attoreService: AttoreService
+    private attoreService: AttoreService,
+    private messageService: MessagesService
   ) {
     this.searchTypeUtils = new SearchTypeUtils(
       this.searchData,
@@ -86,7 +88,11 @@ export class AdminFilmComponent {
       undefined,
       attoreService,
       registaService,
-      genereService
+      genereService,
+      undefined,
+      undefined,
+      undefined,
+      messageService
     );
   }
 
@@ -113,14 +119,40 @@ export class AdminFilmComponent {
 
   // Funzione per creare un nuovo film
   creaFilm() {
-    this.filmService.nuovo(this.nuovoFilm).subscribe();
+    this.filmService.nuovo(this.nuovoFilm).subscribe({
+      next : () => {
+        this.messageService.addMessageSuccess("film aggiunto con successo!")
+      },
+      error : (error) => {
+        if(error.status === 409){
+          this.messageService.addMessageSuccess("errore accavallamento spettacoli")
+        }else if(error.status === 400){
+          this.messageService.addMessageSuccess("alcuni dati non vanno bene/film non trovato")
+        }else{
+          this.messageService.addMessageSuccess("errore aggiunta film")
+        }
+      }
+    });
     this.resetNuovoFilm();
   }
 
   // Funzione per modificare il film selezionato
   modificaFilm() {
     if (this.filmSelezionatoModificato) {
-      this.filmService.nuovo(this.filmSelezionatoModificato).subscribe();
+      this.filmService.nuovo(this.filmSelezionatoModificato).subscribe({
+        next : () => {
+          this.messageService.addMessageSuccess("film modificato con successo!")
+        },
+        error : (error) => {
+          if(error.status === 409){
+            this.messageService.addMessageSuccess("errore accavallamento spettacoli")
+          }else if(error.status === 400){
+            this.messageService.addMessageSuccess("alcuni dati non vanno bene/film non trovato")
+          }else{
+            this.messageService.addMessageSuccess("errore aggiunta film")
+          }
+        }
+      });
       this.modificheAbilitate = false;
     }
   }
@@ -137,7 +169,14 @@ export class AdminFilmComponent {
   // Funzione per eliminare il film selezionato
   eliminaFilm() {
     if (this.filmSelezionato) {
-      this.filmService.elimina(this.filmSelezionato).subscribe();
+      this.filmService.elimina(this.filmSelezionato).subscribe({
+        next : () => {
+          this.messageService.addMessageSuccess("film eliminato con successo")
+        },
+        error : () => {
+          this.messageService.addMessageError("errore eliminazione film")
+        }
+      });
       this.filmSelezionato = null;
     }
   }

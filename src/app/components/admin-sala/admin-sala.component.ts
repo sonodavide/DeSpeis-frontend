@@ -5,6 +5,7 @@ import { SalaService } from '../../services/sala.service';
 import { SalaConPosti } from '../../model/salaConPostiPerFila';
 import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
+import { MessagesService } from '../../services/messages.service';
 
 @Component({
   selector: 'app-admin-sala',
@@ -14,8 +15,8 @@ import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 export class AdminSalaComponent {
   SearchType = SearchType
   searchTypeUtils : SearchTypeUtils
-  constructor(private salaService : SalaService){
-    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, salaService)
+  constructor(private salaService : SalaService, private messageService : MessagesService){
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, salaService, undefined, undefined, undefined, undefined, undefined, undefined, undefined, messageService)
   }
   searchData: Partial<Record<SearchType, SearchData>> = {
     [SearchType.SalaModifica]: {
@@ -67,7 +68,18 @@ export class AdminSalaComponent {
 
   creaSala() {
     
-    this.salaService.nuovo(this.nuovaSala).subscribe()
+    this.salaService.nuovo(this.nuovaSala).subscribe({
+      next : () => {
+        this.messageService.addMessageSuccess("sala aggiunta con successo!")
+      },
+      error : (error) => {
+        if(error.status === 400 ){
+          this.messageService.addMessageError("alcuni dati non vanno bene.")
+        } else {
+          this.messageService.addMessageError("errore aggiunta sala.")
+        }
+      }
+    })
     this.resetNuovaSala()
   }
 
@@ -96,8 +108,17 @@ export class AdminSalaComponent {
   }
   modificaSala() : void {
     if(this.salaSelezionataModificata){
-      this.salaService.nuovo(this.salaSelezionataModificata).subscribe(response => {
-        this.modificheAbilitateSetter(false)
+      this.salaService.nuovo(this.salaSelezionataModificata).subscribe({
+        next : () => {
+          this.messageService.addMessageSuccess("sala aggiunta con successo!")
+        },
+        error : (error) => {
+          if(error.status === 400 ){
+            this.messageService.addMessageError("alcuni dati non vanno bene.")
+          } else {
+            this.messageService.addMessageError("errore aggiunta sala.")
+          }
+        }
       })
     }
   }

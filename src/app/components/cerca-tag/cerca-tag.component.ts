@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { RegistaService } from '../../services/regista.service';
 import { GenereService } from '../../services/genere.service';
 import { AttoreService } from '../../services/attore.service';
+import { MessagesService } from '../../services/messages.service';
 @Component({
   selector: 'app-cerca-tag',
   templateUrl: './cerca-tag.component.html',
@@ -21,7 +22,8 @@ export class CercaTagComponent {
     private router: Router,
     private attoreService: AttoreService,
     private genereService: GenereService,
-    private registaService: RegistaService
+    private registaService: RegistaService,
+    private messageService: MessagesService
   ) {}
 
   ngOnInit() {
@@ -48,10 +50,14 @@ export class CercaTagComponent {
   loadData(): void {
     this.filmService
       .cercaTag(this.tag, this.id, this.paginaCorrente)
-      .subscribe((data) => {
+      .subscribe({next : (data) => {
         this.films = data.content;
         this.totalePagine = data.totalPages;
-      });
+      },
+      error : (error) =>{
+        this.messageService.addMessageError("impossibile caricare film")
+      }
+  });
   }
   paginaPrecedente(): void {
     if (this.paginaCorrente > 0) {
