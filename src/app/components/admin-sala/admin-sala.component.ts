@@ -38,9 +38,7 @@ export class AdminSalaComponent {
 
   }
 
-  modificheAbilitateSetter(stato : boolean) : void {
-    this.modificheAbilitate=stato;
-  }
+  
   rimuoviFila() {
     
     if (this.nuovaSala.postis.length > 1) {
@@ -71,6 +69,7 @@ export class AdminSalaComponent {
     this.salaService.nuovo(this.nuovaSala).subscribe({
       next : () => {
         this.messageService.addMessageSuccess("sala aggiunta con successo!")
+        this.nuovaSala={id: undefined, postis:[]}
       },
       error : (error) => {
         if(error.status === 400 ){
@@ -87,11 +86,15 @@ export class AdminSalaComponent {
 
   selezionaSala(sala: SalaDto) {
     if(sala.id){
-      this.salaService.getPostiPerFila(sala.id!).subscribe(response =>{
+      this.salaService.getPostiPerFila(sala.id!).subscribe({
+        next : response =>{
         this.salaSelezionata = response;
         this.salaSelezionataModificata = { ...response };
-
-      })
+      },
+      error : error => {
+        this.messageService.addMessageError("impossibile caricare la sala")
+      }
+    })
 
     }
   }
@@ -100,10 +103,19 @@ export class AdminSalaComponent {
 
   eliminaSala() : void {
     if (this.salaSelezionata) {
-      this.salaService.elimina({id : this.salaSelezionata.id}).subscribe()
-      this.salaSelezionata = null;
-      this.salaSelezionataModificata = null;
-      this.modificheAbilitateSetter(false)
+      this.salaService.elimina({id : this.salaSelezionata.id}).subscribe({
+        next: () => {
+          this.messageService.addMessageSuccess(
+            'sala eliminata con successo'
+          );
+          this.salaSelezionata = null;
+          this.salaSelezionataModificata = null;
+          this.modificheAbilitate = false;
+        },
+        error: () => {
+          this.messageService.addMessageError('errore eliminazione sala');
+        },
+      });
     }
   }
   modificaSala() : void {
@@ -111,6 +123,9 @@ export class AdminSalaComponent {
       this.salaService.nuovo(this.salaSelezionataModificata).subscribe({
         next : () => {
           this.messageService.addMessageSuccess("sala aggiunta con successo!")
+          this.salaSelezionata=null
+          this.salaSelezionataModificata=null
+          this.modificheAbilitate=false
         },
         error : (error) => {
           if(error.status === 400 ){
@@ -124,8 +139,10 @@ export class AdminSalaComponent {
   }
 
   annullaModifiche() : void {
+
     this.salaSelezionataModificata=this.salaSelezionata
-    this.modificheAbilitateSetter(false)
+    this.modificheAbilitate=false
+    this.messageService.addMessageSuccess("ho reimpostato la sala che avevi selezionato")
   }
   aggiungiFilaModifica() {
     if(this.salaSelezionataModificata){
@@ -140,7 +157,7 @@ export class AdminSalaComponent {
     if(this.salaSelezionataModificata){
       if (this.salaSelezionataModificata.postis.length > 1) {
         this.salaSelezionataModificata.postis.pop()
-        this.modificheAbilitateSetter(true)
+        this.modificheAbilitate=true
       }
     }
   }
@@ -150,7 +167,7 @@ export class AdminSalaComponent {
       for(let posto of this.salaSelezionataModificata.postis){
         if(posto.fila===nomeFila){
           posto.sedili++
-          this.modificheAbilitateSetter(true)
+          this.modificheAbilitate=true
         }
     }
     }
@@ -161,7 +178,7 @@ export class AdminSalaComponent {
       for(let posto of this.salaSelezionataModificata.postis){
         if(posto.fila===nomeFila && posto.sedili>1){
           posto.sedili--
-          this.modificheAbilitateSetter(true)
+          this.modificheAbilitate=true
         }
       }
     }

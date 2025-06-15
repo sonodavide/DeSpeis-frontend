@@ -122,6 +122,7 @@ export class AdminFilmComponent {
     this.filmService.nuovo(this.nuovoFilm).subscribe({
       next : () => {
         this.messageService.addMessageSuccess("film aggiunto con successo!")
+        this.resetNuovoFilm()
       },
       error : (error) => {
         if(error.status === 409){
@@ -142,6 +143,9 @@ export class AdminFilmComponent {
       this.filmService.nuovo(this.filmSelezionatoModificato).subscribe({
         next : () => {
           this.messageService.addMessageSuccess("film modificato con successo!")
+          this.filmSelezionato=null
+          this.filmSelezionatoModificato=null
+          this.modificheAbilitate=false
         },
         error : (error) => {
           if(error.status === 409){
@@ -163,6 +167,7 @@ export class AdminFilmComponent {
     if (this.filmSelezionato) {
       this.filmSelezionatoModificato = { ...this.filmSelezionato };
       this.modificheAbilitate = false;
+      this.messageService.addMessageSuccess("ho resettato il film che avevi selezionato")
     }
   }
 
@@ -172,12 +177,14 @@ export class AdminFilmComponent {
       this.filmService.elimina(this.filmSelezionato).subscribe({
         next : () => {
           this.messageService.addMessageSuccess("film eliminato con successo")
+          this.filmSelezionato = null;
+          this.filmSelezionatoModificato=null
+          this.modificheAbilitate=false
         },
         error : () => {
           this.messageService.addMessageError("errore eliminazione film")
         }
       });
-      this.filmSelezionato = null;
     }
   }
 
