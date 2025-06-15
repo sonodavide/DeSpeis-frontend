@@ -3,19 +3,34 @@ import { RegistaDto } from '../../model/film';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { RegistaService } from '../../services/regista.service';
 import { PaginatedResponse } from '../../model/paginatedResponse';
+import { SearchData, SearchType } from '../../utils/searchType';
+import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 @Component({
   selector: 'app-admin-regista',
   templateUrl: './admin-regista.component.html',
   styleUrl: './admin-regista.component.css'
 })
 export class AdminRegistaComponent {
-  constructor(private registaService : RegistaService){}
+  SearchType = SearchType
+  searchTypeUtils : SearchTypeUtils
+  constructor(private registaService : RegistaService){
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, undefined, undefined, undefined, undefined, registaService)
+  }
+  searchData: Partial<Record<SearchType, SearchData>> = {
+    [SearchType.RegistaModifica]: {
+      termine: '',
+      paginaCorrente: 0,
+      totalePagine: 0,
+      pageSize: 4,
+      risultati: [],
+    }
+  };
 
   
 
   isLoading = false;
   ngOnInit() : void{
-    this.getRegisti()
+   this.searchTypeUtils.loader(SearchType.RegistaModifica)
   }
 
   paginaCorrente = 0;
@@ -33,12 +48,7 @@ export class AdminRegistaComponent {
     this.nuovoRegista = { id: undefined, nome: '', cognome: '' };
   }
 
-  getRegisti() : void {
-    this.registaService.getAllPaginated(this.paginaCorrente, this.pageSize).subscribe(response => {
-      this.registi=response.content
-      this.totalePagine=response.totalPages
-    })
-  }
+
 
   selezionaRegista(regista: RegistaDto) {
     this.registaSelezionato = regista;
@@ -71,38 +81,8 @@ export class AdminRegistaComponent {
       this.registaSelezionatoModificato = null;
     }
   }
-  eseguiRicerca(): void {
-    this.paginaCorrente=0
-    if (this.termineRicerca.trim()) {
-      this.registaService.cerca(this.termineRicerca, this.paginaCorrente, this.pageSize)
-        .subscribe((response: PaginatedResponse<RegistaDto>) => {
-          this.registi = response.content;
-          this.totalePagine = response.totalPages;
-        });
-    } else {
-      this.getRegisti();
-    }
-  }
 
-  resetRicerca(): void {
-    this.termineRicerca = '';
-    this.paginaCorrente = 0;
-    this.getRegisti();
-  }
 
-  paginaPrecedente(): void {
-    if (this.paginaCorrente > 0) {
-      this.paginaCorrente--;
-      this.termineRicerca ? this.eseguiRicerca() : this.getRegisti();
-    }
-  }
-
-  paginaSuccessiva(): void {
-    if (this.paginaCorrente < this.totalePagine - 1) {
-      this.paginaCorrente++;
-      this.termineRicerca ? this.eseguiRicerca() : this.getRegisti();
-    }
-  }
 }
 
 

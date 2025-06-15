@@ -7,8 +7,10 @@
       <div class="film-info">
         <h1 class="film-title">{{ film.titolo }}</h1>
         <div class="film-metadata">
-          <span><strong>Durata:</strong> {{ film.durata }} min</span>
-          <span><strong>Data di uscita:</strong> {{ film.datauscita | date: 'dd-MM-yyyy' }}</span>
+          <ul>
+            <li>Durata: {{ film.durata }} min</li>
+            <li>Data di uscita: {{ film.datauscita | date: 'dd-MM-yyyy' }}</li>
+          </ul>
         </div>
         <p class="film-trama">{{ film.trama }}</p>
   
@@ -22,21 +24,21 @@
       <div *ngIf="film.attores.length > 0" class="film-cast">
         <h2>Cast</h2>
         <ul>
-          <li *ngFor="let attore of film.attores">{{ attore.nome }} {{ attore.cognome }}</li>
+          <li *ngFor="let attore of film.attores" (click)="cercaTag('attore',attore.id)">{{ attore.nome }} {{ attore.cognome }}</li>
         </ul>
       </div>
   
       <div *ngIf="film.registas.length > 0" class="film-directors">
         <h2>Regista</h2>
         <ul>
-          <li *ngFor="let regista of film.registas">{{ regista.nome }} {{ regista.cognome }}</li>
+          <li *ngFor="let regista of film.registas" (click)="cercaTag('regista',regista.id)">{{ regista.nome }} {{ regista.cognome }}</li>
         </ul>
       </div>
   
       <div *ngIf="film.generes.length > 0" class="film-genres">
         <h2>Genere</h2>
         <ul>
-          <li *ngFor="let genere of film.generes">{{ genere.genere }}</li>
+          <li *ngFor="let genere of film.generes" (click)="cercaTag('genere',genere.id)">{{ genere.genere }} </li>
         </ul>
       </div>
     </div>

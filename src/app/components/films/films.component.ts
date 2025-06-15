@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FilmService } from '../../services/film.service';
 import { FilmDto } from '../../model/film';
 import { Router } from '@angular/router';
+import { SearchData, SearchType } from '../../utils/searchType';
+import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 
 @Component({
   selector: 'app-films',
@@ -9,18 +11,27 @@ import { Router } from '@angular/router';
   styleUrl: './films.component.css'
 })
 export class FilmsComponent {
-
-  constructor(private filmService : FilmService, private router: Router){}
+  searchData: Partial<Record<SearchType, SearchData>> = {
+    [SearchType.FilmModifica]: {
+      termine: '',
+      paginaCorrente: 0,
+      totalePagine: 0,
+      pageSize: 10,
+      risultati: [],
+    }}
+  SearchType = SearchType
+  searchTypeUtils: SearchTypeUtils;
+  constructor(private filmService : FilmService, private router: Router){
+    this.searchTypeUtils = new SearchTypeUtils(this.searchData, filmService)
+  }
   films : FilmDto[] = []
   
   ngOnInit() : void{
-    this.loadFilms()
+    this.searchTypeUtils.loader(SearchType.FilmModifica)
     
   }
 
-  loadFilms() : void{
-    this.filmService.getFilms().subscribe(film => this.films = film)
-  }
+ 
 
   goToFilmDetail(filmId: number): void {
     this.router.navigate(['/film', filmId]);  // Naviga alla rotta del film con l'ID specifico

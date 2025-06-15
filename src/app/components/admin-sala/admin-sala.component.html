@@ -40,16 +40,16 @@
   <h2>Modifica Sala: <span *ngIf="salaSelezionata">{{salaSelezionata.id}} </span></h2>
   <!-- Loading indicator -->
 
-  <ul *ngIf="sale.length > 0">
-    <li *ngFor="let sala of sale" (click)="selezionaSala(sala)">
+  <ul *ngIf="searchTypeUtils.getSearchData(SearchType.SalaModifica).risultati.length > 0">
+    <li *ngFor="let sala of searchTypeUtils.getSearchData(SearchType.SalaModifica).risultati" (click)="selezionaSala(sala)">
       > {{ sala.id }} 
     </li>
   </ul>
           <!-- Sezione Paginazione -->
   <div class="pagination">
-    <button (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
-    <span>Pagina {{ paginaCorrente + 1 }} di {{ totalePagine }}</span>
-    <button (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
+    <button (click)="searchTypeUtils.paginaPrecedente(SearchType.SalaModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente === 0">Indietro</button>
+    <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine }}</span>
+    <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.SalaModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine - 1">Avanti</button>
   </div>
   <div class="provo">
     <!-- Colonna per la lista delle file -->

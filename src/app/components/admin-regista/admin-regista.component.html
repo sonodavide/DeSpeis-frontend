@@ -1,66 +1,95 @@
 <div class="admin-regista-container">
-    <!-- Sezione Creazione -->
-    <div class="section create-section">
-      <h2>Crea Nuovo Regista</h2>
-      <form (ngSubmit)="creaRegista()">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" [(ngModel)]="nuovoRegista.nome" name="nome" required />
-  
-        <label for="cognome">Cognome:</label>
-        <input type="text" id="cognome" [(ngModel)]="nuovoRegista.cognome" name="cognome" required />
-  
-        <button type="submit" class="create-button">Crea</button>
-      </form>
-    </div>
-  
-    <!-- Sezione Ricerca e Dettagli -->
-    <div class="section search-section">
-      <h2>Cerca Regista</h2>
-      <input type="text" placeholder="Cerca regista per nome o cognome" [(ngModel)]="termineRicerca"   />
-      <button (click)="eseguiRicerca()">Cerca</button>
-      <button (click)="resetRicerca()">Reset</button>
-      <ul *ngIf="registi.length > 0">
-        <li *ngFor="let regista of registi" (click)="selezionaRegista(regista)">
-          > {{ regista.nome }} {{ regista.cognome }}
-        </li>
-      </ul>
+  <!-- Sezione Creazione -->
+  <div class="section create-section">
+    <h2>Crea Nuovo Regista</h2>
+    <form (ngSubmit)="creaRegista()">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" [(ngModel)]="nuovoRegista.nome" name="nome" required />
 
-            <!-- Sezione Paginazione -->
-    <div class="pagination">
-      <button (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
-      <span>Pagina {{ paginaCorrente + 1 }} di {{ totalePagine }}</span>
-      <button (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
-    </div>
-  
-      <!-- Dettagli Regista Selezionato -->
-<div *ngIf="registaSelezionatoModificato" class="details-section">
-    <h3>Dettagli Regista</h3>
-    <label for="nome">Nome:</label>
-    <input
-      type="text"
-      id="nome"
-      [(ngModel)]="registaSelezionatoModificato.nome"
-      (input)="abilitaModifiche()"
-    />
-  
-    <label for="cognome">Cognome:</label>
-    <input
-      type="text"
-      id="cognome"
-      [(ngModel)]="registaSelezionatoModificato.cognome"
-      (input)="abilitaModifiche()"
-    />
-  
-    <button class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaRegista()">
-      Modifica
-    </button>
-    <button class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">
-      Annulla Modifica
-    </button>
-    <button class="delete-button" (click)="eliminaRegista()">
-      Elimina
-    </button>
+      <label for="cognome">Cognome:</label>
+      <input type="text" id="cognome" [(ngModel)]="nuovoRegista.cognome" name="cognome" required />
+
+      <button type="submit" class="create-button">Crea</button>
+    </form>
   </div>
-  
+
+  <!-- Sezione Ricerca e Dettagli -->
+  <div class="section search-section">
+    <h2>Cerca Regista</h2>
+    <input
+      type="text"
+      placeholder="Cerca regista per nome o cognome"
+      [(ngModel)]="searchTypeUtils.getSearchData(SearchType.RegistaModifica).termine"
+    />
+    <button (click)="searchTypeUtils.eseguiRicerca(SearchType.RegistaModifica)">Cerca</button>
+    <button (click)="searchTypeUtils.resettaRicerca(SearchType.RegistaModifica)">Reset</button>
+    <ul *ngIf="searchTypeUtils.getSearchData(SearchType.RegistaModifica).risultati.length > 0">
+      <li
+        *ngFor="let regista of searchTypeUtils.getSearchData(SearchType.RegistaModifica).risultati"
+        (click)="selezionaRegista(regista)"
+      >
+        > {{ regista.nome }} {{ regista.cognome }}
+      </li>
+    </ul>
+
+    <!-- Sezione Paginazione -->
+    <div class="pagination">
+      <button
+        (click)="searchTypeUtils.paginaPrecedente(SearchType.RegistaModifica)"
+        [disabled]="searchTypeUtils.getSearchData(SearchType.RegistaModifica).paginaCorrente === 0"
+      >
+        Indietro
+      </button>
+      <span>
+        Pagina
+        {{ searchTypeUtils.getSearchData(SearchType.RegistaModifica).paginaCorrente + 1 }} di
+        {{ searchTypeUtils.getSearchData(SearchType.RegistaModifica).totalePagine }}
+      </span>
+      <button
+        (click)="searchTypeUtils.paginaSuccessiva(SearchType.RegistaModifica)"
+        [disabled]="
+          searchTypeUtils.getSearchData(SearchType.RegistaModifica).paginaCorrente >=
+          searchTypeUtils.getSearchData(SearchType.RegistaModifica).totalePagine - 1
+        "
+      >
+        Avanti
+      </button>
+    </div>
+
+    <!-- Dettagli Regista Selezionato -->
+    <div *ngIf="registaSelezionatoModificato" class="details-section">
+      <h3>Dettagli Regista</h3>
+      <label for="nome">Nome:</label>
+      <input
+        type="text"
+        id="nome"
+        [(ngModel)]="registaSelezionatoModificato.nome"
+        (input)="abilitaModifiche()"
+      />
+
+      <label for="cognome">Cognome:</label>
+      <input
+        type="text"
+        id="cognome"
+        [(ngModel)]="registaSelezionatoModificato.cognome"
+        (input)="abilitaModifiche()"
+      />
+
+      <button
+        class="edit-button"
+        [disabled]="!modificheAbilitate"
+        (click)="modificaRegista()"
+      >
+        Modifica
+      </button>
+      <button
+        class="cancel-button"
+        [disabled]="!modificheAbilitate"
+        (click)="annullaModifiche()"
+      >
+        Annulla Modifica
+      </button>
+      <button class="delete-button" (click)="eliminaRegista()">Elimina</button>
+    </div>
   </div>
 </div>

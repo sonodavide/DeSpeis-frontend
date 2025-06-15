@@ -10,6 +10,20 @@ export enum SearchType {
     SalaCreazione = 'salaCreazione',
     SalaModifica = 'salaModifica',
     SpettacoloCreazione = 'spettacoloCreazione',
-    SpettacoloModifica = 'spettacoloModifica'
-    
+    SpettacoloModifica = 'spettacoloModifica',
+    Utente = 'utente',
+    Biglietto = 'biglietto',
+    Ordine = 'ordine',
+    CercaGenere = 'cercaGenere',    
+    CercaAttore = 'cercaAttore',
+    CercaRegista = 'cercaRegista'    
   }
+
+  export type SearchData = {
+    termine: string;
+    paginaCorrente: number;
+    totalePagine: number;
+    pageSize: number;
+    risultati: any[]; // Sostituisci `any` con il tipo specifico dei risultati se noto
+  };
+  

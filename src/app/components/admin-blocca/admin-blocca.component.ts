@@ -4,7 +4,7 @@ import { PrenotazioneService } from '../../services/prenotazione.service';
 import { NuovoSpettacoloDto } from '../../model/nuovoSpettacolo';
 import { PaginatedResponse } from '../../model/paginatedResponse';
 import { SpettacoloDto } from '../../model/spettacolo';
-import { UtilsFormatter } from '../../utils/utilsFormatter';
+import { FormatterUtils} from '../../utils/formatterUtils';
 @Component({
   selector: 'app-admin-blocca',
   templateUrl: './admin-blocca.component.html',
@@ -109,6 +109,6 @@ export class AdminBloccaComponent {
   }
   
   formattafile(map : Map<any, any>) : any[]{
-    return UtilsFormatter.mapKeysToArrayReversed(map)
+    return FormatterUtils.mapKeysToArrayReversed(map)
   }
 }

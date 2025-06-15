@@ -30,11 +30,12 @@ import { AdminSalaComponent } from './components/admin-sala/admin-sala.component
 import { AdminUtenteComponent } from './components/admin-utente/admin-utente.component';
 import { AdminBloccaComponent } from './components/admin-blocca/admin-blocca.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { KeycloakService } from './services/keyclock/keyclock.service';
+import { KeycloakService } from './services/keycloak.service';
 import { HttpTokenInterceptor } from './interceptor/http-token.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
 import { UtenteHomepageComponent } from './components/utente-homepage/utente-homepage.component';
+import { CercaTagComponent } from './components/cerca-tag/cerca-tag.component';
 
 export function kcFactory(kcService:KeycloakService){
   return ()=>kcService.init()
@@ -67,6 +68,7 @@ export function kcFactory(kcService:KeycloakService){
     FooterComponent,
     AdminHomepageComponent,
     UtenteHomepageComponent,
+    CercaTagComponent,
   ],
   imports: [
     FormsModule,

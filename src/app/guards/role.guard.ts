@@ -1,6 +1,6 @@
 import {CanActivateFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
-import { KeycloakService } from '../services/keyclock/keyclock.service';
+import { KeycloakService } from '../services/keycloak.service';
 
 export const roleGuard: CanActivateFn = (route, state) => {
   const keycloakService = inject(KeycloakService);

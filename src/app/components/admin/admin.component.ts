@@ -6,7 +6,7 @@ import { RegistaDto } from '../../model/film';
 import { OrdineDto } from '../../model/ordineDto';
 import { SalaDto } from '../../model/salaDto';
 import { SpettacoloDto } from '../../model/spettacolo';
-import { UtenteDto } from '../../model/utenteDto';
+
 import { Router } from '@angular/router';
 import { NumeriUtiliService } from '../../services/numeri-utili.service';
 @Component({

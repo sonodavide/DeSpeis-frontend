@@ -47,4 +47,11 @@ export class FilmService {
     return this.http.get<PaginatedResponse<FilmDto>>(`${this.apiUrl}/paged`, {params})
   }
 
+  cercaTag(tag : string, id: number, pageNumber: number){
+    const params = new HttpParams()
+    .set("tag", tag)
+    .set("id", id)
+    .set("pageNumber", pageNumber)
+    return this.http.get<PaginatedResponse<FilmDto>>(`${this.apiUrl}/cercaTag`, {params})
+  }
 }

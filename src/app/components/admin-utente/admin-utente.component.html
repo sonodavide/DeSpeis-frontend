@@ -1,83 +1,88 @@
 <div class="admin-utenti-container">
-   <!-- Sezione Ricerca e Dettagli -->
-    <div class="section search-section">
-      <h2>Cerca Utente</h2>
-      <input type="text" placeholder="Cerca utente per nome o username" [(ngModel)]="termineRicerca"  />
-      <button (click)="eseguiRicerca()">Cerca</button>
-      <button (click)="resetRicerca()">Reset</button>
+  <!-- Sezione Ricerca e Dettagli -->
+  <div class="section search-section">
+    <h2>Cerca Utente</h2>
+    <input type="text" placeholder="Cerca utente per nome o username" [(ngModel)]="searchTypeUtils.getSearchData(SearchType.Utente).termine" />
+    <button (click)="searchTypeUtils.eseguiRicerca(SearchType.Utente)">Cerca</button>
+    <button (click)="searchTypeUtils.resettaRicerca(SearchType.Utente)">Reset</button>
 
-      
-      <ul *ngIf="risultatiRicerca.length > 0">
-        <p>Consigliati:</p>
-        <li *ngFor="let utente of risultatiRicerca" (click)="selezionaUtente(utente)">
-          > {{ utente.username }} - {{ utente.firstName }} {{ utente.lastName }}
-        </li>
-      </ul>
-      <!-- Sezione Paginazione -->
+
+    <ul *ngIf="searchTypeUtils.getSearchData(SearchType.Utente).risultati.length > 0">
+      <p>Consigliati:</p>
+      <li *ngFor="let utente of searchTypeUtils.getSearchData(SearchType.Utente).risultati" (click)="selezionaUtente(utente)">
+        > {{ utente.username }} - {{ utente.firstName }} {{ utente.lastName }}
+      </li>
+    </ul>
+    <!-- Sezione Paginazione -->
     <div class="pagination">
-      <button (click)="paginaPrecedente()" [disabled]="paginaUtenti === 0">Indietro</button>
-      <span>Pagina {{ paginaUtenti + 1 }} di {{ totalePagineUtenti }}</span>
-      <button (click)="paginaSuccessiva()" [disabled]="paginaUtenti >= totalePagineUtenti - 1">Avanti</button>
+      <button (click)="searchTypeUtils.paginaPrecedente(SearchType.Utente)" [disabled]="searchTypeUtils.getSearchData(SearchType.Utente).paginaCorrente === 0">Indietro</button>
+      <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.Utente).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.Utente).totalePagine }}</span>
+      <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.Utente)" [disabled]="searchTypeUtils.getSearchData(SearchType.Utente).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.Utente).totalePagine - 1">Avanti</button>
     </div>
-      <!-- Dettagli Utente Selezionato -->
-      <div *ngIf="utenteSelezionato" class="details-section">
-        <h3>Dettagli Utente</h3>
-        <label for="username">Username:</label>
-        <input type="text" id="username" [(ngModel)]="utenteSelezionato.username"  />
-  
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" [(ngModel)]="utenteSelezionato.firstName"  />
-  
-        <label for="cognome">Cognome:</label>
-        <input type="text" id="cognome" [(ngModel)]="utenteSelezionato.lastName"  />
-  
-  
-        <label for="email">Email:</label>
-        <input type="text" id="email" [(ngModel)]="utenteSelezionato.email"  />
-  
-        
-        <!-- Sezione Biglietti -->
-  <div class="biglietti-container">
-    <h3>Biglietti dell'Utente</h3>
-    <div *ngIf="biglietti.length > 0; else nessunBiglietto">
-      <div *ngFor="let biglietto of biglietti" class="biglietto">
-        <!-- Dettagli biglietto -->
-        <p><strong>Codice Biglietto:</strong> {{ biglietto.id }}</p>
-        <p><strong>Film:</strong> {{ biglietto.postospettacoloSpettacoloFilmTitolo }}</p>
-        <!-- Altri dettagli -->
-      </div>
-      <div class="pagination">
-        <button (click)="paginaPrecedenteBiglietti()" [disabled]="paginaBiglietti === 0">Indietro</button>
-        <span class="pagina-info">Pagina {{ paginaBiglietti + 1 }} di {{ totalePagineBiglietti }}</span>
-        <button (click)="paginaSuccessivaBiglietti()" [disabled]="paginaBiglietti >= totalePagineBiglietti - 1">Avanti</button>
-      </div>
-    </div>
-    <ng-template #nessunBiglietto>
-      <p>Non ci sono biglietti.</p>
-    </ng-template>
+    <!-- Dettagli Utente Selezionato -->
   </div>
+  <div class="section" *ngIf="utenteSelezionato">
 
-  <!-- Sezione Ordini -->
-  <div class="ordini-container">
-    <h3>Ordini dell'Utente</h3>
-    <div *ngIf="ordini.length > 0; else nessunOrdine">
-      <div *ngFor="let ordine of ordini" class="ordine">
-        <!-- Dettagli ordine -->
-        <p><strong>Codice Ordine:</strong> {{ ordine.id }}</p>
-        <p><strong>Data:</strong> {{ ordine.data | date: 'dd/MM/yyyy' }}</p>
-        <!-- Altri dettagli -->
+
+    <div  class="details-section">
+      <h3>Dettagli Utente</h3>
+      <label for="username">Username:</label>
+      <input type="text" id="username" readonly [(ngModel)]="utenteSelezionato.username" />
+
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" readonly [(ngModel)]="utenteSelezionato.firstName" />
+
+      <label for="cognome">Cognome:</label>
+      <input type="text" id="cognome" readonly [(ngModel)]="utenteSelezionato.lastName" />
+
+
+      <label for="email">Email:</label>
+      <input type="text" id="email" readonly [(ngModel)]="utenteSelezionato.email" />
+
+
+      <!-- Sezione Biglietti -->
+      <div class="biglietti-container">
+        <h3>Biglietti dell'Utente</h3>
+        <div *ngIf="biglietti.length > 0; else nessunBiglietto">
+          <div *ngFor="let biglietto of biglietti" class="biglietto">
+            <!-- Dettagli biglietto -->
+            <p><strong>Codice Biglietto:</strong> {{ biglietto.id }}</p>
+            <p><strong>Film:</strong> {{ biglietto.postospettacoloSpettacoloFilmTitolo }}</p>
+            <!-- Altri dettagli -->
+          </div>
+          <div class="pagination">
+            <button (click)="searchTypeUtils.paginaPrecedente(SearchType.Biglietto)" [disabled]="searchTypeUtils.getSearchData(SearchType.Biglietto).paginaCorrente === 0">Indietro</button>
+            <span class="pagina-info">Pagina {{ searchTypeUtils.getSearchData(SearchType.Biglietto).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.Biglietto).totalePagine }}</span>
+            <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.Biglietto)"
+              [disabled]="searchTypeUtils.getSearchData(SearchType.Biglietto).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.Biglietto).totalePagine - 1">Avanti</button>
+          </div>
+        </div>
+        <ng-template #nessunBiglietto>
+          <p>Non ci sono biglietti.</p>
+        </ng-template>
       </div>
-      <div class="pagination">
-        <button (click)="paginaPrecedenteOrdini()" [disabled]="paginaOrdini === 0">Indietro</button>
-        <span class="pagina-info">Pagina {{ paginaOrdini + 1 }} di {{ totalePagineOrdini }}</span>
-        <button (click)="paginaSuccessivaOrdini()" [disabled]="paginaOrdini >= totalePagineOrdini - 1">Avanti</button>
+
+      <!-- Sezione Ordini -->
+      <div class="ordini-container">
+        <h3>Ordini dell'Utente</h3>
+        <div *ngIf="ordini.length > 0; else nessunOrdine">
+          <div *ngFor="let ordine of ordini" class="ordine">
+            <!-- Dettagli ordine -->
+            <p><strong>Codice Ordine:</strong> {{ ordine.id }}</p>
+            <p><strong>Data:</strong> {{ ordine.data | date: 'dd/MM/yyyy' }}</p>
+            <!-- Altri dettagli -->
+          </div>
+          <div class="pagination">
+            <button (click)="searchTypeUtils.paginaPrecedente(SearchType.Ordine)" [disabled]="searchTypeUtils.getSearchData(SearchType.Ordine).paginaCorrente === 0">Indietro</button>
+            <span class="pagina-info">Pagina {{ searchTypeUtils.getSearchData(SearchType.Ordine).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.Ordine).totalePagine }}</span>
+            <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.Ordine)"
+              [disabled]="searchTypeUtils.getSearchData(SearchType.Ordine).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.Ordine).totalePagine - 1">Avanti</button>
+          </div>
+        </div>
+        <ng-template #nessunOrdine>
+          <p>Non ci sono ordini.</p>
+        </ng-template>
       </div>
     </div>
-    <ng-template #nessunOrdine>
-      <p>Non ci sono ordini.</p>
-    </ng-template>
   </div>
-      </div>
-    </div>
-  </div>
-  
+</div>
