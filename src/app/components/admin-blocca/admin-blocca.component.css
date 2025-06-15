@@ -21,7 +21,7 @@
     margin-bottom: 15px;
   }
   
-  etichetta {
+  .label {
     display: block;
     margin-top: 10px;
     color: #ffffff;
@@ -132,6 +132,7 @@
   margin-right: 10px;
   width: 20px; /* Dimensione fissa per allineamento */
   text-align: center;
+  
 }
 
 /* Contenitore dei posti */

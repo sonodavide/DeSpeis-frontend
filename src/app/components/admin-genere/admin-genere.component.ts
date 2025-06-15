@@ -7,6 +7,7 @@ import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 import { MessagesService } from '../../services/messages.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import cloneDeep  from 'lodash/cloneDeep';
 @Component({
   selector: 'app-admin-genere',
   templateUrl: './admin-genere.component.html',
@@ -69,8 +70,8 @@ export class AdminGenereComponent {
   }
 
   selezionaGenere(genere: GenereDto) {
-    this.genereSelezionato = genere;
-    this.genereSelezionatoModificato = { ...genere };
+    this.genereSelezionato = cloneDeep(genere);
+    this.genereSelezionatoModificato = cloneDeep(genere)
     this.modificheAbilitate = false;
   }
 
@@ -83,17 +84,18 @@ export class AdminGenereComponent {
       this.genereService.nuovo(this.genereSelezionatoModificato).subscribe({
         next: () => {
           this.messageService.addMessageSuccess(
-            'genere aggiunto con successo!'
+            'genere modificato con successo!'
           );
           this.genereSelezionato = null;
           this.genereSelezionatoModificato = null;
           this.modificheAbilitate = false;
+          this.searchTypeUtils.loader(SearchType.GenereModifica)
         },
         error: (error: HttpErrorResponse) => {
           if (error.status === 400) {
             this.messageService.addMessageError('alcuni dati non vanno bene.');
           } else {
-            this.messageService.addMessageError('errore aggiunta genere.');
+            this.messageService.addMessageError('errore modifica genere.');
           }
         },
       });
@@ -103,7 +105,7 @@ export class AdminGenereComponent {
 
   annullaModifiche() {
     if (this.genereSelezionato) {
-      this.genereSelezionatoModificato = { ...this.genereSelezionato };
+      this.genereSelezionatoModificato = cloneDeep(this.genereSelezionato)
       this.modificheAbilitate = false;
       this.messageService.addMessageSuccess(
         'ho reimpostato il genere che avevi selezionato'
@@ -121,6 +123,7 @@ export class AdminGenereComponent {
           this.genereSelezionato = null;
           this.genereSelezionatoModificato = null;
           this.modificheAbilitate = false;
+          this.searchTypeUtils.loader(SearchType.GenereModifica)
         },
         error: () => {
           this.messageService.addMessageError('errore eliminazione genere');

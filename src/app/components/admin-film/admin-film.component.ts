@@ -12,6 +12,7 @@ import { PaginatedResponse } from '../../model/paginatedResponse';
 import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 import { MessagesService } from '../../services/messages.service';
+import cloneDeep  from 'lodash/cloneDeep';
 @Component({
   selector: 'app-admin-film',
   templateUrl: './admin-film.component.html',
@@ -145,6 +146,7 @@ export class AdminFilmComponent {
           this.filmSelezionato=null
           this.filmSelezionatoModificato=null
           this.modificheAbilitate=false
+          this.searchTypeUtils.loader(SearchType.FilmModifica)
         },
         error : (error) => {
           if(error.status === 409){
@@ -152,7 +154,7 @@ export class AdminFilmComponent {
           }else if(error.status === 400){
             this.messageService.addMessageError("alcuni dati non vanno bene/film non trovato")
           }else{
-            this.messageService.addMessageError("errore aggiunta film")
+            this.messageService.addMessageError("errore modifica film")
           }
         }
       });
@@ -164,7 +166,7 @@ export class AdminFilmComponent {
   }
   annullaModifiche() {
     if (this.filmSelezionato) {
-      this.filmSelezionatoModificato = { ...this.filmSelezionato };
+      this.filmSelezionatoModificato = cloneDeep(this.filmSelezionato)
       this.modificheAbilitate = false;
       this.messageService.addMessageSuccess("ho reimpostato il film che avevi selezionato")
     }
@@ -189,8 +191,8 @@ export class AdminFilmComponent {
 
   // Funzione per selezionare un film dalla lista dei risultati
   selezionaFilm(film: FilmDto) {
-    this.filmSelezionato = { ...film };
-    this.filmSelezionatoModificato = this.filmSelezionato;
+    this.filmSelezionato = cloneDeep(film)
+    this.filmSelezionatoModificato = cloneDeep(this.filmSelezionato);
     this.searchTypeUtils.getSearchData(SearchType.AttoreModifica).termine = '';
     this.searchTypeUtils.getSearchData(SearchType.GenereModifica).termine = '';
     this.searchTypeUtils.getSearchData(SearchType.RegistaModifica).termine = '';

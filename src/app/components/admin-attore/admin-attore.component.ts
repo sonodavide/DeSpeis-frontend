@@ -7,6 +7,7 @@ import { SearchData, SearchType } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 import { MessagesService } from '../../services/messages.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import cloneDeep  from 'lodash/cloneDeep';
 @Component({
   selector: 'app-admin-attore',
   templateUrl: './admin-attore.component.html',
@@ -62,8 +63,8 @@ export class AdminAttoreComponent {
 
 
   selezionaAttore(attore: AttoreDto) {
-    this.attoreSelezionato = attore;
-    this.attoreSelezionatoModificato = { ...attore };
+    this.attoreSelezionato = cloneDeep(attore);
+    this.attoreSelezionatoModificato = cloneDeep(this.attoreSelezionato)
     this.modificheAbilitate = false;
   }
 
@@ -79,12 +80,13 @@ export class AdminAttoreComponent {
           this.attoreSelezionato = null
           this.attoreSelezionatoModificato = null
           this.modificheAbilitate=false
+          this.searchTypeUtils.loader(SearchType.AttoreModifica)
         },
         error : (error : HttpErrorResponse) => {
           if(error.status === 400 ){
             this.messageService.addMessageError("alcuni dati non vanno bene.")
           } else {
-            this.messageService.addMessageError("errore aggiunta attore.")
+            this.messageService.addMessageError("errore modifica attore.")
           }
         }
       })
@@ -95,7 +97,7 @@ export class AdminAttoreComponent {
 
   annullaModifiche() {
     if (this.attoreSelezionato) {
-      this.attoreSelezionatoModificato = { ...this.attoreSelezionato };
+      this.attoreSelezionatoModificato = cloneDeep(this.attoreSelezionato)
       this.modificheAbilitate = false;
       this.messageService.addMessageSuccess("ho reimpostato l'attore che avevi selezionato")
     }
@@ -109,6 +111,7 @@ export class AdminAttoreComponent {
           this.attoreSelezionato = null;
           this.attoreSelezionatoModificato = null;
           this.modificheAbilitate=false
+          this.searchTypeUtils.loader(SearchType.AttoreModifica)
         },
         error : (error) => {
           this.messageService.addMessageError("errore eliminazione attore")

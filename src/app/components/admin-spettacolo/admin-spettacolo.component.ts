@@ -7,6 +7,7 @@ import { SalaService } from '../../services/sala.service';
 import { SearchType, SearchData } from '../../utils/searchType';
 import { SearchTypeUtils } from '../../utils/searchTypeUtils';
 import { MessagesService } from '../../services/messages.service';
+import cloneDeep  from 'lodash/cloneDeep';
 @Component({
   selector: 'app-admin-spettacolo',
   templateUrl: './admin-spettacolo.component.html',
@@ -127,8 +128,8 @@ export class AdminSpettacoloComponent {
   }
 
   selezionaSpettacolo(spettacolo: NuovoSpettacoloDto) {
-    this.spettacoloSelezionato = spettacolo;
-    this.spettacoloSelezionatoModificato = { ...spettacolo };
+    this.spettacoloSelezionato = cloneDeep(spettacolo);
+    this.spettacoloSelezionatoModificato = cloneDeep(spettacolo)
     this.modificheAbilitate = false;
     this.searchTypeUtils.loader(SearchType.FilmModifica);
     this.searchTypeUtils.loader(SearchType.SalaModifica);
@@ -148,6 +149,7 @@ export class AdminSpettacoloComponent {
             this.modificheAbilitate = false;
             this.spettacoloSelezionato=null
             this.spettacoloSelezionatoModificato=null
+            this.searchTypeUtils.loader(SearchType.SpettacoloModifica)
           },
           error : (error) => {
             if(error.status === 400 ){
@@ -156,7 +158,7 @@ export class AdminSpettacoloComponent {
               this.messageService.addMessageError("alcuni spettacoli sono in conflitto/qualcuno ha già prenotato")
             }
              else {
-              this.messageService.addMessageError("errore aggiunta spettacolo.")
+              this.messageService.addMessageError("errore modifica spettacolo.")
             }
           }
         });
@@ -165,7 +167,7 @@ export class AdminSpettacoloComponent {
 
   annullaModifiche() {
     if (this.spettacoloSelezionato) {
-      this.spettacoloSelezionatoModificato = { ...this.spettacoloSelezionato };
+      this.spettacoloSelezionatoModificato = cloneDeep(this.spettacoloSelezionato)
       this.modificheAbilitate = false;
       this.messageService.addMessageSuccess("ho reimpostato lo spettacolo che avevi selezionato")
     }
@@ -181,6 +183,7 @@ export class AdminSpettacoloComponent {
           this.spettacoloSelezionato = null;
           this.spettacoloSelezionatoModificato = null;
           this.modificheAbilitate = false;
+          this.searchTypeUtils.loader(SearchType.SpettacoloModifica)
         },
         error: () => {
           this.messageService.addMessageError('errore eliminazione spettacolo');
