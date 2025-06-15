@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { SpettacoloDto } from '../../model/spettacolo';
 import { SpettacoloService } from '../../services/spettacolo.service';
 import { formatDate } from '@angular/common';
+import { FilmSpettacoliDto } from '../../model/filmSpettacoli';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-spettacoli',
@@ -9,15 +11,17 @@ import { formatDate } from '@angular/common';
   styleUrl: './spettacoli.component.css'
 })
 export class SpettacoliComponent {
-  spettacoli: SpettacoloDto[] = [];
+
+  filmSpettacoli: FilmSpettacoliDto[] = [];
   giorniSettimana: { label: string, date: string }[] = [];
   dataSelezionata: string = '';
 
-  constructor(private spettacoloService: SpettacoloService) {}
+  constructor(private spettacoloService: SpettacoloService, private router: Router) {}
 
   ngOnInit(): void {
     this.generaGiorniSettimana(); // Genera le prossime 7 date
     this.getSpettacoli(this.giorniSettimana[0].date); // Richiedi gli spettacoli per "Oggi"
+
   }
 
   generaGiorniSettimana(): void {
@@ -31,20 +35,13 @@ export class SpettacoliComponent {
     }
   }
 
-  // Metodo per ottenere gli spettacoli per una determinata data
-  getSpettacoli(date: string): void {
-    this.dataSelezionata = date; // Aggiorna la data selezionata
-    this.spettacoloService.getByDate(date).subscribe(
-      (data: SpettacoloDto[]) => {
-        this.spettacoli = data;
-      },
-      (error) => {
-        console.error('Errore nel recuperare gli spettacoli', error);
-        this.spettacoli = [];
-      }
-    );
-  }
-
+  
+   getSpettacoli(date: string): void{
+    this.spettacoloService.getByDate(date).subscribe(f => this.filmSpettacoli = f)
+   }
+   goToSelezionePosti(spettacoloId: number) {
+    this.router.navigate(['/selezione-posti', spettacoloId]);  // Naviga alla rotta del film con l'ID specifico
+    }
   // Metodo per formattare l'orario in maniera più leggibile
   formatTime(time: string): string {
     return time.substring(0, 5); // Mostra solo ore e minuti (HH:mm)

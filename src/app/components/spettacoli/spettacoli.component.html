@@ -9,25 +9,29 @@
       </ul>
     </div>
   
-    <div *ngIf="spettacoli.length === 0" class="no-spettacoli">
+    <div *ngIf="filmSpettacoli.length === 0" class="no-spettacoli">
       <p>Nessuno spettacolo disponibile per la data selezionata.</p>
     </div>
   
-    <div *ngFor="let spettacolo of spettacoli" class="spettacolo-card">
+    <div *ngFor="let istanza of filmSpettacoli" class="spettacolo-card">
       <div class="film-poster">
-        <img [src]="spettacolo.film.img" alt="{{ spettacolo.film.titolo }} poster" />
+        <img [src]="istanza.film.img" alt="{{ istanza.film.titolo }} poster" />
       </div>
       <div class="film-info">
-        <h3>{{ spettacolo.film.titolo }}</h3>
-        <p><strong>Genere:</strong> {{ spettacolo.film.generes[0]?.genere }}</p>
-        <p><strong>Regia:</strong> {{ spettacolo.film.registas[0]?.nome }} {{ spettacolo.film.registas[0]?.cognome }}</p>
-        <p><strong>Cast:</strong> 
-          <span *ngFor="let attore of spettacolo.film.attores">{{ attore.nome }} {{ attore.cognome }}{{ attore !== spettacolo.film.attores[spettacolo.film.attores.length - 1] ? ', ' : ''}}</span>
+        <h3>{{ istanza.film.titolo }}</h3>
+        <p><strong>Genere:</strong> 
+          {{ istanza.film.generes | join:['genere'] }}
         </p>
-        <p><strong>Durata:</strong> {{ spettacolo.film.durata }} min</p>
+        <p><strong>Regia:</strong> 
+          {{ istanza.film.registas | join:['nome', 'cognome'] }}
+        </p>
+        <p><strong>Cast:</strong> 
+          {{ istanza.film.attores | join:['nome', 'cognome'] }}
+        </p>
+        <p><strong>Durata: </strong> {{ istanza.film.durata }} min</p>
         <div class="orari">
-          <span *ngFor="let spettacoloOrario of spettacoli">
-            {{ formatTime(spettacoloOrario.ora) }}
+          <span *ngFor="let spettacolo of istanza.spettacoli" (click)="goToSelezionePosti(spettacolo.id)">
+            {{ formatTime(spettacolo.ora) }}
           </span>
         </div>
       </div>
