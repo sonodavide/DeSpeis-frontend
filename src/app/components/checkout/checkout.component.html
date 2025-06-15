@@ -59,7 +59,7 @@
         <h3>Stai compando:</h3>
         <ul>
           <li *ngFor="let posto of postiPerFilaUtils.toPostiSpettacoloDto()">
-          {{ posto.fila }} - {{ posto.sedile }} - {{ prenotazione?.postiSpettacoloResponseDto?.spettacoloSenzaFilmTagsDto?.prezzo | currency:"eur" }}
+          {{ posto.fila }} - {{ posto.sedile }} - {{ prenotazione?.postiSpettacoloResponseDto?.spettacoloSenzaFilmTagsDto?.prezzo | currency:"€" }}
           </li>
         </ul>
       </div>

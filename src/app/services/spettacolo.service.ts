@@ -102,7 +102,7 @@ export class SpettacoloService {
     .set('date', date)
     .set("pageNumber", pageNumber)
     .set("pageSize", pageSize);
-    return this.http.get<PaginatedResponse<SpettacoloSenzaFilmTagsDto>>(`${this.endpoint}/cerca`, { params });
+    return this.http.get<PaginatedResponse<SpettacoloSenzaFilmTagsDto>>(`${this.endpoint}/cercaSenzaFilmTags`, { params });
   }
 
   getNuovoSpettacoloById(id : number): Observable<NuovoSpettacoloDto>{

@@ -20,7 +20,7 @@ import cloneDeep  from 'lodash/cloneDeep';
 })
 export class AdminFilmComponent {
   SearchType = SearchType;
-  esisteInUnoSpettacoloDaProiettare=false
+  
 
   searchData: Partial<Record<SearchType, SearchData>> = {
     [SearchType.FilmModifica]: {
@@ -150,7 +150,7 @@ export class AdminFilmComponent {
         },
         error : (error) => {
           if(error.status === 409){
-            this.messageService.addMessageError("errore accavallamento spettacoli")
+            this.messageService.addMessageError("errore accavallamento spettacoli oppure uno dei spettacoli con questo film è in corso.")
           }else if(error.status === 400){
             this.messageService.addMessageError("alcuni dati non vanno bene/film non trovato")
           }else{
@@ -180,10 +180,11 @@ export class AdminFilmComponent {
           this.filmSelezionato = null;
           this.filmSelezionatoModificato=null
           this.modificheAbilitate=false
+          this.searchTypeUtils.loader(SearchType.FilmModifica);
         },
         error : (error) => {
           if(error.status === 409){
-            this.messageService.addMessageError("errore eliminazione, il film serve per uno spettacolo ancora non proietato.")
+            this.messageService.addMessageError("errore eliminazione, il film è legato a uno o più spettacoli.")
           }else{
             this.messageService.addMessageError("errore eliminazione film")
           }
@@ -201,14 +202,7 @@ export class AdminFilmComponent {
     this.searchTypeUtils.loader(SearchType.AttoreModifica);
     this.searchTypeUtils.loader(SearchType.GenereModifica);
     this.searchTypeUtils.loader(SearchType.RegistaModifica);
-    this.filmService.esisteInUnoSpettacoloDaProiettare(this.filmSelezionato.id!).subscribe({
-      next : (response) => {
-        this.esisteInUnoSpettacoloDaProiettare=response
-      },
-      error : () => {
-        this.messageService.addMessageError("errore, non so se è prevista una proiezione del film")
-      }
-    })
+    
   }
 
   aggiungiElemento(
