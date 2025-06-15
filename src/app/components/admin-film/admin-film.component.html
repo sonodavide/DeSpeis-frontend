@@ -27,22 +27,26 @@
         <input type="text" 
                placeholder="Cerca attore per nome o cognome" 
                [(ngModel)]="termineRicercaAttoreCreazione" 
-               (ngModelChange)="onSearchChange($event, 'attoreCreazione')" 
                name="filmActors" />
-        
-        <div *ngIf="isLoadingAttoreCreazione" class="loading-indicator">
-          Ricerca in corso...
-        </div>
+               <button (click)="eseguiRicerca(SearchType.AttoreCreazione)">Cerca</button>
+               <button (click)="resettaRicerca(SearchType.AttoreCreazione)">Reset</button>
+
         
         <ul *ngIf="risultatiRicercaAttoriCreazione.length > 0">
           <li *ngFor="let actor of risultatiRicercaAttoriCreazione" 
-              (click)="aggiungiElemento(actor, 'attoreCreazione')">
+              (click)="aggiungiElemento(actor, SearchType.AttoreCreazione)">
               {{ actor.nome }} {{ actor.cognome }}
           </li>
         </ul>
+        <!-- Sezione Paginazione -->
+        <div class="pagination">
+          <button (click)="paginaPrecedente(SearchType.AttoreCreazione)" [disabled]="paginaCorrenteAttoriCreazione === 0">Indietro</button>
+          <span>Pagina {{ paginaCorrenteAttoriCreazione + 1 }} di {{ totalePagineAttoriCreazione }}</span>
+          <button (click)="paginaSuccessiva(SearchType.AttoreCreazione)" [disabled]="paginaCorrenteAttoriCreazione >= totalePagineAttoriCreazione - 1">Avanti</button>
+        </div>
         <div class="selected-list">
           <span *ngFor="let actor of nuovoFilm.attores">
-            <button type="button" (click)="rimuoviElemento(actor, 'attoreCreazione')">
+            <button type="button" (click)="rimuoviElemento(actor, SearchType.AttoreCreazione)">
               {{ actor.nome }} {{ actor.cognome }} <b>X</b>
             </button>
           </span>
@@ -55,22 +59,25 @@
         <input type="text" 
                placeholder="Cerca regista per nome o cognome" 
                [(ngModel)]="termineRicercaRegistaCreazione" 
-               (ngModelChange)="onSearchChange($event, 'registaCreazione')" 
                name="filmRegisti" />
-        
-        <div *ngIf="isLoadingRegistaCreazione" class="loading-indicator">
-          Ricerca in corso...
-        </div>
+        <button (click)="eseguiRicerca(SearchType.RegistaCreazione)">Cerca</button>
+        <button (click)="resettaRicerca(SearchType.RegistaCreazione)">Reset</button>
         
         <ul *ngIf="risultatiRicercaRegistiCreazione.length > 0">
           <li *ngFor="let regista of risultatiRicercaRegistiCreazione" 
-              (click)="aggiungiElemento(regista, 'registaCreazione')">
+              (click)="aggiungiElemento(regista, SearchType.RegistaCreazione)">
               {{ regista.nome }} {{ regista.cognome }}
           </li>
         </ul>
+        <!-- Sezione Paginazione -->
+        <div class="pagination">
+          <button (click)="paginaPrecedente(SearchType.RegistaCreazione)" [disabled]="paginaCorrenteRegistiCreazione === 0">Indietro</button>
+          <span>Pagina {{ paginaCorrenteRegistiCreazione + 1 }} di {{ totalePagineRegistiCreazione }}</span>
+          <button (click)="paginaSuccessiva(SearchType.RegistaCreazione)" [disabled]="paginaCorrenteRegistiCreazione >= totalePagineRegistiCreazione - 1">Avanti</button>
+        </div>
         <div class="selected-list">
           <span *ngFor="let regista of nuovoFilm.registas">
-            <button type="button" (click)="rimuoviElemento(regista, 'registaCreazione')">
+            <button type="button" (click)="rimuoviElemento(regista, SearchType.RegistaCreazione)">
               {{ regista.nome }} {{ regista.cognome }} <b>X</b>
             </button>
           </span>
@@ -83,22 +90,25 @@
         <input type="text" 
                placeholder="Cerca genere" 
                [(ngModel)]="termineRicercaGenereCreazione" 
-               (ngModelChange)="onSearchChange($event, 'genereCreazione')"  
                name="filmGenres" />
-        
-        <div *ngIf="isLoadingGenereCreazione" class="loading-indicator">
-          Ricerca in corso...
-        </div>
+        <button (click)="eseguiRicerca(SearchType.GenereCreazione)">Cerca</button>
+        <button (click)="resettaRicerca(SearchType.GenereCreazione)">Reset</button>
 
         <ul *ngIf="risultatiRicercaGeneriCreazione.length > 0">
           <li *ngFor="let genre of risultatiRicercaGeneriCreazione" 
-              (click)="aggiungiElemento(genre, 'genereCreazione')">
+              (click)="aggiungiElemento(genre, SearchType.GenereCreazione)">
               {{ genre.genere }}
           </li>
         </ul>
+        <!-- Sezione Paginazione -->
+        <div class="pagination">
+          <button (click)="paginaPrecedente(SearchType.GenereCreazione)" [disabled]="paginaCorrenteGeneriCreazione === 0">Indietro</button>
+          <span>Pagina {{ paginaCorrenteGeneriCreazione + 1 }} di {{ totalePagineGeneriCreazione }}</span>
+          <button (click)="paginaSuccessiva(SearchType.GenereCreazione)" [disabled]="paginaCorrenteGeneriCreazione >= totalePagineGeneriCreazione - 1">Avanti</button>
+        </div>
         <div class="selected-list">
           <span *ngFor="let genre of nuovoFilm.generes">
-            <button type="button" (click)="rimuoviElemento(genre, 'genereCreazione')">
+            <button type="button" (click)="rimuoviElemento(genre, SearchType.GenereCreazione)">
               {{ genre.genere }} <b>X</b>
             </button>
           </span>
@@ -118,12 +128,9 @@
     <input type="text" 
            name="searchFilm" 
            placeholder="Cerca film per titolo" 
-           [(ngModel)]="termineRicercaFilm" 
-           (ngModelChange)="onSearchChange($event, 'film')" />
-    
-    <div *ngIf="isLoadingFilm" class="loading-indicator">
-      Ricerca in corso...
-    </div>
+           [(ngModel)]="termineRicercaFilm" />
+    <button (click)="eseguiRicerca(SearchType.FilmModifica)">Cerca</button>
+    <button (click)="resettaRicerca(SearchType.FilmModifica)">Reset</button>
     
     <ul *ngIf="risultatiRicercaFilm.length > 0">
       <li *ngFor="let film of risultatiRicercaFilm" 
@@ -131,6 +138,12 @@
           {{ film.titolo }}
       </li>
     </ul>
+    <!-- Sezione Paginazione -->
+    <div class="pagination">
+      <button (click)="paginaPrecedente(SearchType.FilmModifica)" [disabled]="paginaCorrenteFilm === 0">Indietro</button>
+      <span>Pagina {{ paginaCorrenteFilm + 1 }} di {{ totalePagineFilm }}</span>
+      <button (click)="paginaSuccessiva(SearchType.FilmModifica)" [disabled]="paginaCorrenteFilm >= totalePagineFilm - 1">Avanti</button>
+    </div>
   
     <!-- Form di modifica -->
     <form *ngIf="filmSelezionatoModificato" (ngSubmit)="modificaFilm()">
@@ -166,22 +179,25 @@
         <input type="text" 
                name="editActors" 
                placeholder="Cerca attore per nome o cognome" 
-               [(ngModel)]="termineRicercaAttoreModifica" 
-               (ngModelChange)="onSearchChange($event, 'attoreModifica')" />
-        
-        <div *ngIf="isLoadingAttoreModifica" class="loading-indicator">
-          Ricerca in corso...
-        </div>
+               [(ngModel)]="termineRicercaAttoreModifica" />
+        <button (click)="eseguiRicerca(SearchType.AttoreModifica)">Cerca</button>
+        <button (click)="resettaRicerca(SearchType.AttoreModifica)">Reset</button>
         
         <ul *ngIf="risultatiRicercaAttoriModifica.length > 0">
           <li *ngFor="let actor of risultatiRicercaAttoriModifica" 
-              (click)="aggiungiElemento(actor, 'attoreModifica'); abilitaModifiche()">
+              (click)="aggiungiElemento(actor, SearchType.AttoreModifica); abilitaModifiche()">
               {{ actor.nome }} {{ actor.cognome }}
           </li>
         </ul>
+        <!-- Sezione Paginazione -->
+        <div class="pagination">
+          <button (click)="paginaPrecedente(SearchType.AttoreModifica)" [disabled]="paginaCorrenteAttoriModifica === 0">Indietro</button>
+          <span>Pagina {{ paginaCorrenteAttoriModifica + 1 }} di {{ totalePagineAttoriModifica }}</span>
+          <button (click)="paginaSuccessiva(SearchType.AttoreModifica)" [disabled]="paginaCorrenteAttoriModifica >= totalePagineAttoriModifica - 1">Avanti</button>
+        </div>
         <div class="selected-list">
           <span *ngFor="let actor of filmSelezionatoModificato.attores">
-            <button type="button" (click)="rimuoviElemento(actor, 'attoreModifica'); abilitaModifiche()">
+            <button type="button" (click)="rimuoviElemento(actor, SearchType.AttoreModifica); abilitaModifiche()">
               {{ actor.nome }} {{ actor.cognome }} <b>X</b>
             </button>
           </span>
@@ -194,22 +210,25 @@
         <input type="text" 
                name="editRegisti" 
                placeholder="Cerca regista per nome o cognome" 
-               [(ngModel)]="termineRicercaRegistaModifica" 
-               (ngModelChange)="onSearchChange($event, 'registaModifica')" />
-        
-        <div *ngIf="isLoadingRegistaModifica" class="loading-indicator">
-          Ricerca in corso...
-        </div>
+               [(ngModel)]="termineRicercaRegistaModifica" />
+        <button (click)="eseguiRicerca(SearchType.RegistaModifica)">Cerca</button>
+        <button (click)="resettaRicerca(SearchType.RegistaModifica)">Reset</button>
         
         <ul *ngIf="risultatiRicercaRegistiModifica.length > 0">
           <li *ngFor="let regista of risultatiRicercaRegistiModifica" 
-              (click)="aggiungiElemento(regista, 'registaModifica'); abilitaModifiche()">
+              (click)="aggiungiElemento(regista, SearchType.RegistaModifica); abilitaModifiche()">
               {{ regista.nome }} {{ regista.cognome }}
           </li>
         </ul>
+        <!-- Sezione Paginazione -->
+        <div class="pagination">
+          <button (click)="paginaPrecedente(SearchType.RegistaModifica)" [disabled]="paginaCorrenteRegistiModifica === 0">Indietro</button>
+          <span>Pagina {{ paginaCorrenteRegistiModifica + 1 }} di {{ totalePagineRegistiModifica }}</span>
+          <button (click)="paginaSuccessiva(SearchType.RegistaModifica)" [disabled]="paginaCorrenteRegistiModifica >= totalePagineRegistiModifica - 1">Avanti</button>
+        </div>
         <div class="selected-list">
           <span *ngFor="let regista of filmSelezionatoModificato.registas">
-            <button type="button" (click)="rimuoviElemento(regista, 'registaModifica'); abilitaModifiche()">
+            <button type="button" (click)="rimuoviElemento(regista, SearchType.RegistaModifica); abilitaModifiche()">
               {{ regista.nome }} {{ regista.cognome }} <b>X</b>
             </button>
           </span>
@@ -222,22 +241,25 @@
         <input type="text" 
                name="editGenres" 
                placeholder="Cerca genere" 
-               [(ngModel)]="termineRicercaGenereModifica" 
-               (ngModelChange)="onSearchChange($event, 'genereModifica')" />
-        
-        <div *ngIf="isLoadingGenereModifica" class="loading-indicator">
-          Ricerca in corso...
-        </div>
+               [(ngModel)]="termineRicercaGenereModifica" />
+        <button (click)="eseguiRicerca(SearchType.GenereModifica)">Cerca</button>
+        <button (click)="resettaRicerca(SearchType.GenereModifica)">Reset</button>
         
         <ul *ngIf="risultatiRicercaGeneriModifica.length > 0">
           <li *ngFor="let genre of risultatiRicercaGeneriModifica" 
-              (click)="aggiungiElemento(genre, 'genereModifica'); abilitaModifiche()">
+              (click)="aggiungiElemento(genre, SearchType.GenereModifica); abilitaModifiche()">
               {{ genre.genere }}
           </li>
         </ul>
+        <!-- Sezione Paginazione -->
+        <div class="pagination">
+          <button (click)="paginaPrecedente(SearchType.GenereModifica)" [disabled]="paginaCorrenteGeneriModifica === 0">Indietro</button>
+          <span>Pagina {{ paginaCorrenteGeneriModifica + 1 }} di {{ totalePagineGeneriModifica }}</span>
+          <button (click)="paginaSuccessiva(SearchType.GenereModifica)" [disabled]="paginaCorrenteGeneriModifica >= totalePagineGeneriModifica - 1">Avanti</button>
+        </div>
         <div class="selected-list">
           <span *ngFor="let genre of filmSelezionatoModificato.generes">
-            <button type="button" (click)="rimuoviElemento(genre, 'genereModifica'); abilitaModifiche()" >
+            <button type="button" (click)="rimuoviElemento(genre, SearchType.GenereModifica); abilitaModifiche()" >
               {{ genre.genere }} <b>X</b>
             </button>
           </span>

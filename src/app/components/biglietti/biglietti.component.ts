@@ -21,7 +21,7 @@ export class BigliettiComponent {
   }
 
   getBiglietti() : void { //hardcoded user
-    this.bigliettoService.getBigliettiByUser(1, this.paginaCorrente)
+    this.bigliettoService.getBigliettiByUser(1, this.paginaCorrente, 10)
     .subscribe(response =>{
       this.biglietti = response.content;
       this.totalePagine = response.totalPages;

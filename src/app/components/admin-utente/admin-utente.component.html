@@ -25,11 +25,10 @@
     <!-- Sezione Ricerca e Dettagli -->
     <div class="section search-section">
       <h2>Cerca Utente</h2>
-      <input type="text" placeholder="Cerca utente per nome o username" [(ngModel)]="termineRicerca" (ngModelChange)="onSearchChange($event)" />
-      
-      <div *ngIf="isLoading" class="loading-indicator">
-        Ricerca in corso...
-      </div>
+      <input type="text" placeholder="Cerca utente per nome o username" [(ngModel)]="termineRicerca"  />
+      <button (click)="eseguiRicerca()">Cerca</button>
+      <button (click)="resetRicerca()">Reset</button>
+
       
       <ul *ngIf="risultatiRicerca.length > 0">
         <p>Consigliati:</p>
@@ -37,7 +36,12 @@
           > {{ utente.username }} - {{ utente.nome }} {{ utente.cognome }}
         </li>
       </ul>
-  
+      <!-- Sezione Paginazione -->
+    <div class="pagination">
+      <button (click)="paginaPrecedente()" [disabled]="paginaUtenti === 0">Indietro</button>
+      <span>Pagina {{ paginaUtenti + 1 }} di {{ totalePagineUtenti }}</span>
+      <button (click)="paginaSuccessiva()" [disabled]="paginaUtenti >= totalePagineUtenti - 1">Avanti</button>
+    </div>
       <!-- Dettagli Utente Selezionato -->
       <div *ngIf="utenteSelezionatoModificato" class="details-section">
         <h3>Dettagli Utente</h3>

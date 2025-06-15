@@ -45,8 +45,8 @@ export class UtenteComponent implements OnInit {
     this.bigliettoService.getBigliettiByUserAndDate(userId, new Date().toISOString().split('T')[0]).subscribe(biglietti => this.biglietti=biglietti)
   }
 
-  getOrdini(userId: number){
-    this.ordineService.getOrdiniPaginated(0, userId).subscribe(ordini => this.ordini=ordini.content)
+  getOrdini(userId: number){ //hardcoded user id
+    this.ordineService.getOrdiniByUserPaginated(userId, 0, 4).subscribe(ordini => this.ordini=ordini.content)
   }
 
   modificaInfo(): void {

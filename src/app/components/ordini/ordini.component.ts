@@ -27,8 +27,8 @@ export class OrdiniComponent implements OnInit {
     });
   }
 
-  getOrdini(): void {
-    this.ordineService.getOrdiniPaginated(this.paginaCorrente).subscribe(response => {
+  getOrdini(): void { //hardcoded id
+    this.ordineService.getOrdiniByUserPaginated(1, this.paginaCorrente, 5).subscribe(response => {
       this.ordini = response.content;
       this.totalePagine = response.totalPages;
     });
