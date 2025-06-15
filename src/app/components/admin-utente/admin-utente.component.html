@@ -1,28 +1,5 @@
 <div class="admin-utenti-container">
-    <!-- Sezione Creazione -->
-    <div class="section create-section">
-      <h2>Crea Nuovo Utente</h2>
-      <form (ngSubmit)="creaUtente()">
-        <label for="username">Username:</label>
-        <input type="text" id="username" [(ngModel)]="nuovoUtente.username" name="username" required />
-  
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" [(ngModel)]="nuovoUtente.nome" name="nome" required />
-  
-        <label for="cognome">Cognome:</label>
-        <input type="text" id="cognome" [(ngModel)]="nuovoUtente.cognome" name="cognome" required />
-  
-        <label for="datanascita">Data di Nascita:</label>
-        <input type="date" id="datanascita" [(ngModel)]="nuovoUtente.datanascita" name="datanascita" required />
-  
-        <label for="telefono">Telefono:</label>
-        <input type="tel" id="telefono" [(ngModel)]="nuovoUtente.telefono" name="telefono" required />
-  
-        <button type="submit" class="create-button">Crea</button>
-      </form>
-    </div>
-  
-    <!-- Sezione Ricerca e Dettagli -->
+   <!-- Sezione Ricerca e Dettagli -->
     <div class="section search-section">
       <h2>Cerca Utente</h2>
       <input type="text" placeholder="Cerca utente per nome o username" [(ngModel)]="termineRicerca"  />
@@ -33,7 +10,7 @@
       <ul *ngIf="risultatiRicerca.length > 0">
         <p>Consigliati:</p>
         <li *ngFor="let utente of risultatiRicerca" (click)="selezionaUtente(utente)">
-          > {{ utente.username }} - {{ utente.nome }} {{ utente.cognome }}
+          > {{ utente.username }} - {{ utente.firstName }} {{ utente.lastName }}
         </li>
       </ul>
       <!-- Sezione Paginazione -->
@@ -43,26 +20,22 @@
       <button (click)="paginaSuccessiva()" [disabled]="paginaUtenti >= totalePagineUtenti - 1">Avanti</button>
     </div>
       <!-- Dettagli Utente Selezionato -->
-      <div *ngIf="utenteSelezionatoModificato" class="details-section">
+      <div *ngIf="utenteSelezionato" class="details-section">
         <h3>Dettagli Utente</h3>
         <label for="username">Username:</label>
-        <input type="text" id="username" [(ngModel)]="utenteSelezionatoModificato.username" (input)="abilitaModifiche()" />
+        <input type="text" id="username" [(ngModel)]="utenteSelezionato.username"  />
   
         <label for="nome">Nome:</label>
-        <input type="text" id="nome" [(ngModel)]="utenteSelezionatoModificato.nome" (input)="abilitaModifiche()" />
+        <input type="text" id="nome" [(ngModel)]="utenteSelezionato.firstName"  />
   
         <label for="cognome">Cognome:</label>
-        <input type="text" id="cognome" [(ngModel)]="utenteSelezionatoModificato.cognome" (input)="abilitaModifiche()" />
+        <input type="text" id="cognome" [(ngModel)]="utenteSelezionato.lastName"  />
   
-        <label for="datanascita">Data di Nascita:</label>
-        <input type="date" id="datanascita" [(ngModel)]="utenteSelezionatoModificato.datanascita" (input)="abilitaModifiche()" />
   
-        <label for="telefono">Telefono:</label>
-        <input type="tel" id="telefono" [(ngModel)]="utenteSelezionatoModificato.telefono" (input)="abilitaModifiche()" />
+        <label for="email">Email:</label>
+        <input type="text" id="email" [(ngModel)]="utenteSelezionato.email"  />
   
-        <button class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaUtente()">Modifica</button>
-        <button class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">Annulla Modifica</button>
-        <button class="delete-button" (click)="eliminaUtente()">Elimina</button>
+        
         <!-- Sezione Biglietti -->
   <div class="biglietti-container">
     <h3>Biglietti dell'Utente</h3>

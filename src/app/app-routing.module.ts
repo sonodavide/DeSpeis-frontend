@@ -18,8 +18,8 @@ import { AdminSalaComponent } from './components/admin-sala/admin-sala.component
 import { AdminSpettacoloComponent } from './components/admin-spettacolo/admin-spettacolo.component';
 import { AdminUtenteComponent } from './components/admin-utente/admin-utente.component';
 import { AdminBloccaComponent } from './components/admin-blocca/admin-blocca.component';
-import { authGuard } from './guard/auth.guard';
-import { roleGuard } from './guard/role.guard';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
 import { UtenteHomepageComponent } from './components/utente-homepage/utente-homepage.component';
 const routes: Routes = [

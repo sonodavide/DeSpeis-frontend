@@ -19,7 +19,7 @@ export class BigliettoService {
   }
 
   // Metodo per ottenere i biglietti di un utente specifico con paginazione
-  getBigliettiByUser(userId: number, pageNumber: number, pageSize : number): Observable<PaginatedResponse<BigliettoDto>> {
+  getBigliettiByUser(userId: string, pageNumber: number, pageSize : number): Observable<PaginatedResponse<BigliettoDto>> {
     const params = new HttpParams()
       .set('userId', userId)
       .set('pageNumber', pageNumber)
@@ -34,7 +34,7 @@ export class BigliettoService {
   }
 
   // Metodo per ottenere i biglietti di un utente specifico e di una data specifica
-  getBigliettiByUserAndDate(userId: number, date: string): Observable<BigliettoDto[]> {
+  getBigliettiByUserAndDate(userId: string, date: string): Observable<BigliettoDto[]> {
     const params = new HttpParams()
       .set('user', userId.toString())
       .set('date', date);
@@ -42,7 +42,7 @@ export class BigliettoService {
   }
 
   // Metodo per ottenere biglietti di un utente specifico e di una data specifica con paginazione
-  getBigliettiFiltered(userId?: number, date?: string, page: number = 0): Observable<BigliettoDto[]> {
+  getBigliettiFiltered(userId?: string, date?: string, page: number = 0): Observable<BigliettoDto[]> {
     let params = new HttpParams().set('page', page.toString());
     
     if (userId !== undefined) {

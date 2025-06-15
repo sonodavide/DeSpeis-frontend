@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { OrdineDto } from '../../model/ordineDto';
 import { BigliettoDto } from '../../model/bigliettoDto';
-import { UtenteDto } from '../../model/utenteDto';
+import { UserProfile } from '../../model/user-profile';
 import { OrdineService } from '../../services/ordine.service';
 import { BigliettoService } from '../../services/biglietto.service';
 import { UtenteService } from '../../services/utente.service';
 import { UtilsFormatter } from '../../utils/utilsFormatter';
+import { KeycloakService } from '../../services/keyclock/keyclock.service';
 @Component({
   selector: 'app-utente-homepage',
   templateUrl: './utente-homepage.component.html',
@@ -14,17 +15,16 @@ import { UtilsFormatter } from '../../utils/utilsFormatter';
 })
 export class UtenteHomepageComponent {
   
-  utente: UtenteDto = { 
-    id: 0, 
+  utente: UserProfile = { 
+    id: '', 
     username: '', 
-    nome: '', 
-    cognome: '', 
-    datanascita: '', 
-    telefono: ''
+    firstName: '', 
+    lastName: '', 
+    email: ''
   };
   biglietti : BigliettoDto[] = []
   ordini : OrdineDto[] = []
-  constructor(private router: Router, private utenteService : UtenteService, private bigliettoService : BigliettoService, private ordineService : OrdineService) {
+  constructor(private router: Router, private utenteService : UtenteService, private bigliettoService : BigliettoService, private ordineService : OrdineService, private keycloakService : KeycloakService) {
   }
 
   ngOnInit(): void {
@@ -48,7 +48,7 @@ export class UtenteHomepageComponent {
   }
 
   modificaInfo(): void {
-    this.router.navigate(['/modifica-info']);
+    this.keycloakService.manageAccount()
   }
   
   formatTime(date: string): string{

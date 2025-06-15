@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UtenteDto } from '../../model/utenteDto';
+import { UserProfile } from '../../model/user-profile';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { UtenteService } from '../../services/utente.service';
 import { OrdineService } from '../../services/ordine.service';
@@ -32,20 +32,13 @@ export class AdminUtenteComponent {
     this.caricaUtenti()
   }
 
-  nuovoUtente: UtenteDto = { id: undefined, username: '', nome: '', cognome: '', datanascita: '', telefono: '' };
-  utenti: UtenteDto[] = [];
-  risultatiRicerca: UtenteDto[] = [];
-  utenteSelezionato: UtenteDto | null = null;
-  utenteSelezionatoModificato: UtenteDto | null = null;
-  modificheAbilitate: boolean = false;
+  utenti: UserProfile[] = [];
+  risultatiRicerca: UserProfile[] = [];
+  utenteSelezionato: UserProfile | null = null;
   pageSizeUtenti=4
   pageSizeBiglietti=8
   pageSizeOrdini=4
-  creaUtente() {
-    this.utenteService.nuovo(this.nuovoUtente).subscribe(() => {
-      this.nuovoUtente = { id: 0, username: '', nome: '', cognome: '', datanascita: '', telefono: '' };
-    });
-  }
+
 
   caricaUtenti() : void {
     this.utenteService.getAllPaginated(this.paginaUtenti, this.pageSizeUtenti).subscribe( response => {
@@ -63,10 +56,8 @@ export class AdminUtenteComponent {
   }
   
 
-  selezionaUtente(utente: UtenteDto) {
+  selezionaUtente(utente: UserProfile) {
     this.utenteSelezionato = utente;
-    this.utenteSelezionatoModificato = { ...utente };
-    this.modificheAbilitate = false;
     this.caricaBiglietti();
     this.caricaOrdini();
   }
@@ -127,33 +118,9 @@ export class AdminUtenteComponent {
       this.caricaOrdini();
     }
   }
-  abilitaModifiche() {
-    this.modificheAbilitate = true;
-  }
 
-  modificaUtente() {
-    if (this.utenteSelezionatoModificato) {
-      this.utenteService.nuovo(this.utenteSelezionatoModificato).subscribe(() => {
-        this.modificheAbilitate = false;
-      });
-    }
-  }
 
-  annullaModifiche() {
-    if (this.utenteSelezionato) {
-      this.utenteSelezionatoModificato = { ...this.utenteSelezionato };
-      this.modificheAbilitate = false;
-    }
-  }
 
-  eliminaUtente() {
-    if (this.utenteSelezionato) {
-      this.utenteService.elimina(this.utenteSelezionato).subscribe(() => {
-        this.utenteSelezionato = null;
-        this.utenteSelezionatoModificato = null;
-      });
-    }
-  }
 
   resetRicerca() : void {
     this.termineRicerca = ""
