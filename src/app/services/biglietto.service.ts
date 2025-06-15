@@ -21,10 +21,10 @@ export class BigliettoService {
   // Metodo per ottenere i biglietti di un utente specifico con paginazione
   getBigliettiByUser(userId: number, pageNumber: number, pageSize : number): Observable<PaginatedResponse<BigliettoDto>> {
     const params = new HttpParams()
-      .set('user', userId)
+      .set('userId', userId)
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/paginated/user`, { params });
+    return this.http.get<PaginatedResponse<BigliettoDto>>(`${this.apiUrl}/paged/user`, { params });
   }
 
   // Metodo per ottenere i biglietti di una data specifica

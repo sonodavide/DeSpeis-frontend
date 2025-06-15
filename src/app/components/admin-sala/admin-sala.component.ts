@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { SalaDto } from '../../model/salaDto';
-import { PostoDto } from '../../model/postoDto';
+
+import { SalaService } from '../../services/sala.service';
+import { SalaConPosti } from '../../model/salaConPostiPerFila';
 
 @Component({
   selector: 'app-admin-sala',
@@ -8,110 +10,163 @@ import { PostoDto } from '../../model/postoDto';
   styleUrl: './admin-sala.component.css'
 })
 export class AdminSalaComponent {
-  file: { nome: string, sedili: number[] }[] = [{ nome: 'A', sedili: [1] }];
-  termineRicerca: string = '';
+  constructor(private salaService : SalaService){}
+  nuovaSala : SalaConPosti= {id: undefined, postis:[]}
   sale: SalaDto[] = [];
-  risultatiRicerca: SalaDto[] = [];
-  salaSelezionata: SalaDto | null = null;
-  salaSelezionataModificata: SalaDto | null = null;
-
+  salaSelezionata: SalaConPosti | null = null;
+  salaSelezionataModificata: SalaConPosti | null = null;
+  paginaCorrente = 0
+  paginaSize = 4
+  totalePagine =0
+  modificheAbilitate=false
   aggiungiFila() {
-    const nomeFila = String.fromCharCode(65 + this.file.length);
-    this.file.push({ nome: nomeFila, sedili: [1] });
+    const nomeFila = String.fromCharCode(65 + this.nuovaSala.postis.length);
+    this.nuovaSala.postis.push({id : undefined, fila : nomeFila, sedili : 1});
+
 
   }
 
+  modificheAbilitateSetter(stato : boolean) : void {
+    this.modificheAbilitate=stato;
+  }
   rimuoviFila() {
-    if (this.file.length > 1) {
-      this.file.pop();
+    
+    if (this.nuovaSala.postis.length > 1) {
+      this.nuovaSala.postis.pop()
+      
     }
   }
 
   aggiungiPosto(nomeFila: string) {
-    const fila = this.file.find(f => f.nome === nomeFila);
-    if (fila) {
-      const nuovoPosto = fila.sedili.length + 1;
-      fila.sedili.push(nuovoPosto);
+    for(let posto of this.nuovaSala.postis){
+      if(posto.fila===nomeFila){
+        posto.sedili++
+      }
     }
   }
   
   rimuoviPosto(nomeFila: string) {
-    const fila = this.file.find(f => f.nome === nomeFila);
-    if (fila && fila.sedili.length > 0) {
-      fila.sedili.pop();
+
+    for(let posto of this.nuovaSala.postis){
+      if(posto.fila===nomeFila && posto.sedili>1){
+        posto.sedili--
+      }
     }
   }
 
   creaSala() {
-    const idSala = Date.now();
-    const nuoviPosti = new Set<PostoDto>();
-    this.file.forEach((fila) => {
-      fila.sedili.forEach((sedile) => {
-        nuoviPosti.add({ id: Date.now() + sedile, fila: fila.nome, sedile });
-      });
-    });
-    const nuovaSala: SalaDto = { id: idSala, post: nuoviPosti };
-    this.sale.push(nuovaSala);
-    this.file = [{ nome: 'A', sedili: [1] }];
+    
+    this.salaService.nuovo(this.nuovaSala).subscribe()
+    this.resetNuovaSala()
   }
 
-  cercaSala() {
-    this.risultatiRicerca = this.sale.filter(sala => 
-      sala.id!.toString().includes(this.termineRicerca)
-    );
-  }
+
 
   selezionaSala(sala: SalaDto) {
-    this.salaSelezionata = sala;
-    this.salaSelezionataModificata = { ...sala };
+    if(sala.id){
+      this.salaService.getPostiPerFila(sala.id!).subscribe(response =>{
+        this.salaSelezionata = response;
+        this.salaSelezionataModificata = { ...response };
+
+      })
+
+    }
   }
 
   
 
-  eliminaSala() {
+  eliminaSala() : void {
     if (this.salaSelezionata) {
-      this.sale = this.sale.filter(sala => sala.id !== this.salaSelezionata!.id);
+      this.salaService.elimina({id : this.salaSelezionata.id}).subscribe()
       this.salaSelezionata = null;
       this.salaSelezionataModificata = null;
+      this.modificheAbilitateSetter(false)
+    }
+  }
+  modificaSala() : void {
+    if(this.salaSelezionataModificata){
+      this.salaService.nuovo(this.salaSelezionataModificata).subscribe(response => {
+        this.modificheAbilitateSetter(false)
+      })
     }
   }
 
-  aggiungiPostoModifica(fila: { nome: string; sedili: number[] }) {
-    fila.sedili.push(fila.sedili.length + 1);
+  annullaModifiche() : void {
+    this.salaSelezionataModificata=this.salaSelezionata
+    this.modificheAbilitateSetter(false)
   }
-
-  rimuoviPostoModifica(fila: { nome: string; sedili: number[] }) {
-    if (fila.sedili.length > 1) {
-      fila.sedili.pop();
+  aggiungiFilaModifica() {
+    if(this.salaSelezionataModificata){
+      const nomeFila = String.fromCharCode(65 + this.salaSelezionataModificata.postis.length);
+      this.salaSelezionataModificata.postis.push({id : undefined, fila : nomeFila, sedili : 1});
     }
-  }
-  ngOnInit(): void {
-    this.aggiungiFila(); 
-    this.inizializzaSale();
+
+
   }
 
-  inizializzaSale() {
-    // Sala 1: 3 file, 5 sedili per fila
-    const postiSala1: Set<PostoDto> = new Set();
-    this.generaPosti(postiSala1, 3, 5, 1);
-    this.sale.push({ id: 1, post: postiSala1 });
-
-    // Sala 2: 4 file, 6 sedili per fila
-    const postiSala2: Set<PostoDto> = new Set();
-    this.generaPosti(postiSala2, 4, 6, 2);
-    this.sale.push({ id: 2, post: postiSala2 });
-
-    // Sala 3: 5 file, 4 sedili per fila
-    const postiSala3: Set<PostoDto> = new Set();
-    this.generaPosti(postiSala3, 5, 4, 3);
-    this.sale.push({ id: 3, post: postiSala3 });
-  }
-  generaPosti(posti: Set<PostoDto>, numeroFile: number, numeroSedili: number, idSala: number) {
-    for (let i = 0; i < numeroFile; i++) {
-      const fila = String.fromCharCode(65 + i); // 'A', 'B', 'C', ecc.
-      for (let j = 1; j <= numeroSedili; j++) {
-        posti.add({ id: Date.now() + j, fila, sedile: j, sala: idSala });
+  rimuoviFilaModifica() {
+    if(this.salaSelezionataModificata){
+      if (this.salaSelezionataModificata.postis.length > 1) {
+        this.salaSelezionataModificata.postis.pop()
+        this.modificheAbilitateSetter(true)
       }
     }
   }
+
+  aggiungiPostoModifica(nomeFila: string) {
+    if(this.salaSelezionataModificata){
+      for(let posto of this.salaSelezionataModificata.postis){
+        if(posto.fila===nomeFila){
+          posto.sedili++
+          this.modificheAbilitateSetter(true)
+        }
+    }
+    }
+  }
+  
+  rimuoviPostoModifica(nomeFila: string) {
+    if(this.salaSelezionataModificata){
+      for(let posto of this.salaSelezionataModificata.postis){
+        if(posto.fila===nomeFila && posto.sedili>1){
+          posto.sedili--
+          this.modificheAbilitateSetter(true)
+        }
+      }
+    }
+  }
+  ngOnInit(): void {
+    this.resetNuovaSala()
+    this.getSale()
+  }
+
+  
+
+  getSale(): void {
+    this.salaService.getAllPaginated(this.paginaCorrente, this.paginaSize).subscribe( response => {
+        this.sale = response.content;
+        this.totalePagine = response.totalPages
+    })
+  }
+
+
+  paginaPrecedente(): void {
+    if (this.paginaCorrente > 0) {
+      this.paginaCorrente--;
+      this.getSale();
+    }
+  }
+
+  paginaSuccessiva(): void {
+    if (this.paginaCorrente < this.totalePagine - 1) {
+      this.paginaCorrente++;
+      this.getSale()
+    }
+  }
+
+  resetNuovaSala() : void {
+    this.nuovaSala = {id: undefined, postis:[{fila : "A", sedili : 1}]}
+    
+  }
+
 }
+

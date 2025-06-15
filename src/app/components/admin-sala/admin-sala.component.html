@@ -1,10 +1,13 @@
 <div class="admin-sala-container">
+  <div class="section">
+    <h2>Crea Nuovo Genere</h2>
+  <div class="provo">
     <!-- Colonna per la lista delle file -->
     <div class="fila-list-container">
-        <div class="fila-container" *ngFor="let fila of file.slice().reverse()">
-          <span class="etichetta-fila">{{ fila.nome }}</span>
-          <button (click)="aggiungiPosto(fila.nome)" class="posto-add">+</button>
-          <button (click)="rimuoviPosto(fila.nome)" class="posto-remove">-</button>
+        <div class="fila-container" *ngFor="let posto of  nuovaSala.postis.slice().reverse()">
+          <span class="etichetta-fila">{{ posto.fila }}</span>
+          <button (click)="aggiungiPosto(posto.fila)" class="posto-add">+</button>
+          <button (click)="rimuoviPosto(posto.fila)" class="posto-remove">-</button>
         </div>
       </div>
     
@@ -14,11 +17,12 @@
         <div class="schermo">
           <span>Schermo</span>
         </div>
-        <div class="fila-posti-container" *ngFor="let fila of file.slice().reverse()">
+        <div class="fila-posti-container" *ngFor="let fila of nuovaSala.postis.slice().reverse()">
           <div class="fila">
-            <div class="posto" *ngFor="let posto of fila.sedili">
-              <span>{{ posto }}</span>
+            <div class="posto" *ngFor="let n of [].constructor(fila.sedili); let i=index">
+              <span>{{ i+1 }}</span>
             </div>
+            
           </div>
         </div>
       </div>
@@ -29,5 +33,74 @@
         <button (click)="rimuoviFila()" class="fila-remove">- Fila</button>
       </div>
     </div>
+  </div>
+  <button (click)="creaSala()">Crea</button>
+</div>
+<div class="section">
+  <h2>Modifica Sala: <span *ngIf="salaSelezionata">{{salaSelezionata.id}} </span></h2>
+  <!-- Loading indicator -->
+
+  <ul *ngIf="sale.length > 0">
+    <li *ngFor="let sala of sale" (click)="selezionaSala(sala)">
+      > {{ sala.id }} 
+    </li>
+  </ul>
+          <!-- Sezione Paginazione -->
+  <div class="pagination">
+    <button (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
+    <span>Pagina {{ paginaCorrente + 1 }} di {{ totalePagine }}</span>
+    <button (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
+  </div>
+  <div class="provo">
+    <!-- Colonna per la lista delle file -->
+    <div class="fila-list-container" *ngIf="salaSelezionataModificata">
+        <div class="fila-container" *ngFor="let posto of  salaSelezionataModificata.postis.slice().reverse()">
+          <span class="etichetta-fila">{{ posto.fila }}</span>
+          <button (click)="aggiungiPostoModifica(posto.fila)" class="posto-add">+</button>
+          <button (click)="rimuoviPostoModifica(posto.fila)" class="posto-remove">-</button>
+        </div>
+      </div>
+    
+    <!-- Colonna per la disposizione dei posti della sala -->
+    <div class="posti-container" *ngIf="salaSelezionataModificata">
+      <div class="selezione-posti">
+        <div class="schermo">
+          <span>Schermo</span>
+        </div>
+        <div class="fila-posti-container" *ngFor="let fila of salaSelezionataModificata.postis.slice().reverse()">
+          <div class="fila">
+            <div class="posto" *ngFor="let n of [].constructor(fila.sedili); let i=index">
+              <span>{{ i+1 }}</span>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pulsanti per aggiungere/rimuovere file -->
+      <div class="fila-buttons">
+        <button (click)="aggiungiFilaModifica()" class="fila-add">+ Fila</button>
+        <button (click)="rimuoviFilaModifica()" class="fila-remove">- Fila</button>
+      </div>
+    </div>
+  </div>
+  <button class="edit-button" 
+  type="submit"
+        [disabled]="!modificheAbilitate" 
+        (click)="modificaSala()">
+  Modifica
+</button>
+<button class="cancel-button" 
+type="button"
+        [disabled]="!modificheAbilitate" 
+        (click)="annullaModifiche()">
+  Annulla Modifica
+</button>
+<button typeclass="delete-button" 
+type="button"
+        (click)="eliminaSala()">
+  Elimina
+</button>
+</div>
   </div>
   

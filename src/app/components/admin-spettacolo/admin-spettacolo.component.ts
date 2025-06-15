@@ -73,7 +73,7 @@ export class AdminSpettacoloComponent {
   ngOnInit() : void{
     this.loader(SearchType.FilmCreazione)
     this.loader(SearchType.SpettacoloModifica)
-    this.loader(SearchType.SalaModifica)
+    this.loader(SearchType.SalaCreazione)
   }
 
   creaSpettacolo() {
@@ -102,23 +102,9 @@ export class AdminSpettacoloComponent {
         break;
       }
       
-      case SearchType.SalaCreazione: {
-        this.salaService.cerca(this.termineRicercaSalaCreazione.trim(), this.paginaCorrenteSalaCreazione, this.pageSizeSalaCreazione)
-          .subscribe((response: PaginatedResponse<SalaDto>) => {
-            this.risultatiRicercaSalaCreazione = response.content;
-            this.totalePagineSalaCreazione = response.totalPages;
-          });
-        break;
-      }
+      
         
-      case SearchType.SalaModifica: {
-        this.salaService.cerca(this.termineRicercaSalaModifica.trim(), this.paginaCorrenteSalaModifica, this.pageSizeSalaModifica)
-          .subscribe((response: PaginatedResponse<SalaDto>) => {
-            this.risultatiRicercaSalaModifica = response.content;
-            this.totalePagineSalaModifica = response.totalPages;
-          });
-        break;
-      }
+      
       
       
       case SearchType.SpettacoloModifica: {
@@ -363,8 +349,7 @@ resettaRicerca(tipo: SearchType): void {
       ora: '',           // Valore stringa vuoto per l'ora
       prezzo: 0,         // Imposta il prezzo a zero per iniziare
       sala: {
-        id: undefined,           
-        post: new Set()  // Set vuoto per i posti in sala
+        id: undefined
       },
       film: {
         id: undefined,

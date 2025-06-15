@@ -50,4 +50,5 @@ export class SelezionePostiComponent {
     this.router.navigate(["/checkout"])
     //this.prenotazioneService.prenota({postiIds : this.postiSelezionati, userId : 1, spettacoloId : this.posti?.spettacoloId! }).subscribe()
   }
+
 }
