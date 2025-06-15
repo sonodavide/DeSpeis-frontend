@@ -112,7 +112,7 @@ export class AdminBloccaComponent {
         .getSenzaFilmById(this.spettacoloSelezionato.id)
         .subscribe({
           next: (response) => {
-            this.postiService.blocca({postiSpettacoloResponseDto : {spettacoloSenzaFilmDto : response, postiPerFila : this.postiSelezionati}}).subscribe({
+            this.postiService.blocca({postiSpettacoloResponseDto : {spettacoloSenzaFilmTagsDto : response, postiPerFila : this.postiSelezionati}}).subscribe({
               next: (response) => {
                 this.postiPerFila = response.postiPerFila;
                 this.postiPerFilaUtilsMiei.setPostiPerFila(this.postiPerFila);

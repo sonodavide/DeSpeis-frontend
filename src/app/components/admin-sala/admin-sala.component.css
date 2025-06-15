@@ -203,3 +203,17 @@
   .pagination span {
     color: #ffffff;
   }
+  .mini-avviso-proiezione {
+    font-size: 14pt;
+    color: darkred;
+  }
+  input[type="text"], input[type="date"], input[type="number"] {
+    width: 50px;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background-color: #2a2a2a;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+  }

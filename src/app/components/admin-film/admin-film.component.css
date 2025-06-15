@@ -103,3 +103,8 @@
   .pagination span {
     color: #ffffff;
   }
+
+  .mini-avviso-proiezione {
+    font-size: 14pt;
+    color: darkred;
+  }

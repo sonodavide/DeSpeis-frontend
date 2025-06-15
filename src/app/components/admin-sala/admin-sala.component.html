@@ -34,6 +34,8 @@
       </div>
     </div>
   </div>
+  <label for="numeroSala">Numero sala:</label>
+  <input id="numeroSala" type="number" [(ngModel)]="nuovaSala.id">
   <button id="crea" type="button" (click)="creaSala()">Crea</button>
 </div>
 <div class="section">
@@ -51,9 +53,11 @@
     <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine }}</span>
     <button id="successivo" type="button"(click)="searchTypeUtils.paginaSuccessiva(SearchType.SalaModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.SalaModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.SalaModifica).totalePagine - 1">Avanti</button>
   </div>
+  <span *ngIf="esisteInUnoSpettacoloDaProiettare===true" class="mini-avviso-proiezione">Attenzione! Questo film è occupato in uno spettacolo che deve ancora avvenire!</span>
   <div class="provo">
     <!-- Colonna per la lista delle file -->
     <div class="fila-list-container" *ngIf="salaSelezionataModificata">
+      
         <div class="fila-container" *ngFor="let posto of  salaSelezionataModificata.postis.slice()">
           <span class="etichetta-fila">{{ posto.fila }}</span>
           <button id="aggiungiPostoModifica" type="button" (click)="aggiungiPostoModifica(posto.fila)" class="posto-add">+</button>

@@ -29,8 +29,16 @@ export class SalaService {
     return this.http.post<SalaConPosti>(`${this.apiUrl}/nuovo`, sala)
   }
 
+  modifica(sala : SalaConPosti): Observable<SalaConPosti>{
+    return this.http.post<SalaConPosti>(`${this.apiUrl}/modifica`, sala)
+  }
   elimina(sala : SalaDto): Observable<any>{
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post<any>(`${this.apiUrl}/elimina`, sala, {headers})
+  }
+  esisteInUnoSpettacoloDaProiettare(id : number){
+    const params = new HttpParams()
+    .set("id", id)
+    return this.http.get<boolean>(`${this.apiUrl}/esisteInUnoSpettacoloDaProiettare`, {params})
   }
 }

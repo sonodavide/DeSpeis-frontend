@@ -16,7 +16,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     
     if (token) {
       if(this.keycloakService.keycloak.isTokenExpired()){
-        this.keycloakService.keycloak.login()
+        this.keycloakService.keycloak.updateToken()
       }
       const authReq = request.clone({
         headers: new HttpHeaders({

@@ -58,6 +58,7 @@ export class AdminGenereComponent {
       next: () => {
         this.messageService.addMessageSuccess('genere aggiunto con successo!');
         this.nuovoGenere = { id: undefined, genere: '' };
+        this.searchTypeUtils.loader(SearchType.GenereModifica)
       },
       error: (error: HttpErrorResponse) => {
         if (error.status === 400) {

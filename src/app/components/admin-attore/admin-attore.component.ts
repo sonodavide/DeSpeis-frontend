@@ -48,6 +48,7 @@ export class AdminAttoreComponent {
       next : () => {
         this.messageService.addMessageSuccess("Attore aggiunto con successo!")
         this.nuovoAttore = { id: undefined, nome: '', cognome: '' };
+        this.searchTypeUtils.loader(SearchType.AttoreModifica)
       },
       error : (error : HttpErrorResponse) => {
         if(error.status === 400 ){

@@ -38,7 +38,7 @@ export class CheckoutComponent implements OnInit {
       if (response) {
         this.prenotazione = response;
         this.postiPerFilaUtils.setPostiPerFila(this.prenotazione.postiSpettacoloResponseDto.postiPerFila)
-        this.totale=this.prenotazione.postiSpettacoloResponseDto.spettacoloSenzaFilmDto.prezzo*this.postiPerFilaUtils.getTotalePosti()
+        this.totale=this.prenotazione.postiSpettacoloResponseDto.spettacoloSenzaFilmTagsDto.prezzo*this.postiPerFilaUtils.getTotalePosti()
         this.prenotazione.prezzo=this.totale
       }
     });

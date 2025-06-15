@@ -13,6 +13,7 @@ import cloneDeep  from 'lodash/cloneDeep';
   styleUrl: './admin-sala.component.css',
 })
 export class AdminSalaComponent {
+  esisteInUnoSpettacoloDaProiettare=false
   SearchType = SearchType;
   searchTypeUtils: SearchTypeUtils;
   constructor(
@@ -42,6 +43,7 @@ export class AdminSalaComponent {
       risultati: [],
     },
   };
+
   nuovaSala: SalaConPosti = { id: undefined, postis: [] };
   salaSelezionata: SalaConPosti | null = null;
   salaSelezionataModificata: SalaConPosti | null = null;
@@ -69,7 +71,8 @@ export class AdminSalaComponent {
     // Se c'è solo una fila, non permettiamo di rimuovere l'ultimo posto
     if (
       this.nuovaSala.postis.length === 1 &&
-      this.nuovaSala.postis[0].fila === 'A'
+      this.nuovaSala.postis[0].fila === 'A' &&
+      this.nuovaSala.postis[0].sedili === 1
     ) {
       return;
     }
@@ -97,14 +100,16 @@ export class AdminSalaComponent {
   }
 
   creaSala() {
+    if(this.nuovaSala.id)
     this.salaService.nuovo(this.nuovaSala).subscribe({
       next: () => {
         this.messageService.addMessageSuccess('sala aggiunta con successo!');
-        this.nuovaSala = { id: undefined, postis: [] };
+        this.resetNuovaSala()
+        this.searchTypeUtils.loader(SearchType.SalaModifica)
       },
       error: (error) => {
         if (error.status === 400) {
-          this.messageService.addMessageError('alcuni dati non vanno bene.');
+          this.messageService.addMessageError('alcuni dati non vanno bene o la sala esiste già');
         } else {
           this.messageService.addMessageError('errore aggiunta sala.');
         }
@@ -118,6 +123,14 @@ export class AdminSalaComponent {
         next: (response) => {
           this.salaSelezionata = cloneDeep(response);
           this.salaSelezionataModificata = cloneDeep(response);
+          this.salaService.esisteInUnoSpettacoloDaProiettare(sala.id!).subscribe({
+            next : (response) => {
+              this.esisteInUnoSpettacoloDaProiettare=response
+            },
+            error : () => {
+              this.messageService.addMessageError("errore, non so se è prevista una proiezione del film")
+            }
+          })
         },
         error: (error) => {
           this.messageService.addMessageError('impossibile caricare la sala');
@@ -144,7 +157,7 @@ export class AdminSalaComponent {
   }
   modificaSala(): void {
     if (this.salaSelezionataModificata) {
-      this.salaService.nuovo(this.salaSelezionataModificata).subscribe({
+      this.salaService.modifica(this.salaSelezionataModificata).subscribe({
         next: () => {
           this.messageService.addMessageSuccess('sala modificata con successo!');
           this.salaSelezionata = null;
@@ -219,7 +232,8 @@ export class AdminSalaComponent {
   
     // Se c'è solo una fila, non permettiamo di rimuovere l'ultimo posto
     if (this.salaSelezionataModificata.postis.length === 1 && 
-        this.salaSelezionataModificata.postis[0].fila === 'A') {
+        this.salaSelezionataModificata.postis[0].fila === 'A' &&
+        this.salaSelezionataModificata.postis[0].sedili === 1) {
       return;
     }
   

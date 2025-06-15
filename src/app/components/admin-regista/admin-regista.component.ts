@@ -64,6 +64,7 @@ export class AdminRegistaComponent {
       next: () => {
         this.messageService.addMessageSuccess('regista aggiunto con successo!');
         this.nuovoRegista = { id: undefined, nome: '', cognome: '' };
+        this.searchTypeUtils.loader(SearchType.RegistaModifica)
       },
       error: (error: HttpErrorResponse) => {
         if (error.status === 400) {
