@@ -1,5 +1,5 @@
 import { NuovoSpettacoloDto } from "./nuovoSpettacolo";
-import { PostiSpettacoloResponseDto } from "./postiSpettacolo";
+import { PostiSpettacoloResponseDto } from "./postiSpettacoloResponseDto";
 
 export interface SpettacoloRicercaDto{
     spettacolo : NuovoSpettacoloDto,

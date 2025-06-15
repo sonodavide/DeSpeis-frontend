@@ -28,12 +28,12 @@
     
     <!-- Layout posti -->
     
-      <div class="fila-container" *ngFor="let fila of formattafile(posti!)">
+      <div class="fila-container" *ngFor="let fila of postiPerFilaUtilsMiei.getFile()">
         <div class="fila-etichetta">{{ fila }}</div>
         <div class="posti">
           <div class="posto" [ngClass]="posto.stato"
-          [class.selezionato]="isPostoSelezionato(posto)" (click)="selezionaPosto(posto)" *ngFor="let posto of posti?.get(fila)">
-            {{ posto.postoSedileId }}
+          [class.selezionato]="isPostoSelezionato(fila, posto)" (click)="selezionaPosto(fila, posto)" *ngFor="let posto of postiPerFilaUtilsMiei.getPostiPerFila(fila)">
+            {{ posto.postoSedile }}
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@
 
   <div class="conferma">
     
-    <button type="button" (click)="blocca()">blocca</button>
+    <button type="button" id="blocca" (click)="blocca()">blocca</button>
 
   </div>
 
