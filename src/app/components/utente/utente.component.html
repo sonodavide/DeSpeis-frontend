@@ -18,7 +18,7 @@
     </div>
   
     <h3>Biglietti utilizzabili oggi </h3><a class="mostra-tutti" routerLink="/biglietti">Mostra tutti i biglietti</a>
-    <div class="biglietti-sezione">
+    <div class="biglietti-sezione" *ngIf="biglietti.length>0">
       <div *ngFor="let biglietto of biglietti">
         <p><strong>Codice Biglietto:</strong> {{ biglietto.id }}</p>
         <p><strong>Film</strong> {{biglietto.postospettacoloSpettacoloFilmTitolo}}</p>
@@ -29,9 +29,11 @@
         <hr>
       </div>
     </div>
-  
+    <div class="biglietti-sezione" *ngIf="biglietti.length===0">
+      <p>Non ci sono biglietti per oggi.</p>
+    </div>
     <h3>Ultimi 10 Ordini </h3> <a class="mostra-tutti" routerLink="/ordini">Mostra tutti ordini</a>
-    <div class="ordini-sezione">
+    <div class="ordini-sezione" *ngIf="ordini.length>0">
       <div *ngFor="let ordine of ordini">
         <p><strong>Codice Ordine:</strong> {{ ordine.id }}</p>
         <p><strong>Prezzo:</strong> {{ ordine.totale | currency }}</p>
@@ -45,7 +47,9 @@
           </Ul>
         <hr>
       </div>
-      
+    </div>
+    <div class="ordini-sezione" *ngIf="ordini.length===0">
+      <p>Non ci sono ordini.</p>
     </div>
   </div>
   
