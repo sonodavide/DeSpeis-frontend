@@ -40,11 +40,11 @@
         <p><strong>Stato:</strong> {{ ordine.stato }}</p>
         <p><strong>Data:</strong> {{ ordine.data }}</p>
         <p><strong>Biglietti:</strong> </p>
-          <Ul>
+          <ul>
             <li *ngFor="let biglietto of ordine.bigliettos">
               {{bigliettoToString(biglietto)}}
             </li>
-          </Ul>
+          </ul>
         <hr>
       </div>
     </div>

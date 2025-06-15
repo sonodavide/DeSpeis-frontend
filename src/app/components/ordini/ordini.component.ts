@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrdineService } from '../../services/ordine.service';
 import { OrdineDto } from '../../model/ordineDto';
+import { UtilsFormatter } from '../../utils/utilsFormatter';
+import { BigliettoDto } from '../../model/bigliettoDto';
 
 @Component({
   selector: 'app-ordini',
@@ -54,5 +56,8 @@ export class OrdiniComponent implements OnInit {
 
   tornaAreaUtente(): void {
     this.router.navigate(['/utente']);
+  }
+  bigliettoToString(biglietto : BigliettoDto): string{
+    return UtilsFormatter.bigliettoToString(biglietto)
   }
 }
