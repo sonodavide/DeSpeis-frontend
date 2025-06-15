@@ -3,16 +3,15 @@
       <span>Schermo</span>
     </div>
   
-    <div class="fila-container" *ngFor="let fila of getFilas()">
+    <div class="fila-container" *ngFor="let fila of posti?.posti?.keys()">
       <span class="etichetta-fila">{{ fila }}</span>
       <div class="fila">
         <div class="posto" 
-             *ngFor="let posto of posti[fila]"
-             [class.prenotato]="posto.prenotato"
-             [class.selezionato]="isPostoSelezionato(fila, posto.numero)"
-             [class.speciale]="posto.speciale"
-             (click)="selezionaPosto(fila, posto.numero, posto.prenotato)">
-          <span> {{posto.numero}}</span>
+             *ngFor="let posto of posti?.posti!.get(fila) ?? []"
+             [class.prenotato]="!libero(posto.stato)"
+             [class.selezionato]="isPostoSelezionato(posto.postoId)"
+             (click)="selezionaPosto(posto.postoId)">
+          <span> {{posto.postoSedileId}}</span>
          
         </div>
       </div>
@@ -21,8 +20,9 @@
   
   <div class="posti-selezionati">
     <h3>Posti Selezionati</h3>
+    <button (click)="prenota()">prenota</button>
     <div *ngFor="let posto of postiSelezionati">
-      {{ posto.fila }}{{ posto.numero }}
+      {{ posto}}
     </div>
   </div>
   

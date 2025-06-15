@@ -13,6 +13,7 @@ import { SpettacoliComponent } from './components/spettacoli/spettacoli.componen
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { SelezionePostiComponent } from './components/selezione-posti/selezione-posti.component';
 import { JoinPipe } from './utils/join.pipe';
+import { UserComponent } from './components/user/user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,6 +25,7 @@ import { JoinPipe } from './utils/join.pipe';
     HomepageComponent,
     SelezionePostiComponent,
     JoinPipe,
+    UserComponent,
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,11 @@ body {
   /* Container principale */
   .main-content {
     
+    background-color: #000;
+    color: #fff;
+    
+    width: 80%;
+    margin: auto;
   }
   
   /* Imposta il margine per il contenuto per evitare sovrapposizioni */
