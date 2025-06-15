@@ -15,19 +15,22 @@
     <!-- Sezione Ricerca e Dettagli -->
     <div class="section search-section">
       <h2>Cerca Genere</h2>
-      <input type="text" placeholder="Cerca genere" [(ngModel)]="termineRicerca" (ngModelChange)="onSearchChange($event)"  />
+      <input type="text" placeholder="Cerca genere" [(ngModel)]="termineRicerca"   />
+      <button (click)="eseguiRicerca()">Cerca</button>
+      <button (click)="resetRicerca()">Reset</button>
       <!-- Loading indicator -->
-      <div *ngIf="isLoading" class="loading-indicator">
-        Ricerca in corso...
-      </div>
 
-      <ul *ngIf="risultatiRicerca.length > 0">
-        <p>Consigliati:</p>
-        <li *ngFor="let genere of risultatiRicerca" (click)="selezionaGenere(genere)">
+      <ul *ngIf="generi.length > 0">
+        <li *ngFor="let genere of generi" (click)="selezionaGenere(genere)">
           > {{ genere.genere }} 
         </li>
       </ul>
-  
+            <!-- Sezione Paginazione -->
+    <div class="pagination">
+      <button (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
+      <span>Pagina {{ paginaCorrente + 1 }} di {{ totalePagine }}</span>
+      <button (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
+    </div>
       <!-- Dettagli Genere Selezionato -->
 <div *ngIf="genereSelezionatoModificato" class="details-section">
     <h3>Dettagli Genere</h3>

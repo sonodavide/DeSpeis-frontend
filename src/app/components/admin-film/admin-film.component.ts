@@ -148,8 +148,8 @@ export class AdminFilmComponent {
 
   // Funzione per cercare i film in base al titolo
   cercaFilm(term: string) {
-    this.isLoadingFilm = true;
-    this.filmService.suggest(term).subscribe(
+    /*this.isLoadingFilm = true;
+    this.filmService.cerca(term, 0 ,0).subscribe(
       (risultati: FilmDto[]) => {
         this.risultatiRicercaFilm = risultati;
         this.isLoadingFilm = false;
@@ -159,7 +159,7 @@ export class AdminFilmComponent {
         this.risultatiRicercaFilm = [];
         this.isLoadingFilm = false;
       }
-    );
+    );*/
   }
 
   // Funzione per selezionare un film dalla lista dei risultati
@@ -188,8 +188,8 @@ export class AdminFilmComponent {
         
       case 'genereCreazione':{
         this.isLoadingGenereCreazione = true;
-        this.genereService.getSuggestions(term).subscribe(
-          results => this.aggiornaRisultati('genereCreazione', results),
+        this.genereService.cerca(term, 0 , 0).subscribe(
+          //results => this.aggiornaRisultati('genereCreazione', results),
           error => this.gestisciErrore('genereCreazione', error)
         );
         break;
@@ -205,27 +205,27 @@ export class AdminFilmComponent {
       }
         
       case 'genereModifica':{
-        this.isLoadingGenereModifica = true;
-        this.genereService.getSuggestions(term).subscribe(
+        /*this.isLoadingGenereModifica = true;
+        this.genereService.cerca(term).subscribe(
           results => this.aggiornaRisultati('genereModifica', results),
           error => this.gestisciErrore('genereModifica', error)
-        );
+        );*/
         break;
       }
       case 'registaCreazione' : {
-        this.isLoadingRegistaCreazione = true
-        this.registaService.getSuggestions(term).subscribe(
+        /*this.isLoadingRegistaCreazione = true
+        this.registaService.cerca(term).subscribe(
           results => this.aggiornaRisultati("registaCreazione", results),
           error => this.gestisciErrore('registaCreazione', error)
-        );
+        );*/
         break;
       }
       case 'registaModifica' : {
-        this.isLoadingRegistaModifica = true
-        this.registaService.getSuggestions(term).subscribe(
+        /*this.isLoadingRegistaModifica = true
+        this.registaService.cerca(term).subscribe(
           results => this.aggiornaRisultati("registaModifica", results),
           error => this.gestisciErrore('registaModifica', error)
-        );
+        );*/
         break;
 
       }

@@ -16,17 +16,22 @@
     <!-- Sezione Ricerca e Dettagli -->
     <div class="section search-section">
       <h2>Cerca Regista</h2>
-      <input type="text" placeholder="Cerca regista per nome o cognome" [(ngModel)]="termineRicerca" (ngModelChange)="onSearchChange($event)"  />
-      <!-- Loading indicator -->
-      <div *ngIf="isLoading" class="loading-indicator">
-        Ricerca in corso...
-      </div>
-      <ul *ngIf="risultatiRicerca.length > 0">
+      <input type="text" placeholder="Cerca regista per nome o cognome" [(ngModel)]="termineRicerca"   />
+      <button (click)="eseguiRicerca()">Cerca</button>
+      <button (click)="resetRicerca()">Reset</button>
+      <ul *ngIf="registi.length > 0">
         <p>Consigliati:</p>
-        <li *ngFor="let regista of risultatiRicerca" (click)="selezionaRegista(regista)">
+        <li *ngFor="let regista of registi" (click)="selezionaRegista(regista)">
           > {{ regista.nome }} {{ regista.cognome }}
         </li>
       </ul>
+
+            <!-- Sezione Paginazione -->
+    <div class="pagination">
+      <button (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
+      <span>Pagina {{ paginaCorrente + 1 }} di {{ totalePagine }}</span>
+      <button (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
+    </div>
   
       <!-- Dettagli Regista Selezionato -->
 <div *ngIf="registaSelezionatoModificato" class="details-section">

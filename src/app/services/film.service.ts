@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FilmDto } from '../model/film';
+import { PaginatedResponse } from '../model/paginatedResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -31,9 +32,19 @@ export class FilmService {
   }
 
   // Metodo per suggerire film basato su un termine di ricerca
-  suggest(query: string): Observable<FilmDto[]> {
-    const params = new HttpParams().set('query', query);
-    return this.http.get<FilmDto[]>(`${this.apiUrl}/suggest`, { params });
+  cerca(query: string, pageNumber : number, pageSize : number): Observable<PaginatedResponse<FilmDto>> {
+    const params = new HttpParams()
+    .set('query', query)
+    .set('pageNumber', pageNumber)
+    .set('pageSize', pageSize);
+    return this.http.get<PaginatedResponse<FilmDto>>(`${this.apiUrl}/cerca`, { params });
+  }
+
+  getAllPaginated(pageNumber : number, pageSize : number) : Observable<PaginatedResponse<FilmDto>>{
+    const params = new HttpParams()
+    .set("pageNumber", pageNumber)
+    .set("pageSize", pageSize)
+    return this.http.get<PaginatedResponse<FilmDto>>(`${this.apiUrl}/paged`, {params})
   }
 
 }
