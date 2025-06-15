@@ -1,0 +1,76 @@
+.admin-container {
+    background-color: #121212;
+    padding: 20px;
+    border-radius: 8px;
+    color: #fff;
+    width: 80%;
+    margin: 20px auto;
+  }
+  
+  .admin-section {
+    background-color: #1c1c1c;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  h1, h2 {
+    color: #f5c518;
+    margin-bottom: 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  input[type="time"],
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .selected-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  
+  .selected-list span {
+    background-color: #444;
+    padding: 3px 8px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .selected-list button {
+    background: none;
+    color: #f5c518;
+    border: none;
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  

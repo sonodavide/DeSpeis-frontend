@@ -1,4 +1,4 @@
-export interface postoResponseDto{
+export interface PostoResponseDto{
     postoId : number,
     postoSedileId : number,
     stato : string

@@ -8,6 +8,15 @@ import { SelezionePostiComponent } from './components/selezione-posti/selezione-
 import { UtenteComponent } from './components/utente/utente.component';
 import { OrdiniComponent } from './components/ordini/ordini.component';
 import { BigliettiComponent } from './components/biglietti/biglietti.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AdminAttoreComponent } from './components/admin-attore/admin-attore.component';
+import { AdminGenereComponent } from './components/admin-genere/admin-genere.component';
+import { AdminRegistaComponent } from './components/admin-regista/admin-regista.component';
+import { AdminFilmComponent } from './components/admin-film/admin-film.component';
+import { AdminSalaComponent } from './components/admin-sala/admin-sala.component';
+import { AdminSpettacoloComponent } from './components/admin-spettacolo/admin-spettacolo.component';
+import { AdminUtenteComponent } from './components/admin-utente/admin-utente.component';
 
 const routes: Routes = [
   {path:'films', component:FilmsComponent},
@@ -17,7 +26,16 @@ const routes: Routes = [
   {path: 'selezione-posti/:id', component: SelezionePostiComponent},
   {path: 'utente', component:UtenteComponent},
   {path: 'ordini', component:OrdiniComponent},
-  {path: 'biglietti', component: BigliettiComponent}
+  {path: 'biglietti', component: BigliettiComponent},
+  {path: 'checkout', component : CheckoutComponent},
+  {path: 'admin', component : AdminComponent},
+  {path: 'admin-attore', component: AdminAttoreComponent},
+  {path: 'admin-genere', component: AdminGenereComponent},
+  {path: 'admin-regista', component: AdminRegistaComponent},
+  {path: 'admin-film', component: AdminFilmComponent},
+  {path: 'admin-sala', component: AdminSalaComponent},
+  {path: 'admin-spettacolo', component: AdminSpettacoloComponent},
+  {path: 'admin-utente', component: AdminUtenteComponent}
 ];
 
 @NgModule({

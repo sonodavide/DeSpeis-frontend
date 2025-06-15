@@ -1,5 +1,5 @@
 export interface FilmDto {
-    id: number;
+    id?: number;
     titolo: string;
     durata: number;
     trama: string;
@@ -11,19 +11,19 @@ export interface FilmDto {
   }
   
   export interface RegistaDto {
-    id: number;
+    id?: number;
     nome: string;
     cognome: string;
   }
   
   export interface AttoreDto {
-    id: number;
+    id?: number;
     nome: string;
     cognome: string;
   }
   
   export interface GenereDto {
-    id: number;
+    id?: number;
     genere: string;
   }
   

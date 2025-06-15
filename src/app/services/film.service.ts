@@ -12,7 +12,6 @@ export class FilmService {
 
   constructor(private http: HttpClient) { }
 
-  // Ottieni tutti i film
   getFilms(): Observable<FilmDto[]> {
     return this.http.get<FilmDto[]>(this.apiUrl);
   }
@@ -20,4 +19,21 @@ export class FilmService {
     const params = new HttpParams().set('id',id)
     return this.http.get<FilmDto>(`${this.apiUrl}`, {params});
   }
+
+  // Metodo per creare un nuovo film
+  nuovo(film: FilmDto): Observable<FilmDto> {
+    return this.http.post<FilmDto>(`${this.apiUrl}/nuovo`, film);
+  }
+
+  // Metodo per eliminare un film
+  elimina(film: FilmDto): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/elimina`, film);
+  }
+
+  // Metodo per suggerire film basato su un termine di ricerca
+  suggest(query: string): Observable<FilmDto[]> {
+    const params = new HttpParams().set('query', query);
+    return this.http.get<FilmDto[]>(`${this.apiUrl}/suggest`, { params });
+  }
+
 }

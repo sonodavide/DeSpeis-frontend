@@ -22,4 +22,17 @@ export class UtenteService {
   getUtenti(): Observable< UtenteDto[]>{
     return this.http.get<UtenteDto[]>(this.apiUrl);
   }
+
+  getSuggestions(term: string): Observable<UtenteDto[]> {
+    return this.http.get<UtenteDto[]>(`${this.apiUrl}/cerca?query=${term}`)
+  }
+  // Metodo per aggiungere un nuovo attore
+  nuovo(utenteDto: UtenteDto): Observable<UtenteDto> {
+    return this.http.post<UtenteDto>(`${this.apiUrl}/nuovo`, utenteDto);
+  }
+
+  // Metodo per eliminare un attore
+  elimina(utenteDto: UtenteDto): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/elimina`, utenteDto);
+  }
 }

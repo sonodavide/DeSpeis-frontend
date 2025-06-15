@@ -1,0 +1,98 @@
+<div class="admin-spettacolo-container">
+    <!-- Sezione Creazione -->
+    <div class="section create-section">
+      <h2>Crea Nuovo Spettacolo</h2>
+      <form (ngSubmit)="creaSpettacolo()">
+        <label for="data">Data:</label>
+        <input type="date" id="data" [(ngModel)]="nuovoSpettacolo.data" name="data" required />
+    
+        <label for="ora">Ora:</label>
+        <input type="time" id="ora" [(ngModel)]="nuovoSpettacolo.ora" name="ora" required />
+    
+        <label for="prezzo">Prezzo:</label>
+        <input type="number" id="prezzo" [(ngModel)]="nuovoSpettacolo.prezzo" name="prezzo" required />
+    
+        <label for="salaId">ID Sala:</label>
+        <input type="number" id="salaId" [(ngModel)]="nuovoSpettacolo.salaId" name="salaId" required />
+    
+        <label for="film">ID Film:</label>
+        <input type="number" id="film" [(ngModel)]="nuovoSpettacolo.film" name="film" required />
+  
+        <label for="acquistabile">Acquistabile:</label>
+        <input type="checkbox" id="acquistabile" [(ngModel)]="nuovoSpettacolo.acquistabile" name="acquistabile" />
+    
+        <button type="submit" class="create-button">Crea</button>
+      </form>
+    </div>
+    
+    <!-- Sezione Ricerca e Dettagli -->
+    <div class="section search-section">
+      <h2>Cerca Spettacolo per data</h2>
+      <input type="date" name="dataModifica" [(ngModel)]="termineRicerca" (ngModelChange)="onSearchChange($event)"  />
+      <!-- Loading indicator -->
+      <div *ngIf="isLoading" class="loading-indicator">
+        Ricerca in corso...
+      </div>
+      <ul *ngIf="risultatiRicerca.length > 0">
+        <p>Consigliati:</p>
+        <li *ngFor="let spettacolo of risultatiRicerca" (click)="selezionaSpettacolo(spettacolo); getPosti()">
+          > {{ spettacolo.data }} - ID Film: {{ spettacolo.film }}
+        </li>
+      </ul>
+    
+      <!-- Dettagli Spettacolo Selezionato -->
+      <div *ngIf="spettacoloSelezionatoModificato" class="details-section">
+        <h3>Dettagli Spettacolo</h3>
+  
+        <label for="data">Data:</label>
+        <input type="date" id="data" [(ngModel)]="spettacoloSelezionatoModificato.data" (input)="abilitaModifiche()" />
+  
+        <label for="ora">Ora:</label>
+        <input type="time" id="ora" [(ngModel)]="spettacoloSelezionatoModificato.ora" (input)="abilitaModifiche()" />
+  
+        <label for="prezzo">Prezzo:</label>
+        <input type="number" id="prezzo" [(ngModel)]="spettacoloSelezionatoModificato.prezzo" (input)="abilitaModifiche()" />
+  
+        <label for="salaId">ID Sala:</label>
+        <input type="number" id="salaId" [(ngModel)]="spettacoloSelezionatoModificato.salaId" (input)="abilitaModifiche()" />
+  
+        <label for="film">ID Film:</label>
+        <input type="number" id="film" [(ngModel)]="spettacoloSelezionatoModificato.film" (input)="abilitaModifiche()" />
+  
+        
+        <label for="acquistabile">Acquistabile:</label>
+        <input type="checkbox" id="acquistabile" [(ngModel)]="spettacoloSelezionatoModificato.acquistabile" (change)="abilitaModifiche()" />
+  
+        <button class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaSpettacolo()">Modifica</button>
+        <button class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">Annulla Modifica</button>
+        <button class="delete-button" (click)="eliminaSpettacolo()">Elimina</button>
+      </div>
+
+      <!-- Sezione Dettagli Sala e selezione posti -->
+      <div *ngIf="posti" class="selezione-posti-container">
+        <div class="schermo">Schermo</div>
+        
+        <div class="fila-container" *ngFor="let fila of posti?.keys()">
+          <span class="etichetta-fila">{{ fila }}</span>
+          <div class="fila">
+            <div class="posto" 
+                *ngFor="let posto of posti?.get(fila) ?? []"
+                [ngClass]="getStatoClasse(posto)"
+                [class.selezionato]="isPostoSelezionato(posto.postoId)"
+                (click)="togglePosto(posto.postoId)">
+              <span>{{ posto.postoSedileId }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="posti-selezionati">
+          <h3>Posti Selezionati</h3>
+          <div *ngFor="let posto of postiSelezionati">
+            {{ posto }}
+          </div>
+          <button (click)="blocca()">Blocca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

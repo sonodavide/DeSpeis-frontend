@@ -1,0 +1,111 @@
+.admin-sala-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+  }
+  
+  .fila-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .fila-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .etichetta-fila {
+    font-weight: bold;
+    color: white;
+    padding: 5px;
+  }
+  
+  .posto-add,
+  .posto-remove {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .posto-remove {
+    background-color: #dc3545;
+  }
+  
+  .posti-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .selezione-posti {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .schermo {
+    background-color: gray;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 300px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .fila-posti-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+  .fila {
+    display: flex;
+  }
+  
+  .posto {
+    width: 30px;
+    height: 30px;
+    background-color: lightgray;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid black;
+  }
+  
+  .fila-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .fila-add,
+  .fila-remove {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .fila-remove {
+    background-color: #dc3545;
+  }
+  

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PrenotazioneRequestDto } from '../model/prenotazioneRequest';
-import { PostispettacoloDto } from '../model/postiSpettacolo';
+import { PostiSpettacoloResponseDto } from '../model/postiSpettacolo';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,9 +13,14 @@ export class PrenotazioneService {
 
   constructor(private http: HttpClient) { }
 
-  prenota(prenotazioneRequest: PrenotazioneRequestDto): Observable<PostispettacoloDto[]> {
+  prenota(prenotazioneRequest: PrenotazioneRequestDto): Observable<PostiSpettacoloResponseDto[]> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<PostispettacoloDto[]>(`${this.apiUrl}/prenota`, prenotazioneRequest, { headers });
+    return this.http.post<PostiSpettacoloResponseDto[]>(`${this.apiUrl}/prenota`, prenotazioneRequest, { headers });
+  }
+
+  blocca(prenotazioneRequest: PrenotazioneRequestDto): Observable<PostiSpettacoloResponseDto[]> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<PostiSpettacoloResponseDto[]>(`${this.apiUrl}/blocca`, prenotazioneRequest, { headers });
   }
   
 }

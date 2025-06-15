@@ -1,0 +1,69 @@
+<div class="checkout-container">
+    <h2>Pagamento</h2>
+  
+    <!-- Sezione per visualizzare gli oggetti in acquisto -->
+    
+  
+    <form (ngSubmit)="submitPayment()">
+      <!-- Campo per il nome dell'intestatario -->
+      <label for="cardholderName">Nome Intestatario</label>
+      <input 
+        type="text" 
+        id="cardholderName" 
+        name="cardholderName" 
+        [(ngModel)]="cardholderName" 
+        required 
+      />
+      
+      <!-- Campo per il numero della carta -->
+      <label for="cardNumber">Numero della Carta</label>
+      <input 
+        type="text" 
+        id="cardNumber" 
+        name="cardNumber" 
+        [(ngModel)]="cardNumber" 
+        required 
+        maxlength="19" 
+        placeholder="1234 1234 1234 1234" 
+      />
+  
+      <!-- Campo per la data di scadenza -->
+      <label for="expiryDate">Data di Scadenza</label>
+      <input 
+        type="text" 
+        id="expiryDate" 
+        name="expiryDate" 
+        [(ngModel)]="expiryDate" 
+        required 
+        placeholder="MM/AA" 
+        maxlength="5" 
+      />
+  
+      <!-- Campo per il CVV -->
+      <label for="cvv">CVV</label>
+      <input 
+        type="text" 
+        id="cvv" 
+        name="cvv" 
+        [(ngModel)]="cvv" 
+        required 
+        maxlength="3" 
+        placeholder="123" 
+      />
+  
+      <!-- Campo per l'importo totale (di sola lettura) -->
+      <label>Totale da Pagare</label>
+      <div>{{ totalAmount | currency: 'EUR' }}</div>
+      <div class="items-container">
+        <h3>Stai compando:</h3>
+        <ul>
+          <li *ngFor="let posto of posti">
+            {{ posto }}
+          </li>
+        </ul>
+      </div>
+      <!-- Pulsante per il pagamento -->
+      <button type="submit" class="pay-button">Paga</button>
+    </form>
+  </div>
+  

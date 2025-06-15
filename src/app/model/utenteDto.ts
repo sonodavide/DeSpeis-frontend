@@ -1,6 +1,6 @@
 // utente-dto.model.ts
 export interface UtenteDto {
-    id: number;
+    id?: number;
     username: string;
     nome: string;
     cognome: string;
