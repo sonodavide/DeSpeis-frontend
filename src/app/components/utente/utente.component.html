@@ -1,0 +1,51 @@
+<div class="utente-container">
+    <h2>Informazioni Utente</h2>
+    
+    <div class="info-container">
+      <div class="info-sinistra">
+        <p><strong>Nome:</strong> {{ utente.nome }}</p>
+        <p><strong>Cognome:</strong> {{ utente.cognome }}</p>
+        <p><strong>Username:</strong> {{ utente.username }}</p> <!-- Nuovo campo username -->
+        
+      </div>
+  
+      <div class="info-destra">
+        
+        <p><strong>Telefono:</strong> {{ utente.telefono }}</p>
+        <p><strong>Data di Nascita:</strong> {{ utente.datanascita| date: 'dd/MM/yyyy' }}</p>
+        <button (click)="modificaInfo()">Modifica Info</button>
+      </div>
+    </div>
+  
+    <h3>Biglietti utilizzabili oggi </h3><a class="mostra-tutti" routerLink="/biglietti">Mostra tutti i biglietti</a>
+    <div class="biglietti-sezione">
+      <div *ngFor="let biglietto of biglietti">
+        <p><strong>Codice Biglietto:</strong> {{ biglietto.id }}</p>
+        <p><strong>Film</strong> {{biglietto.postospettacoloSpettacoloFilmTitolo}}</p>
+        <p><strong>Data</strong> {{ biglietto.postospettacoloSpettacoloData }} - {{ formatTime(biglietto.postospettacoloSpettacoloOra)}}</p>
+        <p><strong>Sala</strong> {{ biglietto.postospettacoloSpettacoloSalaId}}</p>
+        <p><strong>Posto</strong> {{ biglietto.postospettacoloPosto.fila }} - {{ biglietto.postospettacoloPosto.sedile}}</p>
+        <p><strong>Prezzo:</strong> {{ biglietto.prezzo| currency : 'EUR'}}</p>
+        <hr>
+      </div>
+    </div>
+  
+    <h3>Ultimi 10 Ordini </h3> <a class="mostra-tutti" routerLink="/ordini">Mostra tutti ordini</a>
+    <div class="ordini-sezione">
+      <div *ngFor="let ordine of ordini">
+        <p><strong>Codice Ordine:</strong> {{ ordine.id }}</p>
+        <p><strong>Prezzo:</strong> {{ ordine.totale | currency }}</p>
+        <p><strong>Stato:</strong> {{ ordine.stato }}</p>
+        <p><strong>Data:</strong> {{ ordine.data }}</p>
+        <p><strong>Biglietti:</strong> </p>
+          <Ul>
+            <li *ngFor="let biglietto of ordine.bigliettos">
+              {{bigliettoToString(biglietto)}}
+            </li>
+          </Ul>
+        <hr>
+      </div>
+      
+    </div>
+  </div>
+  

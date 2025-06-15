@@ -1,0 +1,45 @@
+.ordini-container {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    color: #fff;
+    margin-top: 20px;
+  }
+  
+  .ordine {
+    margin-bottom: 20px;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  button {
+    background-color: #f1c40f;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: black;
+    border-radius: 5px;
+  }
+  
+  button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
+  
+  .torna-button {
+    background-color: #f1c40f;
+    border: none;
+    color: black;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .torna-button:hover {
+    background-color: #e0b40f;
+  }

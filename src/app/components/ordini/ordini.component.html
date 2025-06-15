@@ -1,0 +1,20 @@
+<div class="ordini-container">
+  <a routerLink="/utente" class="torna-button">Torna all'area utente</a>
+
+    <h2>Tutti gli Ordini</h2>
+    <div *ngFor="let ordine of ordini" class="ordine">
+      <p><strong>Codice Ordine:</strong> {{ ordine.id }}</p>
+      <p><strong>Data:</strong> {{ ordine.data | date: 'dd/MM/yyyy' }}</p>
+      <p><strong>Stato:</strong> {{ ordine.stato }}</p>
+      <p><strong>Totale:</strong> {{ ordine.totale | currency: 'EUR' }}</p>
+      <p><strong>Biglietti:</strong> </p>
+      <hr>
+    </div>
+  
+    <div class="pagination">
+      <button (click)="paginaPrecedente()" [disabled]="paginaCorrente === 0">Indietro</button>
+      <span class="pagina-info">Pagina {{ paginaCorrente + 1 }} di {{ totalePagine }}</span>
+      <button (click)="paginaSuccessiva()" [disabled]="paginaCorrente >= totalePagine - 1">Avanti</button>
+    </div>
+  </div>
+  

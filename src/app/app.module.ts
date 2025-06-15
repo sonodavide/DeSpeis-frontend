@@ -13,7 +13,10 @@ import { SpettacoliComponent } from './components/spettacoli/spettacoli.componen
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { SelezionePostiComponent } from './components/selezione-posti/selezione-posti.component';
 import { JoinPipe } from './utils/join.pipe';
-import { UserComponent } from './components/user/user.component';
+
+import { UtenteComponent } from './components/utente/utente.component';
+import { OrdiniComponent } from './components/ordini/ordini.component';
+import { BigliettiComponent } from './components/biglietti/biglietti.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +28,9 @@ import { UserComponent } from './components/user/user.component';
     HomepageComponent,
     SelezionePostiComponent,
     JoinPipe,
-    UserComponent,
+    UtenteComponent,
+    OrdiniComponent,
+    BigliettiComponent,
   ],
   imports: [
     BrowserModule,
