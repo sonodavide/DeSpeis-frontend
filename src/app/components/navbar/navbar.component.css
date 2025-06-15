@@ -2,7 +2,7 @@
 .navbar {
     background-color: #1c1c1c; /* Sfondo navbar */
     color: #ffffff;
-    padding: 15px 30px;
+    padding: 15px 0px;
     top: 0;
     width: 100%;
     z-index: 1000; /* Sovrapponi alla pagina */

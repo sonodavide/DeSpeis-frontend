@@ -6,5 +6,8 @@ export class UtilsFormatter {
     }
     static formatTime(time: string): string {
         return time.substring(0, 5); // Mostra solo ore e minuti (HH:mm)
-      }
+    }
+    static mapKeysToArrayReversed(map : Map<any, any>) : any[] {
+        return Array.from(map.keys()).reverse()
+    }
 }

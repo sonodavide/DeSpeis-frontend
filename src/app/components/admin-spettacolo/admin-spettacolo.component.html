@@ -2,7 +2,7 @@
   <!-- Sezione Creazione -->
   <div class="section create-section">
     <h2>Crea Nuovo Spettacolo</h2>
-    <form (ngSubmit)="creaSpettacolo()">
+    <form>
       <label for="data">Data:</label>
       <input type="date" id="data" [(ngModel)]="nuovoSpettacolo.data" name="data" required />
 
@@ -22,17 +22,17 @@
       </ul>
       <!-- Sezione Paginazione -->
       <div class="pagination">
-        <button (click)="paginaPrecedente(SearchType.SalaCreazione)"
+        <button type="button" (click)="paginaPrecedente(SearchType.SalaCreazione)"
           [disabled]="paginaCorrenteSalaCreazione === 0">Indietro</button>
         <span>Pagina {{ paginaCorrenteSalaCreazione + 1 }} di {{ totalePagineSalaCreazione }}</span>
-        <button (click)="paginaSuccessiva(SearchType.SalaCreazione)"
+        <button type="button" (click)="paginaSuccessiva(SearchType.SalaCreazione)"
           [disabled]="paginaCorrenteSalaCreazione >= totalePagineSalaCreazione - 1">Avanti</button>
       </div>
-      <label for="film"> Film: {{nuovoSpettacolo.film.id ? nuovoSpettacolo.film.titolo + " - " +
+      <label for="FilmCreazione"> Film: {{nuovoSpettacolo.film.id ? nuovoSpettacolo.film.titolo + " - " +
         nuovoSpettacolo.film.datauscita : ""}}</label>
       <input type="text" placeholder="Cerca film per titolo" [(ngModel)]="termineRicercaFilmCreazione" name="film" />
-      <button (click)="eseguiRicerca(SearchType.FilmCreazione)">Cerca</button>
-      <button (click)="resettaRicerca(SearchType.FilmCreazione)">Reset</button>
+      <button type="button" type="button" (click)="eseguiRicerca(SearchType.FilmCreazione)">Cerca</button>
+      <button type="button" type="button" (click)="resettaRicerca(SearchType.FilmCreazione)">Reset</button>
 
       <ul *ngIf="risultatiRicercaFilmCreazione.length > 0">
         <li *ngFor="let film of risultatiRicercaFilmCreazione"
@@ -42,17 +42,17 @@
       </ul>
       <!-- Sezione Paginazione -->
       <div class="pagination">
-        <button (click)="paginaPrecedente(SearchType.FilmCreazione)"
+        <button type="button" (click)="paginaPrecedente(SearchType.FilmCreazione)"
           [disabled]="paginaCorrenteFilmCreazione === 0">Indietro</button>
         <span>Pagina {{ paginaCorrenteFilmCreazione + 1 }} di {{ totalePagineFilmCreazione }}</span>
-        <button (click)="paginaSuccessiva(SearchType.FilmCreazione)"
+        <button type="button" (click)="paginaSuccessiva(SearchType.FilmCreazione)"
           [disabled]="paginaCorrenteFilmCreazione >= totalePagineFilmCreazione - 1">Avanti</button>
       </div>
 
       <label for="acquistabile">Acquistabile:</label>
       <input type="checkbox" id="acquistabile" [(ngModel)]="nuovoSpettacolo.acquistabile" name="acquistabile" />
 
-      <button type="submit" class="create-button">Crea</button>
+      <button type="submit" (click)="creaSpettacolo()"class="create-button">Crea</button>
     </form>
   </div>
 
@@ -60,8 +60,8 @@
   <div class="section search-section">
     <h2>Cerca Spettacolo per data</h2>
     <input type="date" name="dataModifica" [(ngModel)]="termineRicercaSpettacoloModifica" />
-    <button (click)="eseguiRicerca(SearchType.SpettacoloModifica)">Cerca</button>
-    <button (click)="resettaRicerca(SearchType.SpettacoloModifica)">Reset</button>
+    <button type="button" (click)="eseguiRicerca(SearchType.SpettacoloModifica)">Cerca</button>
+    <button type="button" (click)="resettaRicerca(SearchType.SpettacoloModifica)">Reset</button>
     <ul *ngIf="risultatiRicercaSpettacolo.length > 0">
       <li *ngFor="let spettacolo of risultatiRicercaSpettacolo" (click)="selezionaSpettacolo(spettacolo);">
         > Spettacolo: {{ spettacolo.data }} - {{spettacolo.ora}} Film: {{ spettacolo.film.titolo }} - {{
@@ -70,14 +70,14 @@
     </ul>
     <!-- Sezione Paginazione -->
     <div class="pagination">
-      <button (click)="paginaPrecedente(SearchType.SpettacoloModifica)"
+      <button type="button" (click)="paginaPrecedente(SearchType.SpettacoloModifica)"
         [disabled]="paginaCorrenteSpettacoloModifica === 0">Indietro</button>
       <span>Pagina {{ paginaCorrenteSpettacoloModifica + 1 }} di {{ totalePagineSpettacoloModifica }}</span>
-      <button (click)="paginaSuccessiva(SearchType.SalaCreazione)"
+      <button type="button" (click)="paginaSuccessiva(SearchType.SpettacoloModifica)"
         [disabled]="paginaCorrenteSpettacoloModifica >= totalePagineSpettacoloModifica - 1">Avanti</button>
     </div>
     <!-- Dettagli Spettacolo Selezionato -->
-    <div *ngIf="spettacoloSelezionatoModificato" class="details-section">
+    <div *ngIf="spettacoloSelezionatoModificato">
       <h3>Dettagli Spettacolo</h3>
 
       <label for="data">Data:</label>
@@ -100,17 +100,17 @@
       </ul>
       <!-- Sezione Paginazione -->
       <div class="pagination">
-        <button (click)="paginaPrecedente(SearchType.SalaModifica)"
+        <button type="button" (click)="paginaPrecedente(SearchType.SalaModifica)"
           [disabled]="paginaCorrenteSalaModifica === 0">Indietro</button>
         <span>Pagina {{ paginaCorrenteSalaModifica + 1 }} di {{ totalePagineSalaModifica }}</span>
-        <button (click)="paginaSuccessiva(SearchType.SalaModifica)"
+        <button type="button" (click)="paginaSuccessiva(SearchType.SalaModifica)"
           [disabled]="paginaCorrenteSalaModifica >= totalePagineSalaModifica - 1">Avanti</button>
       </div>
       <label for="film">Film: {{spettacoloSelezionatoModificato.film.id ? spettacoloSelezionatoModificato.film.titolo +
         " - " + spettacoloSelezionatoModificato.film.datauscita : ""}}</label>
       <input type="text" name="filmModifica" [(ngModel)]="termineRicercaFilmModifica" />
-      <button (click)="eseguiRicerca(SearchType.FilmModifica)">Cerca</button>
-      <button (click)="resettaRicerca(SearchType.FilmModifica)">Reset</button>
+      <button type="button" (click)="eseguiRicerca(SearchType.FilmModifica)">Cerca</button>
+      <button type="button" (click)="resettaRicerca(SearchType.FilmModifica)">Reset</button>
 
       <ul *ngIf="risultatiRicercaFilmModifica.length > 0">
         <li *ngFor="let film of risultatiRicercaFilmModifica"
@@ -120,10 +120,10 @@
       </ul>
       <!-- Sezione Paginazione -->
       <div class="pagination">
-        <button (click)="paginaPrecedente(SearchType.FilmModifica)"
+        <button type="button" (click)="paginaPrecedente(SearchType.FilmModifica)"
           [disabled]="paginaCorrenteFilmModifica === 0">Indietro</button>
         <span>Pagina {{ paginaCorrenteFilmModifica + 1 }} di {{ totalePagineFilmModifica }}</span>
-        <button (click)="paginaSuccessiva(SearchType.FilmModifica)"
+        <button type="button" (click)="paginaSuccessiva(SearchType.FilmModifica)"
           [disabled]="paginaCorrenteFilmModifica >= totalePagineFilmModifica - 1">Avanti</button>
       </div>
 
@@ -132,33 +132,11 @@
       <input type="checkbox" id="acquistabile" [(ngModel)]="spettacoloSelezionatoModificato.acquistabile"
         (change)="abilitaModifiche()" />
 
-      <button class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaSpettacolo()">Modifica</button>
-      <button class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">Annulla
+      <button type="button" class="edit-button" [disabled]="!modificheAbilitate"
+        (click)="modificaSpettacolo()">Modifica</button>
+      <button type="button" class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">Annulla
         Modifica</button>
-      <button class="delete-button" (click)="eliminaSpettacolo()">Elimina</button>
-    </div>
-
-    <!-- Sezione Dettagli Sala e selezione posti -->
-    <div *ngIf="posti" class="selezione-posti-container">
-      <div class="schermo">Schermo</div>
-
-      <div class="fila-container" *ngFor="let fila of posti?.keys()">
-        <span class="etichetta-fila">{{ fila }}</span>
-        <div class="fila">
-          <div class="posto" *ngFor="let posto of posti?.get(fila) ?? []" [ngClass]="getStatoClasse(posto)"
-            [class.selezionato]="isPostoSelezionato(posto.postoId)" (click)="togglePosto(posto.postoId)">
-            <span>{{ posto.postoSedileId }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="posti-selezionati">
-        <h3>Posti Selezionati</h3>
-        <div *ngFor="let posto of postiSelezionati">
-          {{ posto }}
-        </div>
-        <button (click)="blocca()">Blocca</button>
-      </div>
+      <button type="button" class="delete-button" (click)="eliminaSpettacolo()">Elimina</button>
     </div>
   </div>
 </div>

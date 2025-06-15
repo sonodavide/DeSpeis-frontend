@@ -13,14 +13,14 @@ export class PrenotazioneService {
 
   constructor(private http: HttpClient) { }
 
-  prenota(prenotazioneRequest: PrenotazioneRequestDto): Observable<PostiSpettacoloResponseDto[]> {
+  prenota(prenotazioneRequest: PrenotazioneRequestDto): Observable<PostiSpettacoloResponseDto> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<PostiSpettacoloResponseDto[]>(`${this.apiUrl}/prenota`, prenotazioneRequest, { headers });
+    return this.http.post<PostiSpettacoloResponseDto>(`${this.apiUrl}/prenota`, prenotazioneRequest, { headers });
   }
 
-  blocca(prenotazioneRequest: PrenotazioneRequestDto): Observable<PostiSpettacoloResponseDto[]> {
+  blocca(prenotazioneRequest: PrenotazioneRequestDto): Observable<PostiSpettacoloResponseDto> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<PostiSpettacoloResponseDto[]>(`${this.apiUrl}/blocca`, prenotazioneRequest, { headers });
+    return this.http.post<PostiSpettacoloResponseDto>(`${this.apiUrl}/blocca`, prenotazioneRequest, { headers });
   }
   
 }

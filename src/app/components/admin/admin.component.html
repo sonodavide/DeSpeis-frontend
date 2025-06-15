@@ -1,108 +1,31 @@
 <div class="admin-container">
-    <h1>Pannello di Controllo</h1>
-    
-    <!-- Sezione per Creazione Sala -->
-    <section class="admin-section">
-      <h2>Crea Nuova Sala</h2>
-      <div class="form-group">
-        <label for="numRows">Numero di file:</label>
-        <input type="number" id="numRows" [(ngModel)]="newSala.rows" />
-      </div>
-      <div class="form-group">
-        <label for="seatsPerRow">Posti per fila:</label>
-        <input type="number" id="seatsPerRow" [(ngModel)]="newSala.seatsPerRow" />
-      </div>
-      <button (click)="createSala()">Crea Sala</button>
-    </section>
-    
-    <!-- Sezione per Creazione Spettacolo -->
-    <section class="admin-section">
-      <h2>Crea Nuovo Spettacolo</h2>
-      <div class="form-group">
-        <label for="spettacoloDate">Data:</label>
-        <input type="date" id="spettacoloDate" [(ngModel)]="newSpettacolo.data" />
-      </div>
-      <div class="form-group">
-        <label for="spettacoloTime">Ora:</label>
-        <input type="time" id="spettacoloTime" [(ngModel)]="newSpettacolo.ora" />
-      </div>
-      <div class="form-group">
-        <label for="spettacoloFilm">Film:</label>
-        <select [(ngModel)]="newSpettacolo.filmId">
-          <option *ngFor="let film of films" [value]="film.id">{{ film.titolo }}</option>
-        </select>
-      </div>
-      <button (click)="createSpettacolo()">Crea Spettacolo</button>
-    </section>
-  
-    <!-- Sezione per Creazione Film -->
-    <section class="admin-section">
-      <h2>Crea Nuovo Film</h2>
-      <div class="form-group">
-        <label for="filmTitle">Titolo:</label>
-        <input type="text" id="filmTitle" [(ngModel)]="newFilm.titolo" />
-      </div>
-      <div class="form-group">
-        <label for="filmActors">Attori:</label>
-        <input type="text" placeholder="Cerca Attori" (input)="filterActors($event)" />
-        <ul *ngIf="filteredActors.length">
-          <li *ngFor="let actor of filteredActors" (click)="addActor(actor)">{{ actor.nome }} {{ actor.cognome }}</li>
-        </ul>
-        <div class="selected-list">
-          <span *ngFor="let actor of newFilm.actors">{{ actor.nome }} {{ actor.cognome }}
-            <button (click)="removeActor(actor)">x</button>
-          </span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="filmGenres">Generi:</label>
-        <input type="text" placeholder="Cerca Generi" (input)="filterGenres($event)" />
-        <ul *ngIf="filteredGenres.length">
-          <li *ngFor="let genre of filteredGenres" (click)="addGenre(genre)">{{ genre.genere }}</li>
-        </ul>
-        <div class="selected-list">
-          <span *ngFor="let genre of newFilm.genres">{{ genre.genere }}
-            <button (click)="removeGenre(genre)">x</button>
-          </span>
-        </div>
-      </div>
-      <button (click)="createFilm()">Crea Film</button>
-    </section>
-  
-    <!-- Sezione per Creazione Attore -->
-    <section class="admin-section">
-      <h2>Crea Nuovo Attore</h2>
-      <div class="form-group">
-        <label for="actorName">Nome:</label>
-        <input type="text" id="actorName" [(ngModel)]="newActor.nome" />
-      </div>
-      <div class="form-group">
-        <label for="actorSurname">Cognome:</label>
-        <input type="text" id="actorSurname" [(ngModel)]="newActor.cognome" />
-      </div>
-      <button (click)="createActor()">Crea Attore</button>
-    </section>
-  
-    <!-- Sezione per Selezionare Utente e Mostrare Ordini -->
-    <section class="admin-section">
-      <h2>Gestione Utenti</h2>
-      <div class="form-group">
-        <label for="selectUser">Seleziona Utente:</label>
-        <select id="selectUser" [(ngModel)]="selectedUserId" (change)="showUserOrders(selectedUserId)">
-          <option *ngFor="let user of users" [value]="user.id">{{ user.username }}</option>
-        </select>
-      </div>
-      <div *ngIf="userOrders.length">
-        <h3>Ordini di {{ selectedUser?.username }}</h3>
-        <ul>
-          <li *ngFor="let order of userOrders">
-            Ordine #{{ order.id }} - Totale: {{ order.totale | currency }}
-            <ul>
-              <li *ngFor="let ticket of order.bigliettos">Biglietto #{{ ticket.id }} - Prezzo: {{ ticket.prezzo | currency }}</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </section>
+  <div class="section">
+
+    <h1>Pannello amministratore</h1>
+    <div class="buttons-grid">
+      <button (click)="navigateTo('admin-attore')">Gestisci Attori</button>
+      <button (click)="navigateTo('admin-blocca')">Blocca Utenti</button>
+      <button (click)="navigateTo('admin-film')">Gestisci Film</button>
+      <button (click)="navigateTo('admin-genere')">Gestisci Generi</button>
+      <button (click)="navigateTo('admin-regista')">Gestisci Registi</button>
+      <button (click)="navigateTo('admin-sala')">Gestisci Sale</button>
+      <button (click)="navigateTo('admin-spettacolo')">Gestisci Spettacoli</button>
+      <button (click)="navigateTo('admin-utente')">Gestisci Utenti</button>
+    </div>
   </div>
-  
+
+  <div class="section">
+    <h1>Informazioni utili:</h1>
+    <p>Numero totale film: {{ numeroFilm }}</p>
+    <p>Numero totale registi: {{ numeroRegisti }}</p>
+    <p>Numero totale attori: {{ numeroAttori }}</p>
+    <p>Numero totale generi: {{ numeroGeneri }}</p>
+    <p>Biglietti venduti: {{ numeroBiglietti }}</p>
+    <p>Numero di utenti registrati: {{ numeroUtenti }}</p>
+    <p>Incassi totali: {{ incassiTotali }}</p>
+    <p>Ordini totali: {{ numeroOrdini }}</p>
+    <p>Numero totale spettacoli: {{ numeroSpettacoli }}</p>
+    <p>Sale disponibili: {{ numeroSale }}</p>
+
+  </div>
+</div>

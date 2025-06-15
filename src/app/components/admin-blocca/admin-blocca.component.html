@@ -1,1 +1,49 @@
-<p>admin-blocca works!</p>
+<div class="admin-blocca-container">
+  <div class="section search-section">
+    <h2>Cerca Spettacolo per data</h2>
+    <input type="date" name="dataModifica" [(ngModel)]="termineRicercaSpettacoloModifica" />
+    <button type="button" (click)="eseguiRicerca()">Cerca</button>
+    <button type="button" (click)="resettaRicerca()">Reset</button>
+    <ul *ngIf="risultatiRicercaSpettacolo.length > 0">
+      <li *ngFor="let spettacolo of risultatiRicercaSpettacolo" (click)="selezionaSpettacolo(spettacolo);">
+        > Spettacolo: {{ spettacolo.data }} - {{spettacolo.ora}} Film: {{ spettacolo.film.titolo }} - {{
+        spettacolo.film.datauscita}}
+      </li>
+    </ul>
+    <!-- Sezione Paginazione -->
+    <div class="pagination">
+      <button type="button" (click)="paginaPrecedente()"
+        [disabled]="paginaCorrenteSpettacoloModifica === 0">Indietro</button>
+      <span>Pagina {{ paginaCorrenteSpettacoloModifica + 1 }} di {{ totalePagineSpettacoloModifica }}</span>
+      <button type="button" (click)="paginaSuccessiva()"
+        [disabled]="paginaCorrenteSpettacoloModifica >= totalePagineSpettacoloModifica - 1">Avanti</button>
+    </div>
+  </div>
+  <div class="selezione-posti-container">
+    <div class="schermo">
+      <span>Schermo</span>
+    </div>
+    <div *ngIf="posti">
+      <div class="fila-container" *ngFor="let fila of formattafile(posti)">
+        <span class="etichetta-fila">{{ fila }}</span>
+        <div class="fila">
+          <div  *ngFor="let posto of posti?.get(fila) ?? []" [ngClass]="posto.stato"
+            [class.selezionato]="isPostoSelezionato(posto.postoId)" class="posto"(click)="selezionaPosto(posto.postoId)">
+            <span> {{posto.postoSedileId}}</span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="posti-selezionati">
+    <h3>Posti Selezionati</h3>
+    <button type="button" (click)="blocca()">blocca</button>
+    <div *ngFor="let posto of postiSelezionati">
+      {{ posto}}
+    </div>
+  </div>
+
+
+</div>
