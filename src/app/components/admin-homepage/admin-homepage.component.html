@@ -1,0 +1,31 @@
+<div class="admin-container">
+    <div class="section">
+  
+      <h1>Pannello amministratore</h1>
+      <div class="buttons-grid">
+        <button (click)="navigateTo('admin/attore')">Gestisci Attori</button>
+        <button (click)="navigateTo('admin/blocca')">Blocca Utenti</button>
+        <button (click)="navigateTo('admin/film')">Gestisci Film</button>
+        <button (click)="navigateTo('admin/genere')">Gestisci Generi</button>
+        <button (click)="navigateTo('admin/regista')">Gestisci Registi</button>
+        <button (click)="navigateTo('admin/sala')">Gestisci Sale</button>
+        <button (click)="navigateTo('admin/spettacolo')">Gestisci Spettacoli</button>
+        <button (click)="navigateTo('admin/utente')">Gestisci Utenti</button>
+      </div>
+    </div>
+  
+    <div class="section">
+      <h1>Informazioni utili:</h1>
+      <p>Numero totale film: {{ numeroFilm }}</p>
+      <p>Numero totale registi: {{ numeroRegisti }}</p>
+      <p>Numero totale attori: {{ numeroAttori }}</p>
+      <p>Numero totale generi: {{ numeroGeneri }}</p>
+      <p>Biglietti venduti: {{ numeroBiglietti }}</p>
+      <p>Numero di utenti registrati: {{ numeroUtenti }}</p>
+      <p>Incassi totali: {{ incassiTotali }}</p>
+      <p>Ordini totali: {{ numeroOrdini }}</p>
+      <p>Numero totale spettacoli: {{ numeroSpettacoli }}</p>
+      <p>Sale disponibili: {{ numeroSale }}</p>
+  
+    </div>
+  </div>

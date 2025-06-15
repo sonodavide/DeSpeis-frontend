@@ -1,14 +1,26 @@
 <div>
-    
     <nav class="navbar">
-        <div class="navbar-container">
-            <a routerLink="/" class="navbar-logo">CinemaApp</a>
-            <ul class="navbar-links">
-                <li><a routerLink="/">Home</a></li>
-                <li><a routerLink="/films">Film</a></li>
-                <li><a routerLink="/spettacoli">Spettacoli</a></li>
-            </ul>
+      <div class="navbar-container">
+        <!-- Sinistra: Logo e Link principali -->
+        <div class="navbar-left">
+          <a routerLink="/" class="navbar-logo">CinemaApp</a>
+          <ul class="navbar-links">
+            <li><a routerLink="/">Home</a></li>
+            <li><a routerLink="/films">Film</a></li>
+            <li><a routerLink="/spettacoli">Spettacoli</a></li>
+            <li *ngIf="loggato && isAdmin()" class="navbar-admin">
+              <a routerLink="/admin">Amministrazione</a>
+            </li>
+          </ul>
         </div>
+  
+        <!-- Destra: Pulsanti Login, Logout e Account -->
+        <div class="navbar-right">
+          <a *ngIf="loggato" routerLink="/utente" class="navbar-action">Account</a>
+          <a *ngIf="!loggato" routerLink="/login" (click)="login()" class="navbar-action">Login</a>
+          <a *ngIf="loggato" routerLink="/logout" (click)="logout()" class="navbar-action">Logout</a>
+        </div>
+      </div>
     </nav>
-    
-</div>
+  </div>
+  
