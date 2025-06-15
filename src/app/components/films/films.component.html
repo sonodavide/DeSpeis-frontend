@@ -1,0 +1,14 @@
+<div class="film-gallery-container">
+    <h1 class="title">Film Showcase</h1>
+  
+    <div *ngIf="films.length > 0" class="film-grid">
+      <div class="film-item" *ngFor="let film of films" (click)="goToFilmDetail(film.id)">
+        <img [src]="film.img" alt="{{ film.titolo }} image" class="film-img">
+        <div class="film-title">{{ film.titolo }}</div>
+      </div>
+    </div>
+  
+    <div *ngIf="films.length === 0">
+      Non ho caricato alcun film
+    </div>
+  </div>

@@ -1,0 +1,112 @@
+/* Contenitore principale */
+.film-details-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1c1c1c; /* Sfondo principale */
+    color: #ffffff; /* Colore testo principale */
+    border-radius: 8px;
+  }
+  
+  /* Sezione principale del film */
+  .film-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  
+  /* Immagine del film */
+  .film-img-detail {
+    width: 300px;
+    height: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+  }
+  
+  /* Informazioni principali */
+  .film-info {
+    max-width: 700px;
+  }
+  
+  .film-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #f5c518; /* Colore accento per il titolo */
+  }
+  
+  .film-metadata {
+    font-size: 18px;
+    color: #bdbdbd; /* Testo secondario */
+    margin-bottom: 20px;
+  }
+  
+  .film-trama {
+    font-size: 16px;
+    color: #e0e0e0; /* Testo trama */
+    line-height: 1.5;
+  }
+  
+  /* Sezione dei dettagli aggiuntivi */
+  .film-extra-details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+  
+  .film-extra-details h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #f5c518; /* Colore accento per i titoli delle sezioni */
+  }
+  
+  .film-extra-details ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .film-extra-details li {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #ffffff;
+  }
+  
+  /* Pulsante per link o azioni */
+  .button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f5c518; /* Colore accento giallo */
+    color: #1c1c1c; /* Colore testo bottone */
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+  }
+  
+  .button-link:hover {
+    background-color: #ffda44; /* Effetto hover sul bottone */
+  }
+  
+  @media (max-width: 768px) {
+    .film-header {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .film-info {
+      text-align: center;
+      max-width: 100%;
+    }
+  
+    .film-img-detail {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+  
