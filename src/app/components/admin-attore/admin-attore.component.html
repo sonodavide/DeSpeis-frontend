@@ -9,7 +9,7 @@
         <label for="cognome">Cognome:</label>
         <input type="text" id="cognome" [(ngModel)]="nuovoAttore.cognome" name="cognome" required />
   
-        <button type="submit" class="create-button">Crea</button>
+        <button id="crea" type="submit" class="create-button">Crea</button>
       </form>
     </div>
   
@@ -17,8 +17,8 @@
     <div class="section search-section">
       <h2>Cerca Attore</h2>
       <input type="text" placeholder="Cerca attore per nome o cognome" [(ngModel)]="searchTypeUtils.getSearchData(SearchType.AttoreModifica).termine" />
-      <button (click)="searchTypeUtils.eseguiRicerca(SearchType.AttoreModifica)">Cerca</button>
-      <button (click)="searchTypeUtils.resettaRicerca(SearchType.AttoreModifica)">Reset</button>
+      <button id="cerca" type="button" (click)="searchTypeUtils.eseguiRicerca(SearchType.AttoreModifica)">Cerca</button>
+      <button id="reset-ricerca" type="button" (click)="searchTypeUtils.resettaRicerca(SearchType.AttoreModifica)">Reset</button>
       
       <ul *ngIf="searchTypeUtils.getSearchData(SearchType.AttoreModifica).risultati.length > 0">
         <li *ngFor="let attore of searchTypeUtils.getSearchData(SearchType.AttoreModifica).risultati" (click)="selezionaAttore(attore)">
@@ -27,9 +27,9 @@
       </ul>
       <!-- Sezione Paginazione -->
     <div class="pagination">
-      <button (click)="searchTypeUtils.paginaPrecedente(SearchType.AttoreModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.AttoreModifica).paginaCorrente === 0">Indietro</button>
+      <button id="precedente" type="button" (click)="searchTypeUtils.paginaPrecedente(SearchType.AttoreModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.AttoreModifica).paginaCorrente === 0">Indietro</button>
       <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.AttoreModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.AttoreModifica).totalePagine }}</span>
-      <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.AttoreModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.AttoreModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.AttoreModifica).totalePagine - 1">Avanti</button>
+      <button id="successivo" type="button" (click)="searchTypeUtils.paginaSuccessiva(SearchType.AttoreModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.AttoreModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.AttoreModifica).totalePagine - 1">Avanti</button>
     </div>
     
       <!-- Dettagli Attore Selezionato -->
@@ -51,13 +51,13 @@
       (input)="abilitaModifiche()"
     />
   
-    <button class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaAttore()">
+    <button id="modifica" type="button" class="edit-button" [disabled]="!modificheAbilitate" (click)="modificaAttore()">
       Modifica
     </button>
-    <button class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">
+    <button id="reset" type="button" class="cancel-button" [disabled]="!modificheAbilitate" (click)="annullaModifiche()">
       Annulla Modifica
     </button>
-    <button class="delete-button" (click)="eliminaAttore()">
+    <button id="elimina" type="button" class="delete-button" (click)="eliminaAttore()">
       Elimina
     </button>
   </div>

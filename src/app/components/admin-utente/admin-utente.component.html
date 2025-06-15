@@ -3,8 +3,8 @@
   <div class="section search-section">
     <h2>Cerca Utente</h2>
     <input type="text" placeholder="Cerca utente per nome o username" [(ngModel)]="searchTypeUtils.getSearchData(SearchType.Utente).termine" />
-    <button (click)="searchTypeUtils.eseguiRicerca(SearchType.Utente)">Cerca</button>
-    <button (click)="searchTypeUtils.resettaRicerca(SearchType.Utente)">Reset</button>
+    <button id="cerca" type="button"(click)="searchTypeUtils.eseguiRicerca(SearchType.Utente)">Cerca</button>
+    <button id="reset-ricerca" type="button"(click)="searchTypeUtils.resettaRicerca(SearchType.Utente)">Reset</button>
 
 
     <ul *ngIf="searchTypeUtils.getSearchData(SearchType.Utente).risultati.length > 0">
@@ -15,9 +15,9 @@
     </ul>
     <!-- Sezione Paginazione -->
     <div class="pagination">
-      <button (click)="searchTypeUtils.paginaPrecedente(SearchType.Utente)" [disabled]="searchTypeUtils.getSearchData(SearchType.Utente).paginaCorrente === 0">Indietro</button>
+      <button id="precedenteU"type="button"(click)="searchTypeUtils.paginaPrecedente(SearchType.Utente)" [disabled]="searchTypeUtils.getSearchData(SearchType.Utente).paginaCorrente === 0">Indietro</button>
       <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.Utente).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.Utente).totalePagine }}</span>
-      <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.Utente)" [disabled]="searchTypeUtils.getSearchData(SearchType.Utente).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.Utente).totalePagine - 1">Avanti</button>
+      <button id="successivoU"type="button"(click)="searchTypeUtils.paginaSuccessiva(SearchType.Utente)" [disabled]="searchTypeUtils.getSearchData(SearchType.Utente).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.Utente).totalePagine - 1">Avanti</button>
     </div>
     <!-- Dettagli Utente Selezionato -->
   </div>
@@ -51,9 +51,9 @@
             <!-- Altri dettagli -->
           </div>
           <div class="pagination">
-            <button (click)="searchTypeUtils.paginaPrecedente(SearchType.Biglietto)" [disabled]="searchTypeUtils.getSearchData(SearchType.Biglietto).paginaCorrente === 0">Indietro</button>
+            <button id="precedenteB" type="button"(click)="searchTypeUtils.paginaPrecedente(SearchType.Biglietto)" [disabled]="searchTypeUtils.getSearchData(SearchType.Biglietto).paginaCorrente === 0">Indietro</button>
             <span class="pagina-info">Pagina {{ searchTypeUtils.getSearchData(SearchType.Biglietto).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.Biglietto).totalePagine }}</span>
-            <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.Biglietto)"
+            <button id="successivoB"type="button"(click)="searchTypeUtils.paginaSuccessiva(SearchType.Biglietto)"
               [disabled]="searchTypeUtils.getSearchData(SearchType.Biglietto).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.Biglietto).totalePagine - 1">Avanti</button>
           </div>
         </div>
@@ -73,9 +73,9 @@
             <!-- Altri dettagli -->
           </div>
           <div class="pagination">
-            <button (click)="searchTypeUtils.paginaPrecedente(SearchType.Ordine)" [disabled]="searchTypeUtils.getSearchData(SearchType.Ordine).paginaCorrente === 0">Indietro</button>
+            <button id="precedenteO" type="button"(click)="searchTypeUtils.paginaPrecedente(SearchType.Ordine)" [disabled]="searchTypeUtils.getSearchData(SearchType.Ordine).paginaCorrente === 0">Indietro</button>
             <span class="pagina-info">Pagina {{ searchTypeUtils.getSearchData(SearchType.Ordine).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.Ordine).totalePagine }}</span>
-            <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.Ordine)"
+            <button id="successivoO"type="button"(click)="searchTypeUtils.paginaSuccessiva(SearchType.Ordine)"
               [disabled]="searchTypeUtils.getSearchData(SearchType.Ordine).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.Ordine).totalePagine - 1">Avanti</button>
           </div>
         </div>

@@ -2,8 +2,8 @@
     <h1 class="title">Films</h1>
     <div>
       <input type="text" placeholder="Cerca Film" [(ngModel)]="searchTypeUtils.getSearchData(SearchType.FilmModifica).termine"   />
-      <button (click)="searchTypeUtils.eseguiRicerca(SearchType.FilmModifica)">Cerca</button>
-      <button (click)="searchTypeUtils.resettaRicerca(SearchType.FilmModifica)">Reset</button>
+      <button id="cerca" type="button" (click)="searchTypeUtils.eseguiRicerca(SearchType.FilmModifica)">Cerca</button>
+      <button id="reset-ricerac" type="button" (click)="searchTypeUtils.resettaRicerca(SearchType.FilmModifica)">Reset</button>
     </div>
   
     <div *ngIf="searchTypeUtils.getSearchData(SearchType.FilmModifica).risultati.length > 0" class="film-grid">
@@ -18,8 +18,8 @@
     </div>
 
     <div class="pagination">
-      <button (click)="searchTypeUtils.paginaPrecedente(SearchType.FilmModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente === 0">Indietro</button>
+      <button id="precedente" type="button" (click)="searchTypeUtils.paginaPrecedente(SearchType.FilmModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente === 0">Indietro</button>
       <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.FilmModifica).totalePagine }}</span>
-      <button (click)="searchTypeUtils.paginaSuccessiva(SearchType.FilmModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.FilmModifica).totalePagine - 1">Avanti</button>
+      <button id="successivo" type="button" (click)="searchTypeUtils.paginaSuccessiva(SearchType.FilmModifica)" [disabled]="searchTypeUtils.getSearchData(SearchType.FilmModifica).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.FilmModifica).totalePagine - 1">Avanti</button>
     </div>
   </div>
