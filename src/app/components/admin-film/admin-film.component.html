@@ -102,9 +102,9 @@
         </ul>
         <!-- Sezione Paginazione -->
         <div class="pagination">
-          <button id="precedente-genereC"type="button"(click)="searchTypeUtils.paginaPrecedente(SearchType.GenereCreazione)" [disabled]="searchTypeUtils.getSearchData(SearchType.RegistaCreazione).paginaCorrente === 0">Indietro</button>
-          <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.RegistaCreazione).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.GenereCreazione).totalePagine }}</span>
-          <button id="successivo-genereC" type="button"(click)="searchTypeUtils.paginaSuccessiva(SearchType.GenereCreazione)" [disabled]="searchTypeUtils.getSearchData(SearchType.RegistaCreazione).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.GenereCreazione).totalePagine - 1">Avanti</button>
+          <button id="precedente-genereC"type="button"(click)="searchTypeUtils.paginaPrecedente(SearchType.GenereCreazione)" [disabled]="searchTypeUtils.getSearchData(SearchType.GenereCreazione).paginaCorrente === 0">Indietro</button>
+          <span>Pagina {{ searchTypeUtils.getSearchData(SearchType.GenereCreazione).paginaCorrente + 1 }} di {{ searchTypeUtils.getSearchData(SearchType.GenereCreazione).totalePagine }}</span>
+          <button id="successivo-genereC" type="button"(click)="searchTypeUtils.paginaSuccessiva(SearchType.GenereCreazione)" [disabled]="searchTypeUtils.getSearchData(SearchType.GenereCreazione).paginaCorrente >= searchTypeUtils.getSearchData(SearchType.GenereCreazione).totalePagine - 1">Avanti</button>
         </div>
         <div class="selected-list">
           <span *ngFor="let genre of nuovoFilm.generes">
